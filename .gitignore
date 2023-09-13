@@ -1,0 +1,11 @@
+dist/
+node_modules/
+
+*.log
+
+.idea/
+.vscode/
+
+*.mac
+.DS_Store
+Thumbs.db

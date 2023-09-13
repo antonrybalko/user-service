@@ -1,0 +1,45 @@
+{
+  "name": "user-service",
+  "version": "1.0.0",
+  "description": "User Service",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "nodemon --config nodemon.json src/index.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:run": "npm run build && npm run typeorm migration:run -- -d src/data-source.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anton Rybalko",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "@types/pg": "^8.10.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.17",
+    "@types/joi": "^17.2.3",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/kafkajs": "^1.9.0",
+    "@types/morgan": "^1.9.5",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "joi": "^17.10.1",
+    "jsonwebtoken": "^9.0.2",
+    "kafkajs": "^2.2.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "tslog": "^4.9.2",
+    "typeorm": "^0.3.17"
+  }
+}
