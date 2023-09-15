@@ -4,7 +4,7 @@
   "description": "User Service",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build --clean",
+    "build": "tsc --build",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "npm run build && npm run typeorm migration:run -- -d src/data-source.ts",
@@ -32,6 +32,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
+    "express-validator": "^7.0.1",
     "joi": "^17.10.1",
     "jsonwebtoken": "^9.0.2",
     "kafkajs": "^2.2.4",
