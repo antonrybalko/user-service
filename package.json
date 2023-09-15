@@ -4,7 +4,7 @@
   "description": "User Service",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build --clean",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "npm run build && npm run typeorm migration:run -- -d src/data-source.ts",
