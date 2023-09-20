@@ -1,3 +1,9 @@
+### Install
+
+```bash
+npm install -g typescript
+```
+
 ### Scripts
 
 ```bash
