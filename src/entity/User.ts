@@ -45,15 +45,15 @@ export class User {
     })
     status: UserStatus;
 
-    isActive(): boolean {
+    public isActive(): boolean {
         return this.status === UserStatus.ACTIVE;
     }
 
-    isBlocked(): boolean {
+    public isBlocked(): boolean {
         return this.status === UserStatus.BLOCKED;
     }
 
-    isDeleted(): boolean {
+    public isDeleted(): boolean {
         return this.status === UserStatus.DELETED;
     }
 }
