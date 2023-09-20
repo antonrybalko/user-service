@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import userRouter from './controller/UserController';
+import registraionRouter from './registration/RegistrationController';
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ app.use(morgan('tiny'));
 app.get('/', (req, res) => res.json({status: 'OK'}));
 
 app.use('/users', userRouter);
+
+app.use('/users/register', registraionRouter);
 
 app.listen(PORT, () => {
     console.log(`User Service is running on port ${PORT}`);

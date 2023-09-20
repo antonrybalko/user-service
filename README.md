@@ -1,4 +1,4 @@
-### Scripts
+## Scripts
 
 ```bash
 npm run start
@@ -11,21 +11,27 @@ npm run migration:revert
 ```
 
 
-### Migrations
+## Migrations
 
-Generate a migration
+### Generate a migration
 
 ```bash
-npm run typeorm migration:generate -- src/migration/CreateUserTable -d src/data-source.ts
-npm run build
+npm run typeorm migration:generate -- src/migration/MigrationName -d src/data-source.ts
 ```
 
-Run migrations
+### Run migrations
 ```bash
+npm run build
 npm run typeorm migration:run -- -d src/data-source.ts
 ```
 
-Rollback migrations
+or
+
 ```bash
-npm run typeorm migration:revert -- -d src/data-source.ts
+npm run migration:run
+```
+
+### Rollback migrations
+```bash
+npm run migration:revert
 ```

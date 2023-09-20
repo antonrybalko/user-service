@@ -9,7 +9,7 @@ export async function ensureAdminUser(req: RequestInterface, res: Response, next
         const userService = new UserService();
         const user = await userService.findByGuid(userGuid);
 
-        if (user && user.isAdmin) {
+        if (user && user.isActive() && user.isAdmin) {
             next();
         } else {
             res.sendStatus(401);
