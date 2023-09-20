@@ -3,6 +3,7 @@
 import { AppDataSource} from "../data-source";
 import { User } from '../entity/User';
 import bcrypt from 'bcrypt';
+import { ConflictException } from "./exception/ConflictException";
 
 export class UserService {
 
@@ -12,7 +13,7 @@ export class UserService {
         // Check for existing user
         const existingUser = await userRepository.findOne({ where: [{ email: data.email }, { phoneNumber: data.phoneNumber }] });
         if (existingUser) {
-            throw new Error('User with this email or phone number already exists.');
+            throw new ConflictException('User with this email or phone number already exists.');
         }
 
         // Hash the password

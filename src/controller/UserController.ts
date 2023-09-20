@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator';
 import { UserService } from '../service/UserService';
 import {AppDataSource} from "../data-source";
 import {User} from "../entity/User";
+import {ConflictException} from "../service/exception/ConflictException";
 
 const router = Router();
 const userService = new UserService();
@@ -36,9 +37,13 @@ router.post('/register', [
         const newUser = await userService.createUser(req.body);
         res.status(201).json(newUser);
     } catch (error) {
-        const logger = new Logger();
-        logger.error(error);
-        res.status(500).json({error: 'Unknown error'});
+        if (error instanceof ConflictException) {
+            res.status(409).json({ error: error.message });
+        } else {
+            const logger = new Logger();
+            logger.error(error);
+            res.status(500).json({error: 'Unknown error'});
+        }
     }
 });
 

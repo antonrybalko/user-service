@@ -1,5 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+export enum UserStatus {
+    REGISTERED = 0,
+    ACTIVE = 1,
+    DELETED = 2,
+    BLOCKED = 3,
+}
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn("uuid")
@@ -25,4 +32,28 @@ export class User {
 
     @Column({nullable: true})
     googleId: string;
+
+    @Column("boolean", {default: false})
+    isAdmin: boolean;
+
+    @Column("boolean", {default: false})
+    isVendor: boolean;
+
+    @Column({
+        type: 'int',
+        default: UserStatus.REGISTERED
+    })
+    status: UserStatus;
+
+    isActive(): boolean {
+        return this.status === UserStatus.ACTIVE;
+    }
+
+    isBlocked(): boolean {
+        return this.status === UserStatus.BLOCKED;
+    }
+
+    isDeleted(): boolean {
+        return this.status === UserStatus.DELETED;
+    }
 }
