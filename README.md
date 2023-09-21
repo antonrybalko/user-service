@@ -1,3 +1,10 @@
+## Install
+
+```bash
+npm install -g typescript
+npm install
+```
+
 ## Scripts
 
 ```bash
@@ -28,6 +35,7 @@ npm run typeorm migration:run -- -d src/data-source.ts
 or
 
 ```bash
+<<<<<<< HEAD
 npm run migration:run
 ```
 
@@ -35,3 +43,7 @@ npm run migration:run
 ```bash
 npm run migration:revert
 ```
+=======
+npm run typeorm migration:revert -- -d src/data-source.ts
+```
+>>>>>>> 9c7bc236fc7aca93f165b7de6ca74eced748c1f1
