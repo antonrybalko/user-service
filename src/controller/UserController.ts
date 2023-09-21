@@ -4,14 +4,16 @@ import { body, validationResult } from 'express-validator';
 import { UserService } from '../service/UserService';
 import {AppDataSource} from "../data-source";
 import {User} from "../entity/User";
-import {ConflictException} from "../registration/exception/ConflictException";
 import {NotFoundException} from "../service/exception/NotFoundException";
 import {AuthService} from "../service/AuthService";
-import {authenticateJWT} from "../middlewares/authenticateJWT";
-import {ensureAdminUser} from "../middlewares/ensureAdminUser";
-import {RequestInterface} from "../middlewares/RequestInterface";
+import {AuthenticateMiddleware} from "../middleware/AuthenticateMiddleware";
+import {EnsureAdminUser} from "../middleware/EnsureAdminUser";
+import Container from "typedi";
 
 const router = Router();
+
+const authenticateMiddleware = Container.get(AuthenticateMiddleware);
+const ensureAdminUser = Container.get(EnsureAdminUser);
 
 router.post('/login', [
     body('username').notEmpty().withMessage('Username is required.'),
@@ -46,7 +48,12 @@ router.post('/login', [
     }
 });
 
-router.get('/', authenticateJWT, ensureAdminUser, async (req, res) => {
+router.get(
+    '/', 
+    (req, res, next) => authenticateMiddleware.authenticate(req, res, next), 
+    (req, res, next) => ensureAdminUser.ensure(req, res, next),
+    async (req, res) => 
+{
     try {
         const userRepository = AppDataSource.getRepository(User)
         const result = await userRepository.find();
@@ -58,7 +65,10 @@ router.get('/', authenticateJWT, ensureAdminUser, async (req, res) => {
     }
 });
 
-router.get('/:guid', authenticateJWT, ensureAdminUser, async (req: Request, res: Response) => {
+router.get('/:guid', 
+(req, res, next) => authenticateMiddleware.authenticate(req, res, next), 
+(req, res, next) => ensureAdminUser.ensure(req, res, next),
+ async (req: Request, res: Response) => {
     const { guid } = req.params;
 
     try {

@@ -2,10 +2,10 @@
   "name": "user-service",
   "version": "1.0.0",
   "description": "User Service",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "build": "tsc --build",
-    "dev": "nodemon --config nodemon.json src/index.ts",
+    "dev": "nodemon --config nodemon.json src/app.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "npm run build && npm run typeorm migration:run -- -d src/data-source.ts",
     "migration:revert": "npm run build && npm run typeorm migration:revert -- -d src/data-source.ts",
@@ -45,6 +45,7 @@
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "tslog": "^4.9.2",
+    "typedi": "^0.10.0",
     "typeorm": "^0.3.17"
   }
 }

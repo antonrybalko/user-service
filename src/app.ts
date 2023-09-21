@@ -1,7 +1,9 @@
+import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import './diconfig';
 import userRouter from './controller/UserController';
 import registraionRouter from './registration/RegistrationController';
 
