@@ -12,17 +12,16 @@ dotenv.config();
 const app = express();
 const PORT = process.env.APP_PORT || 3000;
 
-
 app.use(express.json());
 app.use(cors());
 app.use(morgan('tiny'));
 
-app.get('/', (req, res) => res.json({status: 'OK'}));
+app.get('/', (req, res) => res.json({ status: 'OK' }));
 
 app.use('/users', userRouter);
 
 app.use('/users/register', registraionRouter);
 
 app.listen(PORT, () => {
-    console.log(`User Service is running on port ${PORT}`);
+  console.log(`User Service is running on port ${PORT}`);
 });

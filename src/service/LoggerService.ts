@@ -4,11 +4,9 @@ import { LoggerInterface } from '../interface/LoggerInterface';
 
 @Service()
 export class LoggerService implements LoggerInterface {
-    constructor(
-        private logger = new Logger()
-    ) {}
+  constructor(private logger = new Logger()) {}
 
-    async error(message: any): Promise<void> {
-        this.logger.error(message);
-    }
+  async error(message: any): Promise<void> {
+    this.logger.error(message);
+  }
 }
