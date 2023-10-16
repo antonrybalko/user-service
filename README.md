@@ -8,7 +8,7 @@ npm install
 ## Scripts
 
 ```bash
-npm run start
+npm run dev
 npm run build
 npm run test
 npm run lint
