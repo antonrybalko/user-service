@@ -8,6 +8,7 @@
     "dev": "nodemon --config nodemon.json src/app.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "npm run build && npm run typeorm migration:run -- -d src/data-source.ts",
+    "migration:run:dev": "npm run build && NODE_ENV=development npm run typeorm migration:run -- -d src/data-source.ts",
     "migration:revert": "npm run build && npm run typeorm migration:revert -- -d src/data-source.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",

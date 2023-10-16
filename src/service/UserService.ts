@@ -1,5 +1,3 @@
-// src/service/UserService.ts
-
 import { AppDataSource } from '../data-source';
 import { User } from '../entity/User';
 import { NotFoundException } from './exception/NotFoundException';
