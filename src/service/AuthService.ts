@@ -22,7 +22,7 @@ export class AuthService {
       username: user.username,
     };
     return jwt.sign(payload, process.env.JWT_SECRET as string, {
-      expiresIn: '1h',
+      expiresIn: process.env.JWT_EXPIRES_IN as string,
     });
   }
 }
