@@ -8,7 +8,7 @@ export class InsertDevAdminUser1697481899763 implements MigrationInterface {
         if (process.env.NODE_ENV === 'development') {
             console.log('Inserting dev admin user into database...');
             const password = await bcrypt.hash('admin123', 3)
-            await queryRunner.query(`INSERT INTO "user" (username, password, "isAdmin") VALUES ('admin', '${password}', true)`);
+            await queryRunner.query(`INSERT INTO "user" (username, password, "isAdmin", status) VALUES ('admin', '${password}', true, 1)`);
         };
     }
 

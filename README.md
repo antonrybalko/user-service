@@ -13,8 +13,8 @@ npm run build
 npm run test
 npm run lint
 npm run typeorm
-npm run migration:run
-npm run migration:revert
+npm run migration:run:dev
+npm run migration:revert:dev
 ```
 
 
@@ -35,12 +35,12 @@ npm run typeorm migration:run -- -d src/data-source.ts
 or
 
 ```bash
-npm run migration:run
+npm run migration:run:dev
 ```
 
 ### Rollback migrations
 ```bash
-npm run migration:revert
+npm run migration:revert:dev
 ```
 
 or

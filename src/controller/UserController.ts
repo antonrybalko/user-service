@@ -32,6 +32,12 @@ router.post(
       const authService = new AuthService();
 
       const user = await userService.findByUsername(req.body.username);
+      if (!user.isActive()) {
+        return res.status(401).json({
+          error: 'Username is not active',
+        });
+      }
+
       const isPasswordValid = await authService.comparePasswords(
         req.body.password,
         user.password,
