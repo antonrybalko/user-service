@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { AppDataSource } from '../data-source';
 import { User, UserStatus } from '../entity/User';
 import { AuthService } from '../service/AuthService';
-import { RegistrationDto } from './dto/RegistrationDto';
+import { RegisterDto } from './RegisterDto';
 
 export class RegistrationRepository {
   private authService: AuthService;
@@ -13,7 +13,7 @@ export class RegistrationRepository {
     this.userRepository = AppDataSource.getRepository(User);
   }
 
-  async checkIfUserExists({ username }: RegistrationDto): Promise<boolean> {
+  async checkIfUserExists({ username }: RegisterDto): Promise<boolean> {
     // Check for existing user
     const usernameExists = await this.userRepository.findOne({
       where: [{ username }],
@@ -24,7 +24,7 @@ export class RegistrationRepository {
   async checkIfEmailOrPhoneExists({
     email,
     phoneNumber,
-  }: RegistrationDto): Promise<boolean> {
+  }: RegisterDto): Promise<boolean> {
     // Check for existing user
     const emailOrPhoneExists = await this.userRepository.findOne({
       where: [{ email }, { phoneNumber }],
@@ -32,7 +32,7 @@ export class RegistrationRepository {
     return !!emailOrPhoneExists;
   }
 
-  async createUser(userData: RegistrationDto): Promise<User> {
+  async createUser(userData: RegisterDto): Promise<User> {
     const userRepository = AppDataSource.getRepository(User);
 
     // Hash the password

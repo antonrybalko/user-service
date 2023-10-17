@@ -1,14 +1,14 @@
 import { RegistrationRepository } from './RegistrationRepository';
-import { RegistrationDto } from './dto/RegistrationDto';
-import { RegisteredUserDto } from './dto/RegisteredUserDto';
-import { ConflictException } from './exception/ConflictException';
+import { RegisterDto } from './RegisterDto';
+import { RegisteredUserDto } from './RegisteredUserDto';
+import { ConflictException } from '@core/exception/ConflictException';
 
 export class RegistrationService {
   constructor(private registrationRepository = new RegistrationRepository()) {}
 
-  async registerUser(userData: RegistrationDto): Promise<RegisteredUserDto> {
+  async registerUser(userData: RegisterDto): Promise<RegisteredUserDto> {
     if (await this.registrationRepository.checkIfUserExists(userData)) {
-      throw new ConflictException('User with this username already exists.');
+      throw new ConflictException('User with this username already exists');
     }
 
     if (await this.registrationRepository.checkIfEmailOrPhoneExists(userData)) {

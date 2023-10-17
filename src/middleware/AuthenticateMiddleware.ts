@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { NextFunction, Response } from 'express';
-import { AuthUser, RequestInterface } from './RequestInterface';
 import { Inject, Service } from 'typedi';
-import { LoggerInterface } from '../interface/LoggerInterface';
+import { NextFunction, Response } from 'express';
+import { TokenPayload, RequestInterface } from './RequestInterface';
+import { LoggerInterface } from '@core/interface/LoggerInterface';
 
 @Service()
 export class AuthenticateMiddleware {
@@ -21,7 +21,7 @@ export class AuthenticateMiddleware {
           return res.sendStatus(401);
         }
 
-        req.user = payload;
+        req.tokenPayload = payload as TokenPayload;
         next();
       });
     } else {

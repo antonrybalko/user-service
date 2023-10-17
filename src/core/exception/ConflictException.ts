@@ -1,4 +1,4 @@
-// Class for Repository Conflict Error
+// Entity Conflict Errors
 
 export class ConflictException extends Error {
   constructor(message: string) {

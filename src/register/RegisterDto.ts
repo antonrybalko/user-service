@@ -9,7 +9,7 @@ import {
   IsPhoneNumber,
 } from 'class-validator';
 
-export class RegistrationDto {
+export class RegisterDto {
   @IsString()
   @Trim()
   username: string;
@@ -19,13 +19,13 @@ export class RegistrationDto {
   @Trim()
   password: string;
 
-  @ValidateIf((person: RegistrationDto) => person.phoneNumber === undefined)
+  @ValidateIf((person: RegisterDto) => person.phoneNumber === undefined)
   @IsEmail()
   @Trim()
   @NormalizeEmail()
   email: string;
 
-  @ValidateIf((person: RegistrationDto) => person.email === undefined)
+  @ValidateIf((person: RegisterDto) => person.email === undefined)
   @IsPhoneNumber('RU')
   @Whitelist(/0123456789/)
   phoneNumber: string;
@@ -33,4 +33,18 @@ export class RegistrationDto {
   @IsOptional()
   @IsBoolean()
   isVendor: boolean;
+
+  constructor({
+    username,
+    password,
+    email,
+    phoneNumber,
+    isVendor,
+  }: RegisterDto) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.isVendor = isVendor;
+  }
 }

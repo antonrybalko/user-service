@@ -1,4 +1,4 @@
-import { UserStatus } from '../../entity/User';
+import { UserStatus } from '../entity/User';
 
 export class RegisteredUserDto {
   guid: string;
