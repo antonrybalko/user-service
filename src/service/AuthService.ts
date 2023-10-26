@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '../entity/User';
-import { TokenPayload } from '../middleware/RequestInterface';
+import { UserEntity } from '../persistence/entity/UserEntity';
+import { TokenPayload } from '../api/middleware/RequestInterface';
 
 export class AuthService {
   async hashPassword(password: string): Promise<string> {
@@ -16,7 +16,7 @@ export class AuthService {
     return bcrypt.compare(password, hashedPassword);
   }
 
-  createToken(user: User): string {
+  createToken(user: UserEntity): string {
     const payload: TokenPayload = {
       guid: user.guid,
       username: user.username,

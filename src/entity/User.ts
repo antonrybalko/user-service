@@ -1,59 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
 export enum UserStatus {
-  REGISTERED = 0,
-  ACTIVE = 1,
-  DELETED = 2,
-  BLOCKED = 3,
+    REGISTERED = 0,
+    ACTIVE = 1,
+    DELETED = 2,
+    BLOCKED = 3,
 }
 
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  guid: string;
+export const DefaultUserStatus = UserStatus.ACTIVE;
 
-  @Column({ unique: true })
-  username: string;
+export default class User {
+    constructor(
+        private guid: string,
+        private username: string,
+        private isAdmin: boolean,
+        private isVendor: boolean,
+        private phoneNumber?: string,
+        private email?: string,
+        private oauthProvider?: string,
+        private vkId?: string,
+        private googleId?: string,
+        private status: UserStatus = DefaultUserStatus,
+    ) { }
 
-  @Column()
-  password: string;
+    public isActive(): boolean {
+        return this.status === UserStatus.ACTIVE;
+    }
 
-  @Column({ nullable: true, unique: true })
-  phoneNumber: string;
+    public isBlocked(): boolean {
+        return this.status === UserStatus.BLOCKED;
+    }
 
-  @Column({ nullable: true, unique: true })
-  email: string;
-
-  @Column({ nullable: true })
-  oauthProvider: string;
-
-  @Column({ nullable: true })
-  vkId: string;
-
-  @Column({ nullable: true })
-  googleId: string;
-
-  @Column('boolean', { default: false })
-  isAdmin: boolean;
-
-  @Column('boolean', { default: false })
-  isVendor: boolean;
-
-  @Column({
-    type: 'int',
-    default: UserStatus.REGISTERED,
-  })
-  status: UserStatus;
-
-  public isActive(): boolean {
-    return this.status === UserStatus.ACTIVE;
-  }
-
-  public isBlocked(): boolean {
-    return this.status === UserStatus.BLOCKED;
-  }
-
-  public isDeleted(): boolean {
-    return this.status === UserStatus.DELETED;
-  }
+    public isDeleted(): boolean {
+        return this.status === UserStatus.DELETED;
+    }
 }

@@ -1,6 +1,6 @@
 import { Sanitizer } from 'class-sanitizer';
 import { Service } from 'typedi';
-import { SanitizerInterface } from '@core/api/interface/SanitizerInterface';
+import { SanitizerInterface } from '../interface/SanitizerInterface';
 
 @Service()
 export class SanitizerService implements SanitizerInterface {

@@ -1,6 +1,6 @@
 import { Inject, Service } from 'typedi';
 import { NextFunction, Response } from 'express';
-import { UserService } from '../service/UserService';
+import { UserService } from '../../service/UserService';
 import { RequestInterface } from './RequestInterface';
 import { LoggerInterface } from '@core/interface/LoggerInterface';
 

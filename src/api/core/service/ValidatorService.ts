@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { ValidationError, Validator } from 'class-validator';
-import { ValidatorInterface } from '@core/api/interface/ValidatorInterface';
+import { ValidatorInterface } from '../interface/ValidatorInterface';
 
 @Service()
 export class ValidatorService implements ValidatorInterface {

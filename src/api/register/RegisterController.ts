@@ -1,14 +1,17 @@
 import { Request, Response } from 'express';
-import { Service } from 'typedi';
+import Container, { Service } from 'typedi';
 import { RegisterDto } from './RegisterDto';
 import { RegisteredUserDto } from './RegisteredUserDto';
-import { RegistrationService } from './RegistrationService';
-import BaseController from '@core/api/BaseController';
+import BaseController from '../core/BaseController';
+import { RegistrationService } from '../../register/RegistrationService';
 
 @Service()
 export class RegisterController extends BaseController {
-  public constructor(private registerService = new RegistrationService()) {
+  private registerService: RegistrationService;
+
+  public constructor() {
     super();
+    this.registerService = Container.get(RegistrationService);
   }
 
   public async handle(request: Request, response: Response): Promise<Response> {
@@ -20,7 +23,7 @@ export class RegisterController extends BaseController {
       // Register the user
       const newUser = await this.registerService.registerUser(registerDto);
 
-      return response.status(201).json(new RegisteredUserDto(newUser));
+      return response.status(201).json(new RegisteredUserDto(...newUser));
     } catch (error) {
       return this.handleError(response, error);
     }

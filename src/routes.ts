@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { Request, Response } from 'express';
-import registerController from './register';
+import registerController from './api/register';
 import { body, validationResult } from 'express-validator';
 import { UserService } from './service/UserService';
 import { AuthService } from './service/AuthService';
 import { NotFoundException } from './service/exception/NotFoundException';
 import { Logger } from 'tslog';
-import userRouter from './controller/UserController';
+import userRouter from './api/manageUser/UserController';
 
 const router = Router();
 

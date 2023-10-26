@@ -1,9 +1,9 @@
 import { Logger } from 'tslog';
 import { Router, Request, Response } from 'express';
-import { UserService } from '../service/UserService';
-import { AppDataSource } from '../data-source';
-import { User } from '../entity/User';
-import { NotFoundException } from '../service/exception/NotFoundException';
+import { UserService } from '../../service/UserService';
+import { AppDataSource } from '../../persistence/data-source';
+import { UserEntity } from '../../persistence/entity/UserEntity';
+import { NotFoundException } from '../../service/exception/NotFoundException';
 import { AuthenticateMiddleware } from '../middleware/AuthenticateMiddleware';
 import { EnsureAdminUser } from '../middleware/EnsureAdminUser';
 import Container from 'typedi';
@@ -19,7 +19,7 @@ router.get(
   (req, res, next) => ensureAdminUser.ensure(req, res, next),
   async (req, res) => {
     try {
-      const userRepository = AppDataSource.getRepository(User);
+      const userRepository = AppDataSource.getRepository(UserEntity);
       const result = await userRepository.find();
       res.json(result);
     } catch (error) {
