@@ -1,9 +1,9 @@
 import { Inject, Service } from 'typedi';
 import { Response } from 'express';
-import { LoggerInterface } from '@core/interface/LoggerInterface';
-import { ConflictException } from '@core/exception/ConflictException';
-import { ValidatorInterface } from './interface/ValidatorInterface';
-import { SanitizerInterface } from './interface/SanitizerInterface';
+import { LoggerInterface } from '../../shared/interface/LoggerInterface';
+import { ConflictException } from '../../shared/exception/ConflictException';
+import { ValidatorInterface } from '../../shared/interface/ValidatorInterface';
+import { SanitizerInterface } from '../../shared/interface/SanitizerInterface';
 
 @Service()
 class BaseController {

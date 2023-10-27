@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Container, { Service } from 'typedi';
 import { RegisterDto } from './RegisterDto';
 import { RegisteredUserDto } from './RegisteredUserDto';
-import BaseController from '../core/BaseController';
+import BaseController from '../shared/BaseController';
 import { RegistrationService } from '../../register/RegistrationService';
 
 @Service()

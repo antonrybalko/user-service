@@ -1,7 +1,7 @@
 import { RegistrationRepositoryInterface } from './RegistrationRepositoryInterface';
 import { RegisterDto } from '../api/register/RegisterDto';
 import { RegisteredUserDto } from '../api/register/RegisteredUserDto';
-import { ConflictException } from '@core/exception/ConflictException';
+import { ConflictException } from '../shared/exception/ConflictException';
 import {AuthService} from "../service/AuthService";
 import {Inject} from "typedi";
 import User from "../entity/User";

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Inject, Service } from 'typedi';
 import { NextFunction, Response } from 'express';
 import { TokenPayload, RequestInterface } from './RequestInterface';
-import { LoggerInterface } from '@core/interface/LoggerInterface';
+import { LoggerInterface } from '../../../shared/interface/LoggerInterface';
 
 @Service()
 export class AuthenticateMiddleware {

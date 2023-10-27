@@ -4,8 +4,8 @@ import { UserService } from '../../service/UserService';
 import { AppDataSource } from '../../persistence/data-source';
 import { UserEntity } from '../../persistence/entity/UserEntity';
 import { NotFoundException } from '../../service/exception/NotFoundException';
-import { AuthenticateMiddleware } from '../middleware/AuthenticateMiddleware';
-import { EnsureAdminUser } from '../middleware/EnsureAdminUser';
+import { AuthenticateMiddleware } from '../shared/middleware/AuthenticateMiddleware';
+import { EnsureAdminUser } from '../shared/middleware/EnsureAdminUser';
 import Container from 'typedi';
 
 const router = Router();

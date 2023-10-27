@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { Logger } from 'tslog';
-import { LoggerInterface } from '@core/interface/LoggerInterface';
+import { LoggerInterface } from '../interface/LoggerInterface';
 
 @Service()
 export class LoggerService implements LoggerInterface {

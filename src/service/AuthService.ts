@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserEntity } from '../persistence/entity/UserEntity';
-import { TokenPayload } from '../api/middleware/RequestInterface';
+import { TokenPayload } from '../api/shared/middleware/RequestInterface';
 
 export class AuthService {
   async hashPassword(password: string): Promise<string> {
