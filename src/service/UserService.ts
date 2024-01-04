@@ -1,6 +1,7 @@
 import { AppDataSource } from '../persistence/data-source';
-import { UserEntity } from '../persistence/entity/UserEntity';
 import { NotFoundException } from './exception/NotFoundException';
+import User from '../entity/User';
+import { UserEntity } from '../persistence/entity/UserEntity';
 
 export class UserService {
   async findByUsername(username: string): Promise<UserEntity> {
@@ -14,7 +15,7 @@ export class UserService {
     return user;
   }
 
-  async findByGuid(guid: string): Promise<UserEntity> {
+  async findByGuid(guid: string): Promise<User> {
     const userRepository = AppDataSource.getRepository(UserEntity);
     const user = await userRepository.findOne({ where: { guid } });
 
@@ -22,6 +23,6 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    return user;
+    return user.toDomainEntity();
   }
 }

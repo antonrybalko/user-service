@@ -7,6 +7,7 @@ import { AuthService } from './service/AuthService';
 import { NotFoundException } from './service/exception/NotFoundException';
 import { Logger } from 'tslog';
 import userRouter from './api/manageUser/UserController';
+import { UserStatus } from './entity/User';
 
 const router = Router();
 
@@ -37,7 +38,7 @@ router.post(
       const authService = new AuthService();
 
       const user = await userService.findByUsername(req.body.username);
-      if (!user.isActive()) {
+      if (user.status !== UserStatus.ACTIVE) {
         return res.status(401).json({
           error: 'Username is not active',
         });

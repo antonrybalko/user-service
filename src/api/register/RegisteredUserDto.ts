@@ -1,12 +1,24 @@
-import { UserStatus } from '../../persistence/entity/UserEntity';
+import User, { UserStatus } from '../../entity/User';
 
 export class RegisteredUserDto {
-    constructor(
-        public guid: string,
-        public username: string,
-        public email: string,
-        public phoneNumber: string,
-        public isVendor: boolean,
-        public status: UserStatus,
-    ) { }
+  constructor(
+    public guid: string,
+    public username: string,
+    public isVendor: boolean,
+    public status: UserStatus,
+    public email?: string,
+    public phoneNumber?: string,
+  ) {}
+
+  // constructor for User object
+  public static fromDomainEntity(user: User): RegisteredUserDto {
+    return new RegisteredUserDto(
+      user.guid,
+      user.username,
+      user.isVendor,
+      user.status,
+      user.email,
+      user.phoneNumber,
+    );
+  }
 }

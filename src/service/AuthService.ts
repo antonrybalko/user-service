@@ -2,7 +2,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserEntity } from '../persistence/entity/UserEntity';
 import { TokenPayload } from '../api/shared/middleware/RequestInterface';
+import { Service } from 'typedi';
 
+@Service()
 export class AuthService {
   async hashPassword(password: string): Promise<string> {
     const saltRounds = 3;

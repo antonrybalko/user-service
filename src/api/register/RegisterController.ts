@@ -21,9 +21,11 @@ export class RegisterController extends BaseController {
       // Validate the request body
       await this.validate(registerDto);
       // Register the user
-      const newUser = await this.registerService.registerUser(registerDto);
+      const user = await this.registerService.registerUser(registerDto);
 
-      return response.status(201).json(new RegisteredUserDto(...newUser));
+      return response
+        .status(201)
+        .json(RegisteredUserDto.fromDomainEntity(user));
     } catch (error) {
       return this.handleError(response, error);
     }
