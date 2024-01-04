@@ -1,9 +1,5 @@
 import { Request as ExpressRequest } from 'express';
-
-export type TokenPayload = {
-  guid: string;
-  username: string;
-};
+import TokenPayload from 'entity/TokenPayload';
 
 export interface RequestInterface extends ExpressRequest {
   tokenPayload?: TokenPayload;

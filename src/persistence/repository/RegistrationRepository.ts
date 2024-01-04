@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import User, { DefaultUserStatus } from '../../entity/User';
 import { UserEntity } from '../entity/UserEntity';
 import { AppDataSource } from '../data-source';
-import { RegistrationRepositoryInterface } from '../../register/RegistrationRepositoryInterface';
+import { RegistrationRepositoryInterface } from '../../application/register/RegistrationRepositoryInterface';
 import { Service } from 'typedi';
 
 @Service()

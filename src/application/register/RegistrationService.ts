@@ -1,8 +1,8 @@
 import { RegistrationRepositoryInterface } from './RegistrationRepositoryInterface';
-import { ConflictException } from '../shared/exception/ConflictException';
-import { AuthService } from '../service/AuthService';
+import { ConflictException } from '../../shared/exception/ConflictException';
 import { Inject, Service } from 'typedi';
-import User from '../entity/User';
+import User from 'entity/User';
+import { PasswordServiceInterface } from 'application/PasswordServiceInterface';
 
 type RegistrationData = {
   username: string;
@@ -17,7 +17,8 @@ export class RegistrationService {
   @Inject('RegistrationRepositoryInterface')
   private registrationRepository: RegistrationRepositoryInterface;
 
-  constructor(private authService: AuthService = new AuthService()) {}
+  @Inject('PasswordServiceInterface')
+  private passwordService: PasswordServiceInterface;
 
   async registerUser(userData: RegistrationData): Promise<User> {
     if (
@@ -38,7 +39,7 @@ export class RegistrationService {
     }
 
     const { username, password, email, phoneNumber, isVendor } = userData;
-    const hashedPassword = await this.authService.hashPassword(password);
+    const hashedPassword = await this.passwordService.hashPassword(password);
 
     return await this.registrationRepository.createUser(
       username,

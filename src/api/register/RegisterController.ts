@@ -1,18 +1,14 @@
 import { Request, Response } from 'express';
-import Container, { Service } from 'typedi';
+import { Inject, Service } from 'typedi';
+import { RegistrationService } from 'application/register/RegistrationService';
 import { RegisterDto } from './RegisterDto';
 import { RegisteredUserDto } from './RegisteredUserDto';
 import BaseController from '../shared/BaseController';
-import { RegistrationService } from '../../register/RegistrationService';
 
 @Service()
-export class RegisterController extends BaseController {
+export default class RegisterController extends BaseController {
+  @Inject('RegistrationService')
   private registerService: RegistrationService;
-
-  public constructor() {
-    super();
-    this.registerService = Container.get(RegistrationService);
-  }
 
   public async handle(request: Request, response: Response): Promise<Response> {
     try {

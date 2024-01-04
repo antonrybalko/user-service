@@ -10,7 +10,6 @@ export class RegisteredUserDto {
     public phoneNumber?: string,
   ) {}
 
-  // constructor for User object
   public static fromDomainEntity(user: User): RegisteredUserDto {
     return new RegisteredUserDto(
       user.guid,

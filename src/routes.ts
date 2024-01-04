@@ -1,13 +1,8 @@
-import { Router } from 'express';
-import { Request, Response } from 'express';
-import registerController from './api/register';
-import { body, validationResult } from 'express-validator';
-import { UserService } from './service/UserService';
-import { AuthService } from './service/AuthService';
-import { NotFoundException } from './service/exception/NotFoundException';
-import { Logger } from 'tslog';
+import Container from 'typedi';
+import { Router, Request, Response } from 'express';
+import LoginController from 'api/login/LoginController';
+import RegisterController from 'api/register/RegisterController';
 import userRouter from './api/manageUser/UserController';
-import { UserStatus } from './entity/User';
 
 const router = Router();
 
@@ -16,57 +11,15 @@ router.get('/', (request: Request, response: Response) => {
 });
 
 router.post('/register', (request: Request, response: Response) => {
+  const registerController = Container.get(RegisterController);
   return registerController.handle(request, response);
 });
 
+router.post('/login', (request: Request, response: Response) => {
+  const loginController = Container.get(LoginController);
+  return loginController.handle(request, response);
+});
+
 router.use('/users', userRouter);
-
-router.post(
-  '/login',
-  [
-    body('username').notEmpty().withMessage('Username is required.'),
-    body('password').notEmpty().withMessage('Password is required.'),
-  ],
-  async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    try {
-      const userService = new UserService();
-      const authService = new AuthService();
-
-      const user = await userService.findByUsername(req.body.username);
-      if (user.status !== UserStatus.ACTIVE) {
-        return res.status(401).json({
-          error: 'Username is not active',
-        });
-      }
-
-      const isPasswordValid = await authService.comparePasswords(
-        req.body.password,
-        user.password,
-      );
-
-      if (!isPasswordValid) {
-        return res.status(401).json({
-          error: 'Invalid username or password',
-        });
-      }
-
-      const token = authService.createToken(user);
-      res.json({ token });
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        res.status(409).json({ error: 'Invalid username or password' });
-      } else {
-        const logger = new Logger();
-        logger.error(error);
-        res.status(500).json({ error: 'Unknown error' });
-      }
-    }
-  },
-);
 
 export { router };
