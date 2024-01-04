@@ -6,13 +6,16 @@ import { RegistrationRepositoryInterface } from '../../register/RegistrationRepo
 import { Service } from 'typedi';
 
 @Service()
-export class RegistrationRepository
-  extends Repository<UserEntity>
-  implements RegistrationRepositoryInterface
-{
+export class RegistrationRepository implements RegistrationRepositoryInterface {
+  private userRepository: Repository<UserEntity>;
+
+  constructor() {
+    this.userRepository = AppDataSource.getRepository(UserEntity);
+  }
+
   async checkIfUserExists(username: string): Promise<boolean> {
     // Check for existing user
-    const usernameExists = await this.findOne({
+    const usernameExists = await this.userRepository.findOne({
       where: [{ username }],
     });
     return !!usernameExists;
@@ -23,7 +26,7 @@ export class RegistrationRepository
     phoneNumber: string,
   ): Promise<boolean> {
     // Check for existing user
-    const emailOrPhoneExists = await this.findOne({
+    const emailOrPhoneExists = await this.userRepository.findOne({
       where: [{ email }, { phoneNumber }],
     });
     return !!emailOrPhoneExists;
