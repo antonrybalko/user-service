@@ -1,4 +1,4 @@
-// Class for Repository Conflict Error
+// Entity not found exception
 
 export class NotFoundException extends Error {
   constructor(message: string) {

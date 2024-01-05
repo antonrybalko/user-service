@@ -4,6 +4,7 @@ import { LoggerInterface } from '../../shared/interface/LoggerInterface';
 import { ConflictException } from '../../shared/exception/ConflictException';
 import { ValidatorInterface } from '../../shared/interface/ValidatorInterface';
 import { SanitizerInterface } from '../../shared/interface/SanitizerInterface';
+import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 
 @Service()
 class BaseController {
@@ -28,6 +29,8 @@ class BaseController {
       return response.status(400).json({ errors: error });
     } else if (error instanceof ConflictException) {
       return response.status(409).json({ error: error.message });
+    } else if (error instanceof UnauthorizedException) {
+      return response.status(401).json({ error: error.message });
     } else {
       this.logger.error(error);
       return response.status(500).json({ error: 'Unknown error' });

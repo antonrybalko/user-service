@@ -1,9 +1,9 @@
 import { Logger } from 'tslog';
 import { Router, Request, Response } from 'express';
-import { UserService } from '../../service/UserService';
+import { UserService } from 'application/UserService';
 import { AppDataSource } from '../../persistence/data-source';
 import { UserEntity } from '../../persistence/entity/UserEntity';
-import { NotFoundException } from '../../service/exception/NotFoundException';
+import { NotFoundException } from '../../shared/exception/NotFoundException';
 import { AuthenticateMiddleware } from '../shared/middleware/AuthenticateMiddleware';
 import { EnsureAdminUser } from '../shared/middleware/EnsureAdminUser';
 import Container from 'typedi';

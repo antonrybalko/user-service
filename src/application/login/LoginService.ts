@@ -2,6 +2,9 @@ import { Service, Inject } from 'typedi';
 import { LoginRepositoryInterface } from './LoginRepositoryInterface';
 import { PasswordServiceInterface } from 'application/PasswordServiceInterface';
 import { TokenServiceInterface } from 'application/TokenServiceInterface';
+import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
+import UserAndPassword from 'entity/UserAndPassword';
+import { NotFoundException } from 'shared/exception/NotFoundException';
 
 type LoginData = {
   username: string;
@@ -26,12 +29,10 @@ export class LoginService {
    */
   async login(loginData: LoginData): Promise<string> {
     const { user, password: hashedPassword } =
-      await this.loginRepository.findByUsername(loginData.username);
+      await this.findUserAndPassword(loginData);
+
     if (!user.isActive()) {
-      throw new Error('User is not active');
-      // return res.status(401).json({
-      //     error: 'Username is not active',
-      // });
+      throw new UnauthorizedException('User is not active');
     }
 
     const isPasswordValid = await this.passwordService.comparePassword(
@@ -40,13 +41,22 @@ export class LoginService {
     );
 
     if (!isPasswordValid) {
-      throw new Error('Invalid username or password');
-      // return res.status(401).json({
-      //     error: 'Invalid username or password',
-      // });
+      throw new UnauthorizedException('Invalid username or password');
     }
-    console.log('!!! user', user);
 
     return this.tokenService.generateToken(user);
+  }
+
+  private async findUserAndPassword(
+    loginData: LoginData,
+  ): Promise<UserAndPassword> {
+    try {
+      return await this.loginRepository.findByUsername(loginData.username);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new UnauthorizedException('Invalid username or password');
+      }
+      throw error;
+    }
   }
 }
