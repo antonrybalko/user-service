@@ -2,10 +2,10 @@
   "name": "user-service",
   "version": "1.0.0",
   "description": "User Service",
-  "main": "app.js",
+  "main": "interface/web/server.js",
   "scripts": {
     "build": "tsc --build",
-    "dev": "nodemon --config nodemon.json src/app.ts",
+    "dev": "nodemon --config nodemon.json src/interface/web/server.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "npm run build && npm run typeorm migration:run -- -d src/infrastructure/persistence/data-source.ts",
     "migration:run:dev": "npm run build && NODE_ENV=development npm run typeorm migration:run -- -d src/infrastructure/persistence/data-source.ts",

@@ -1,11 +1,11 @@
 import { Logger } from 'tslog';
 import { Router, Request, Response } from 'express';
-import { UserService } from '../../../application/UserService';
-import { AppDataSource } from '../../../infrastructure/persistence/data-source';
-import { UserEntity } from '../../../infrastructure/persistence/entity/UserEntity';
-import { NotFoundException } from '../../../shared/exception/NotFoundException';
-import { AuthenticateMiddleware } from '../shared/middleware/AuthenticateMiddleware';
-import { EnsureAdminUser } from '../shared/middleware/EnsureAdminUser';
+import { UserService } from '../../../../application/UserService';
+import { AppDataSource } from '../../../../infrastructure/persistence/data-source';
+import { UserEntity } from '../../../../infrastructure/persistence/entity/UserEntity';
+import { NotFoundException } from '../../../../shared/exception/NotFoundException';
+import { AuthenticateMiddleware } from '../../middleware/AuthenticateMiddleware';
+import { EnsureAdminUser } from '../../middleware/EnsureAdminUser';
 import Container from 'typedi';
 
 const router = Router();

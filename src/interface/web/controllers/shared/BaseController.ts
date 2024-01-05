@@ -1,10 +1,10 @@
 import { Inject, Service } from 'typedi';
 import { Response } from 'express';
-import { LoggerInterface } from '../../../shared/interface/LoggerInterface';
-import { ConflictException } from '../../../shared/exception/ConflictException';
-import { ValidatorInterface } from '../../../shared/interface/ValidatorInterface';
-import { SanitizerInterface } from '../../../shared/interface/SanitizerInterface';
-import { UnauthorizedException } from '../../../shared/exception/UnauthorizedException';
+import { LoggerInterface } from '../../../../shared/interface/LoggerInterface';
+import { ConflictException } from '../../../../shared/exception/ConflictException';
+import { ValidatorInterface } from '../../../../shared/interface/ValidatorInterface';
+import { SanitizerInterface } from '../../../../shared/interface/SanitizerInterface';
+import { UnauthorizedException } from '../../../../shared/exception/UnauthorizedException';
 
 @Service()
 class BaseController {

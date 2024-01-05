@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Inject, Service } from 'typedi';
-import { RegistrationService } from '../../../application/usecase/register/RegistrationService';
-import { RegisterDto } from '../../../application/usecase/register/RegisterDto';
+import { RegistrationService } from '../../../../application/usecase/register/RegistrationService';
+import { RegisterDto } from '../../../../application/usecase/register/RegisterDto';
 import { RegisteredUserDto } from './RegisteredUserDto';
 import BaseController from '../shared/BaseController';
 
