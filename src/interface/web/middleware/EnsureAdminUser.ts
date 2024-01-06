@@ -24,7 +24,7 @@ export class EnsureAdminUser {
       }
 
       this.logger.error(`EnsureAdminUser failed for: ${userGuid}`);
-      res.sendStatus(403);
+      res.status(403).json({ error: 'Forbidden' });
     } catch (error) {
       this.logger.error(error);
       res.status(500).json({ error: 'Unknown error' });
