@@ -1,8 +1,8 @@
 import { Inject, Service } from 'typedi';
 import { NextFunction, Response } from 'express';
 import { RequestInterface } from './RequestInterface';
-import { LoggerInterface } from '../../../shared/interface/LoggerInterface';
-import { UserService } from '../../../application/UserService';
+import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { UserService } from 'application/services/UserService';
 
 @Service()
 export class EnsureAdminUser {

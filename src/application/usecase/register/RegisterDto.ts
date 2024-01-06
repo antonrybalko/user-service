@@ -12,6 +12,7 @@ import {
 
 export class RegisterDto {
   @IsString()
+  @MinLength(3)
   @MaxLength(30)
   @Trim()
   username: string;

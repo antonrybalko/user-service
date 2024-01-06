@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
-import { UserEntity } from './entity/UserEntity';
+import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 
 dotenv.config();
 
@@ -18,8 +18,8 @@ export const AppDataSource = new DataSource({
 });
 
 AppDataSource.initialize()
-  .then(() => {
-    // here you can start to work with your database
+  .then(async () => {
+    // Connection initialized with database...
   })
   /* eslint-disable-next-line no-console */
   .catch((error) => console.log(error));

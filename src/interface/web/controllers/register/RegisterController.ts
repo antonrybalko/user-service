@@ -8,14 +8,14 @@ import BaseController from '../shared/BaseController';
 @Service()
 export default class RegisterController extends BaseController {
   @Inject('RegistrationService')
-  private registerService: RegistrationService;
+  private registrationService: RegistrationService;
 
   public async handle(request: Request, response: Response): Promise<Response> {
     try {
       const registerDto = new RegisterDto(request.body);
 
       // Register the user
-      const user = await this.registerService.registerUser(registerDto);
+      const user = await this.registrationService.registerUser(registerDto);
 
       return response
         .status(201)

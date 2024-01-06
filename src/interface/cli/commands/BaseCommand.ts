@@ -1,0 +1,24 @@
+import { Inject } from 'typedi';
+import { ConflictException } from 'shared/exception/ConflictException';
+import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
+import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
+import { Command } from 'commander';
+
+export default abstract class BaseCommand {
+  @Inject('ValidatorInterface')
+  protected validator: ValidatorInterface;
+
+  protected async handleError(program: Command, error: unknown): Promise<void> {
+    if (this.validator.isValidationError(error)) {
+      program.error(this.validator.validationErrorToMessage(error), {
+        exitCode: 1,
+      });
+    } else if (error instanceof ConflictException) {
+      program.error(error.message, { exitCode: 2 });
+    } else if (error instanceof UnauthorizedException) {
+      program.error(error.message, { exitCode: 3 });
+    } else {
+      throw error;
+    }
+  }
+}

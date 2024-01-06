@@ -10,13 +10,21 @@ npm install
 ```bash
 npm run dev
 npm run build
+npm run cli
 npm run test
 npm run lint
+npm run format
 npm run typeorm
 npm run migration:run:dev
 npm run migration:revert:dev
 ```
 
+## CLI
+
+```bash
+yarn cli help
+yarn cli register -u vendor1 -p password123 -e vendor1@example.com --isVendor
+```
 
 ## Migrations
 

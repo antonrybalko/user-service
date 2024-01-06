@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
-import User, { DefaultUserStatus } from '../../../domain/entity/User';
-import { UserEntity } from '../entity/UserEntity';
+import User, { DefaultUserStatus } from 'domain/entity/User';
+import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 import { AppDataSource } from '../data-source';
-import { RegistrationRepositoryInterface } from '../../../application/usecase/register/RegistrationRepositoryInterface';
+import { RegistrationRepositoryInterface } from 'application/usecase/register/RegistrationRepositoryInterface';
 import { Service } from 'typedi';
 
 @Service()
@@ -39,8 +39,6 @@ export class RegistrationRepository implements RegistrationRepositoryInterface {
     phoneNumber: string,
     isVendor: boolean,
   ): Promise<User> {
-    const userRepository = AppDataSource.getRepository(UserEntity);
-
     // Create and save the user
     const user = new UserEntity();
     user.username = username;
@@ -50,7 +48,7 @@ export class RegistrationRepository implements RegistrationRepositoryInterface {
     user.isVendor = isVendor;
     user.status = DefaultUserStatus;
 
-    const userCreated = await userRepository.save(user);
+    const userCreated = await this.userRepository.save(user);
     return userCreated.toDomainEntity();
   }
 }
