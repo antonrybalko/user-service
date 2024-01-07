@@ -5,6 +5,13 @@ export enum UserStatus {
   BLOCKED = 3,
 }
 
+export const UserStatuses = [
+  UserStatus.REGISTERED,
+  UserStatus.ACTIVE,
+  UserStatus.DELETED,
+  UserStatus.BLOCKED,
+];
+
 export const DefaultUserStatus = UserStatus.ACTIVE;
 
 export default class User {

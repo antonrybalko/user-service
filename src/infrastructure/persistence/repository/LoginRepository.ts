@@ -1,23 +1,16 @@
-import { LoginRepositoryInterface } from '../../../application/usecase/login/LoginRepositoryInterface';
-import UserAndPassword from '../../../domain/valueObject/UserAndPassword';
-import { AppDataSource } from '../data-source';
-import { UserEntity } from '../entity/UserEntity';
-import { NotFoundException } from '../../../shared/exception/NotFoundException';
+import { LoginRepositoryInterface } from 'application/usecase/login/LoginRepositoryInterface';
+import UserAndPassword from 'domain/valueObject/UserAndPassword';
+import { NotFoundException } from 'shared/exception/NotFoundException';
 import { Service } from 'typedi';
-import { Repository } from 'typeorm';
+import { BaseUserRepository } from './BaseUserRepository';
 
 @Service()
-export class LoginRepository implements LoginRepositoryInterface {
-  private userRepository: Repository<UserEntity>;
-
-  constructor() {
-    this.userRepository = AppDataSource.getRepository(UserEntity);
-  }
-
+export class LoginRepository
+  extends BaseUserRepository
+  implements LoginRepositoryInterface
+{
   async findByUsername(username: string): Promise<UserAndPassword> {
-    const user = await this.userRepository.findOne({
-      where: [{ username }],
-    });
+    const user = await this.findUserByUsername(username);
     if (!user) {
       throw new NotFoundException('User not found');
     }

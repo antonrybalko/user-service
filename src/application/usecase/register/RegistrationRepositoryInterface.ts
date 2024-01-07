@@ -1,4 +1,4 @@
-import User from '../../../domain/entity/User';
+import User from 'domain/entity/User';
 
 export interface RegistrationRepositoryInterface {
   checkIfUserExists(username: string): Promise<boolean>;

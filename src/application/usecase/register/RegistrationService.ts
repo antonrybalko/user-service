@@ -1,10 +1,10 @@
 import { RegistrationRepositoryInterface } from './RegistrationRepositoryInterface';
-import { ConflictException } from '../../../shared/exception/ConflictException';
+import { ConflictException } from 'shared/exception/ConflictException';
 import { Inject, Service } from 'typedi';
-import User from '../../../domain/entity/User';
-import { PasswordServiceInterface } from '../../services/PasswordServiceInterface';
+import User from 'domain/entity/User';
+import { PasswordServiceInterface } from 'application/services/PasswordServiceInterface';
 import { RegisterDto } from './RegisterDto';
-import BaseUseCaseService from '../shared/BaseUseCaseService';
+import BaseUseCaseService from 'application/usecase/shared/BaseUseCaseService';
 
 @Service()
 export class RegistrationService extends BaseUseCaseService {
