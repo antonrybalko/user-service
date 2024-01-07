@@ -1,23 +1,16 @@
-import { Repository } from 'typeorm';
 import User, { DefaultUserStatus } from 'domain/entity/User';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
-import { AppDataSource } from '../data-source';
 import { RegistrationRepositoryInterface } from 'application/usecase/register/RegistrationRepositoryInterface';
 import { Service } from 'typedi';
+import { BaseUserRepository } from './BaseUserRepository';
 
 @Service()
-export class RegistrationRepository implements RegistrationRepositoryInterface {
-  private userRepository: Repository<UserEntity>;
-
-  constructor() {
-    this.userRepository = AppDataSource.getRepository(UserEntity);
-  }
-
+export class RegistrationRepository
+  extends BaseUserRepository
+  implements RegistrationRepositoryInterface
+{
   async checkIfUserExists(username: string): Promise<boolean> {
-    // Check for existing user
-    const usernameExists = await this.userRepository.findOne({
-      where: [{ username }],
-    });
+    const usernameExists = await this.findUserByUsername(username);
     return !!usernameExists;
   }
 
@@ -25,7 +18,6 @@ export class RegistrationRepository implements RegistrationRepositoryInterface {
     email: string,
     phoneNumber: string,
   ): Promise<boolean> {
-    // Check for existing user
     const emailOrPhoneExists = await this.userRepository.findOne({
       where: [{ email }, { phoneNumber }],
     });
