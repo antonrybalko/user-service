@@ -1,65 +1,44 @@
-import { Logger } from 'tslog';
-import { Router, Request, Response } from 'express';
-import { UserService } from 'application/services/UserService';
-import { AppDataSource } from 'infrastructure/persistence/data-source';
-import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
-import { NotFoundException } from 'shared/exception/NotFoundException';
-import { AuthenticateMiddleware } from '../../middleware/AuthenticateMiddleware';
-import { EnsureAdminUser } from '../../middleware/EnsureAdminUser';
-import Container from 'typedi';
+import { Request, Response } from 'express';
+import { Service, Inject } from 'typedi';
+import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
+import BaseController from 'interface/web/controllers/shared/BaseController';
 
-const router = Router();
+@Service()
+class UserController extends BaseController {
+  @Inject('ManageUsersService')
+  private manageUsersService: ManageUsersService;
 
-const authenticateMiddleware = Container.get(AuthenticateMiddleware);
-const ensureAdminUser = Container.get(EnsureAdminUser);
-
-router.get(
-  '/',
-  (req, res, next) => authenticateMiddleware.authenticate(req, res, next),
-  (req, res, next) => ensureAdminUser.ensure(req, res, next),
-  async (req, res) => {
+  public async getAllUsers(req: Request, res: Response): Promise<Response> {
     try {
-      const userRepository = AppDataSource.getRepository(UserEntity);
-      const result = await userRepository.find();
-      res.json(result);
+      const users = await this.manageUsersService.getAllUsers();
+      return res.json(users);
     } catch (error) {
-      const logger = new Logger();
-      logger.error(error);
-      res.status(500).json({ error: 'Unknown error' });
+      return this.handleError(res, error);
     }
-  },
-);
+  }
 
-router.get(
-  '/:guid',
-  (req, res, next) => authenticateMiddleware.authenticate(req, res, next),
-  (req, res, next) => ensureAdminUser.ensure(req, res, next),
-  async (req: Request, res: Response) => {
-    const { guid } = req.params;
-
+  public async getUserByGuid(req: Request, res: Response): Promise<Response> {
     try {
-      const userService = new UserService();
-      const { username, email, phoneNumber, isAdmin, isVendor, status } =
-        await userService.findByGuid(guid);
+      const user = await this.manageUsersService.getUserByGuid(req.params.guid);
+      return res.json(user);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
 
-      res.json({
+  public async updateUser(req: Request, res: Response): Promise<Response> {
+    try {
+      const guid = req.params.guid;
+      const userData = req.body; // Assuming body data is already validated and matches the expected DTO format
+      const updatedUser = await this.manageUsersService.updateUser(
         guid,
-        username,
-        email,
-        phoneNumber,
-        isAdmin,
-        isVendor,
-        status,
-      });
+        userData,
+      );
+      return res.json(updatedUser);
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        res.status(404).json({ error: error.message });
-      }
-      const logger = new Logger();
-      logger.error(error);
-      res.status(500).json({ error: 'Unknown error' });
+      return this.handleError(res, error);
     }
-  },
-);
+  }
+}
 
-export default router;
+export default UserController;
