@@ -2,10 +2,13 @@ import { Inject, Service } from 'typedi';
 import { NextFunction, Response } from 'express';
 import { RequestInterface } from './RequestInterface';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
-import { UserService } from 'application/services/UserService';
+import {ManageUsersService} from "../../../application/usecase/manageUsers/ManageUsersService";
 
 @Service()
 export class EnsureAdminUser {
+  @Inject('ManageUsersService')
+  private manageUsersService: ManageUsersService;
+
   @Inject('LoggerInterface')
   private logger: LoggerInterface;
 
@@ -16,9 +19,8 @@ export class EnsureAdminUser {
         return;
       }
       const userGuid = req.tokenPayload.guid;
-      const userService = new UserService();
 
-      if (await userService.isUserAdmin(userGuid)) {
+      if (await this.manageUsersService.isUserAdmin(userGuid)) {
         next();
         return;
       }

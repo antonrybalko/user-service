@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi';
-import User from 'domain/entity/User';
+import User, {UserStatus} from 'domain/entity/User';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { ManageUsersRepositoryInterface } from './ManageUsersRepositoryInterface';
 import BaseUseCaseService from 'application/usecase/shared/BaseUseCaseService';
@@ -61,5 +61,13 @@ export class ManageUsersService extends BaseUseCaseService {
       throw new NotFoundException(`User with GUID ${guid} does not exist`);
     }
     return await this.manageUsersRepository.deleteUser(guid);
+  }
+
+  async isUserAdmin(guid: string): Promise<boolean> {
+    if (!(await this.manageUsersRepository.checkIfUserExists(guid))) {
+      return false;
+    }
+    const user = await this.manageUsersRepository.findByGuid(guid);
+    return user !== null && user.status === UserStatus.ACTIVE && user.isAdmin;
   }
 }
