@@ -8,6 +8,8 @@ import { PasswordService } from './infrastructure/security/PasswordService';
 import { TokenService } from './infrastructure/security/TokenService';
 import { LoginRepository } from './infrastructure/persistence/repository/LoginRepository';
 import { LoginService } from './application/usecase/login/LoginService';
+import { ManageUsersService } from './application/usecase/manageUsers/ManageUsersService';
+import { ManageUsersRepository } from './infrastructure/persistence/repository/ManageUsersRepository';
 
 Container.set('PasswordServiceInterface', Container.get(PasswordService));
 Container.set('TokenServiceInterface', Container.get(TokenService));
@@ -23,3 +25,9 @@ Container.set(
   Container.get(RegistrationRepository),
 );
 Container.set('RegistrationService', Container.get(RegistrationService));
+
+Container.set(
+  'ManageUsersRepositoryInterface',
+  Container.get(ManageUsersRepository),
+);
+Container.set('ManageUsersService', Container.get(ManageUsersService));

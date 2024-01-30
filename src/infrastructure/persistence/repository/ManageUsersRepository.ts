@@ -48,7 +48,11 @@ export class ManageUsersRepository
 
   async deleteUser(guid: string): Promise<boolean> {
     const deleteResult = await this.userRepository.delete({ guid });
-    return deleteResult.affected > 0;
+    return (
+      deleteResult.affected !== null &&
+      deleteResult.affected !== undefined &&
+      deleteResult.affected > 0
+    );
   }
 
   async checkIfUserExists(guid: string): Promise<boolean> {
