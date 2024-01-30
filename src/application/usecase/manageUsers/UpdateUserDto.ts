@@ -44,4 +44,20 @@ export class UpdateUserDto {
   @IsInt()
   @IsEnum(UserStatuses)
   status?: number;
+
+  constructor({
+    username,
+    email,
+    phoneNumber,
+    isAdmin,
+    isVendor,
+    status,
+  }: UpdateUserDto) {
+    this.username = username;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.isAdmin = isAdmin;
+    this.isVendor = isVendor;
+    this.status = status;
+  }
 }
