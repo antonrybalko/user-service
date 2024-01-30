@@ -2,11 +2,13 @@ import 'reflect-metadata';
 import '../../diconfig';
 import Container from 'typedi';
 import { Command } from 'commander';
+import { AppDataSource } from 'infrastructure/persistence/data-source';
 import {
   RegisterCommand,
   RegisterCommandOptions,
 } from './commands/RegisterCommand';
-import { AppDataSource } from 'infrastructure/persistence/data-source';
+import { ListUsersCommand } from './commands/ListUsersCommand';
+import { UpdateUserCommand } from './commands/UpdateUserCommand';
 
 const runProgram = async () => {
   const program = new Command();
@@ -30,6 +32,27 @@ const runProgram = async () => {
         console.log(error);
       }
     });
+  program
+    .command('users/list')
+    .description('List all users')
+    .action(async () => {
+      const command = Container.get(ListUsersCommand);
+      await command.execute(program);
+    });
+  program
+    .command('users/update <guid>')
+    .description('Update user attributes')
+    .option('-u, --username <username>', 'Username')
+    .option('-e, --email <email>', 'Email')
+    .option('-ph, --phone <phone>', 'Phone number')
+    .option('-a, --isAdmin', 'Is admin', false)
+    .option('-v, --isVendor', 'Is vendor', false)
+    .option('-s, --status <status>', 'User status')
+    .action(async (guid, options) => {
+      const command = Container.get(UpdateUserCommand);
+      await command.execute(program, guid, options);
+    });
+
   program.parse();
 };
 
