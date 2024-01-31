@@ -5,6 +5,7 @@ import RegisterController from './controllers/register/RegisterController';
 import { AuthenticateMiddleware } from './middleware/AuthenticateMiddleware';
 import { EnsureAdminUser } from './middleware/EnsureAdminUser';
 import UserController from './controllers/manageUser/UserController';
+import CurrentUserController from './controllers/getCurrentUser/CurrentUserController';
 
 const router = Router();
 
@@ -33,6 +34,16 @@ const authenticateAndAuthorize = [
   (req: Request, res: Response, next: NextFunction) =>
     ensureAdminUser.ensure(req, res, next),
 ];
+
+// Current user information
+router.get(
+  '/me',
+  authenticateMiddleware.authenticate.bind(authenticateMiddleware),
+  (req: Request, res: Response) => {
+    const meController = Container.get(CurrentUserController);
+    return meController.getCurrentUser(req, res);
+  },
+);
 
 // User management routes
 router.get('/users', authenticateAndAuthorize, (req: Request, res: Response) =>
