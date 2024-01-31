@@ -40,7 +40,10 @@ router.get(
   '/me',
   authenticateMiddleware.authenticate.bind(authenticateMiddleware),
   (req: Request, res: Response) => {
+<<<<<<< HEAD
     throw new Error('test');
+=======
+>>>>>>> 756c9b1 (Add version to API routes)
     const meController = Container.get(CurrentUserController);
     return meController.getCurrentUser(req, res);
   },
