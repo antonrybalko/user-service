@@ -29,7 +29,7 @@ class UserController extends BaseController {
   public async updateUser(req: Request, res: Response): Promise<Response> {
     try {
       const guid = req.params.guid;
-      const userData = req.body; // Assuming body data is already validated and matches the expected DTO format
+      const userData = req.body;
       const updatedUser = await this.manageUsersService.updateUser(
         guid,
         userData,

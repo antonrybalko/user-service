@@ -1,10 +1,11 @@
 import { Inject, Service } from 'typedi';
 import { Response } from 'express';
-import { LoggerInterface } from '../../../../shared/interface/LoggerInterface';
-import { ConflictException } from '../../../../shared/exception/ConflictException';
-import { ValidatorInterface } from '../../../../shared/interface/ValidatorInterface';
-import { SanitizerInterface } from '../../../../shared/interface/SanitizerInterface';
-import { UnauthorizedException } from '../../../../shared/exception/UnauthorizedException';
+import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { ConflictException } from 'shared/exception/ConflictException';
+import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
+import { SanitizerInterface } from 'shared/interface/SanitizerInterface';
+import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
+import { NotFoundException } from 'shared/exception/NotFoundException';
 
 @Service()
 class BaseController {
@@ -27,6 +28,8 @@ class BaseController {
   ): Promise<Response> {
     if (this.validator.isValidationError(error)) {
       return response.status(400).json({ errors: error });
+    } else if (error instanceof NotFoundException) {
+      return response.status(404).json({ error: error.message });
     } else if (error instanceof ConflictException) {
       return response.status(409).json({ error: error.message });
     } else if (error instanceof UnauthorizedException) {

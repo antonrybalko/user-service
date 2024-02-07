@@ -24,32 +24,48 @@ export class RegisterDto {
   password: string;
 
   @ValidateIf((person: RegisterDto) => person.phoneNumber === undefined)
-  @MaxLength(100)
+  @MaxLength(255)
   @IsEmail()
   @Trim()
   @NormalizeEmail()
-  email: string;
+  email?: string;
 
   @ValidateIf((person: RegisterDto) => person.email === undefined)
   @IsPhoneNumber('RU')
   @Whitelist(/0123456789/)
-  phoneNumber: string;
+  phoneNumber?: string;
+
+  @IsString()
+  @MinLength(2)
+  @MaxLength(35)
+  @Trim()
+  firstname: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(35)
+  @Trim()
+  lastname?: string;
 
   @IsOptional()
   @IsBoolean()
-  isVendor: boolean;
+  isVendor?: boolean;
 
   constructor({
     username,
     password,
     email,
     phoneNumber,
+    firstname,
+    lastname,
     isVendor,
   }: RegisterDto) {
     this.username = username;
     this.password = password;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    this.firstname = firstname;
+    this.lastname = lastname;
     this.isVendor = isVendor;
   }
 }

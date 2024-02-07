@@ -34,12 +34,22 @@ export class RegistrationService extends BaseUseCaseService {
       );
     }
 
-    const { username, password, email, phoneNumber, isVendor } = userData;
+    const {
+      username,
+      password,
+      email,
+      phoneNumber,
+      isVendor,
+      firstname,
+      lastname,
+    } = userData;
     const hashedPassword = await this.passwordService.hashPassword(password);
 
     return await this.registrationRepository.createUser(
       username,
       hashedPassword,
+      firstname,
+      lastname,
       email,
       phoneNumber,
       isVendor,

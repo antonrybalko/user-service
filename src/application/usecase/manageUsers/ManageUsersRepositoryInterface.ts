@@ -8,6 +8,8 @@ export interface ManageUsersRepositoryInterface {
     username?: string,
     email?: string,
     phoneNumber?: string,
+    firstname?: string,
+    lastname?: string,
     isAdmin?: boolean,
     isVendor?: boolean,
     status?: number,

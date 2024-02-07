@@ -21,7 +21,7 @@ export class UpdateUserDto {
   username?: string;
 
   @IsOptional()
-  @MaxLength(100)
+  @MaxLength(255)
   @IsEmail()
   @Trim()
   @NormalizeEmail()
@@ -31,6 +31,19 @@ export class UpdateUserDto {
   @IsPhoneNumber('RU')
   @Whitelist(/0123456789/)
   phoneNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(2)
+  @MaxLength(35)
+  @Trim()
+  firstname: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(35)
+  @Trim()
+  lastname?: string;
 
   @IsOptional()
   @IsBoolean()
@@ -49,6 +62,8 @@ export class UpdateUserDto {
     username,
     email,
     phoneNumber,
+    firstname,
+    lastname,
     isAdmin,
     isVendor,
     status,
@@ -56,6 +71,8 @@ export class UpdateUserDto {
     this.username = username;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    this.firstname = firstname;
+    this.lastname = lastname;
     this.isAdmin = isAdmin;
     this.isVendor = isVendor;
     this.status = status;
