@@ -18,6 +18,12 @@ export class UserEntity {
   @Column({ nullable: true, unique: true })
   phoneNumber?: string;
 
+  @Column()
+  firstname: string;
+
+  @Column({ nullable: true })
+  lastname?: string;
+
   @Column({ nullable: true, unique: true })
   email?: string;
 
@@ -34,7 +40,7 @@ export class UserEntity {
   isAdmin: boolean;
 
   @Column('boolean', { default: false })
-  isVendor: boolean;
+  isVendor?: boolean;
 
   @Column('int', { default: DefaultUserStatus })
   status: UserStatus;
@@ -44,7 +50,9 @@ export class UserEntity {
       this.guid,
       this.username,
       this.isAdmin,
-      this.isVendor,
+      this.isVendor ?? false,
+      this.firstname,
+      this.lastname,
       this.phoneNumber,
       this.email,
       this.oauthProvider,

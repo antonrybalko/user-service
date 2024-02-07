@@ -46,6 +46,8 @@ export class ManageUsersService extends BaseUseCaseService {
       userData.username,
       userData.email,
       userData.phoneNumber,
+      userData.firstname,
+      userData.lastname,
       userData.isAdmin,
       userData.isVendor,
       userData.status,

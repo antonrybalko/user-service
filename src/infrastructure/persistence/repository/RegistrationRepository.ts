@@ -15,8 +15,8 @@ export class RegistrationRepository
   }
 
   async checkIfEmailOrPhoneExists(
-    email: string,
-    phoneNumber: string,
+    email?: string,
+    phoneNumber?: string,
   ): Promise<boolean> {
     const emailOrPhoneExists = await this.userRepository.findOne({
       where: [{ email }, { phoneNumber }],
@@ -27,17 +27,20 @@ export class RegistrationRepository
   async createUser(
     username: string,
     password: string,
-    email: string,
-    phoneNumber: string,
-    isVendor: boolean,
+    firstname: string,
+    lastname?: string,
+    email?: string,
+    phoneNumber?: string,
+    isVendor?: boolean,
   ): Promise<User> {
-    // Create and save the user
     const user = new UserEntity();
     user.username = username;
     user.password = password;
     user.email = email;
     user.phoneNumber = phoneNumber;
     user.isVendor = isVendor;
+    user.firstname = firstname;
+    user.lastname = lastname;
     user.status = DefaultUserStatus;
 
     const userCreated = await this.userRepository.save(user);

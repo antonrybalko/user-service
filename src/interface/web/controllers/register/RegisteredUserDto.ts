@@ -1,4 +1,4 @@
-import User, { UserStatus } from '../../../../domain/entity/User';
+import User, { UserStatus } from 'domain/entity/User';
 
 export class RegisteredUserDto {
   constructor(
@@ -6,6 +6,8 @@ export class RegisteredUserDto {
     public username: string,
     public isVendor: boolean,
     public status: UserStatus,
+    public firstname: string,
+    public lastname?: string,
     public email?: string,
     public phoneNumber?: string,
   ) {}
@@ -16,6 +18,8 @@ export class RegisteredUserDto {
       user.username,
       user.isVendor,
       user.status,
+      user.firstname,
+      user.lastname,
       user.email,
       user.phoneNumber,
     );

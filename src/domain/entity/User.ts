@@ -20,6 +20,8 @@ export default class User {
     public username: string,
     public isAdmin: boolean,
     public isVendor: boolean,
+    public firstname: string,
+    public lastname?: string,
     public phoneNumber?: string,
     public email?: string,
     public oauthProvider?: string,

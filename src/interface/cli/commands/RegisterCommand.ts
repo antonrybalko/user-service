@@ -10,6 +10,8 @@ export interface RegisterCommandOptions {
   email: string;
   phoneNumber: string;
   isVendor: boolean;
+  firstname: string;
+  lastname?: string;
 }
 
 @Service()
@@ -27,6 +29,8 @@ export class RegisterCommand extends BaseCommand {
       email: options.email,
       phoneNumber: options.phoneNumber,
       isVendor: options.isVendor,
+      firstname: options.firstname,
+      lastname: options.lastname,
     });
 
     try {

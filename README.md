@@ -31,7 +31,13 @@ yarn cli register -u vendor1 -p password123 -e vendor1@example.com --isVendor
 ### Generate a migration
 
 ```bash
-npm run typeorm migration:generate -- src/migration/MigrationName -d src/data-source.ts
+npm run typeorm migration:generate -- src/infrastructure/persistence/migration/MigrationName -d src/infrastructure/persistence/data-source.ts
+```
+
+### Create a migration
+
+```bash
+npm run typeorm migration:create  src/infrastructure/persistence/migration/MigrationName
 ```
 
 ### Run migrations
