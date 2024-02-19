@@ -16,6 +16,3 @@ COPY . .
 # Expose the port your app runs on
 EXPOSE 3001
 
-# Command to run your app using nodemon for development
-CMD ["npm", "run", "dev"]
-
