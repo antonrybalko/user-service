@@ -3,13 +3,11 @@ import '../../diconfig';
 import Container from 'typedi';
 import { Command } from 'commander';
 import { AppDataSource } from 'infrastructure/persistence/data-source';
-import {
-  RegisterCommand,
-  RegisterCommandOptions,
-} from './commands/RegisterCommand';
-import { ListUsersCommand } from './commands/ListUsersCommand';
-import { UpdateUserCommand } from './commands/UpdateUserCommand';
-import { CreateOrganizationCommand } from './commands/CreateOrganizationCommand';
+import RegisterCommand from './commands/user/RegisterCommand';
+import ListUsersCommand from './commands/user/ListUsersCommand';
+import UpdateUserCommand from './commands/user/UpdateUserCommand';
+import CreateOrganizationCommand from './commands/organization/CreateOrganizationCommand';
+import UpdateOrganizationCommand from './commands/organization/UpdateOrganizationCommand';
 
 const runProgram = async () => {
   const program = new Command();
@@ -26,10 +24,7 @@ const runProgram = async () => {
     .action(async (options) => {
       const registerCommand = Container.get(RegisterCommand);
       try {
-        await registerCommand.execute(
-          program,
-          options as RegisterCommandOptions,
-        );
+        await registerCommand.execute(program, options);
       } catch (error: unknown) {
         /* eslint-disable-next-line no-console */
         console.log(error);
@@ -61,7 +56,7 @@ const runProgram = async () => {
     });
 
   program
-    .command('organizations/create <userGuid>')
+    .command('orgs/create <userGuid>')
     .description(
       'Create a new organization. User GUID is a creator of the organization',
     )
@@ -82,6 +77,25 @@ const runProgram = async () => {
     .action(async (userGuid, options) => {
       const command = Container.get(CreateOrganizationCommand);
       await command.execute(program, userGuid, options);
+    });
+
+  program
+    .command('orgs/update <organizationGuid>')
+    .description('Update organization attributes')
+    .option('-t, --title <title>', 'Title of the organization')
+    .option(
+      '-p, --phoneNumber <phoneNumber>',
+      'Phone number of the organization',
+    )
+    .option('-e, --email <email>', 'Email address of the organization')
+    .option('-c, --cityGuid <cityGuid>', 'City GUID of the organization')
+    .option(
+      '-r, --registrationNumber <registrationNumber>',
+      'Registration number of the organization',
+    )
+    .action(async (organizationGuid, options) => {
+      const command = Container.get(UpdateOrganizationCommand);
+      await command.execute(program, organizationGuid, options);
     });
 
   program.parse();

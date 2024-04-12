@@ -7,7 +7,7 @@ import BaseController from 'interface/web/controllers/shared/BaseController';
 
 @Service()
 export default class RegisterController extends BaseController {
-  @Inject('RegistrationService')
+  @Inject()
   private registrationService: RegistrationService;
 
   public async handle(request: Request, response: Response): Promise<Response> {

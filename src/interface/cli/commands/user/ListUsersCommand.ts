@@ -1,18 +1,16 @@
 import { Command } from 'commander';
-import { Service, Container } from 'typedi';
+import { Service, Inject } from 'typedi';
 import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
-import BaseCommand from './BaseCommand';
+import BaseCommand from '../BaseCommand';
 
 @Service()
-export class ListUsersCommand extends BaseCommand {
-  constructor() {
-    super();
-  }
+export default class ListUsersCommand extends BaseCommand {
+  @Inject()
+  private manageUsersService: ManageUsersService;
 
   async execute(program: Command): Promise<void> {
     try {
-      const manageUsersService = Container.get(ManageUsersService);
-      const users = await manageUsersService.getAllUsers();
+      const users = await this.manageUsersService.getAllUsers();
       // eslint-disable-next-line no-console
       console.log('List of Users:', users);
     } catch (error) {

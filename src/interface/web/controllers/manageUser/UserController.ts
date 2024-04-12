@@ -5,7 +5,7 @@ import BaseController from 'interface/web/controllers/shared/BaseController';
 
 @Service()
 class UserController extends BaseController {
-  @Inject('ManageUsersService')
+  @Inject()
   private manageUsersService: ManageUsersService;
 
   public async getAllUsers(req: Request, res: Response): Promise<Response> {

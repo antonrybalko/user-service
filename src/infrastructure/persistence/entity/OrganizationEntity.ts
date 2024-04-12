@@ -32,11 +32,12 @@ export class OrganizationEntity {
   @Column({ nullable: true })
   registrationNumber?: string;
 
+  @Column({ type: 'uuid' })
+  createdByUserGuid: string;
+
   @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'createdByUserGuid' })
   createdByUser: UserEntity;
-
-  createdByUserGuid: string;
 
   @Column({ default: 'suspended' })
   status: OrganizationStatus;
@@ -60,8 +61,8 @@ export class OrganizationEntity {
       this.cityGuid,
       this.phoneNumber,
       this.email,
-      this.createdByUser.toDomainEntity(),
-      this.organizationMembers.map((member) => member.toDomainEntity()),
+      this.createdByUser?.toDomainEntity(),
+      this.organizationMembers?.map((member) => member.toDomainEntity()),
       this.registrationNumber,
       this.status,
     );

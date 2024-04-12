@@ -48,7 +48,7 @@ export class OrganizationService extends BaseUseCaseService {
   async updateOrganization(
     guid: string,
     organizationData: UpdateOrganizationDto,
-  ): Promise<void> {
+  ): Promise<Organization> {
     await this.validate(organizationData);
     const { title, phoneNumber, email, cityGuid, registrationNumber } =
       organizationData;
@@ -59,7 +59,7 @@ export class OrganizationService extends BaseUseCaseService {
       );
     }
 
-    await this.organizationRepository.update(
+    return await this.organizationRepository.update(
       guid,
       title,
       phoneNumber,

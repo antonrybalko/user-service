@@ -6,7 +6,7 @@ import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersS
 
 @Service()
 export class EnsureAdminUser {
-  @Inject('ManageUsersService')
+  @Inject()
   private manageUsersService: ManageUsersService;
 
   @Inject('LoggerInterface')

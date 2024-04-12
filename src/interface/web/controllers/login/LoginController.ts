@@ -7,7 +7,7 @@ import TokenDto from './TokenDto';
 
 @Service()
 class LoginController extends BaseController {
-  @Inject('LoginService')
+  @Inject()
   private loginService: LoginService;
 
   public async handle(request: Request, response: Response): Promise<Response> {
