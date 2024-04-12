@@ -3,4 +3,4 @@ type TokenPayload = {
   username: string;
 };
 
-export default TokenPayload;
+export { TokenPayload };

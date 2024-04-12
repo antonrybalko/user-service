@@ -1,4 +1,4 @@
-import User, { DefaultUserStatus } from 'domain/entity/User';
+import { User, DefaultUserStatus } from 'domain/entity/User';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 import { RegistrationRepositoryInterface } from 'application/usecase/register/RegistrationRepositoryInterface';
 import { Service } from 'typedi';

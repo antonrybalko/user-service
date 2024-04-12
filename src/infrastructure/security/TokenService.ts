@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Service } from 'typedi';
-import User from '../../domain/entity/User';
-import TokenPayload from '../../domain/valueObject/TokenPayload';
+import { User } from '../../domain/entity/User';
+import { TokenPayload } from '../../domain/valueObject/TokenPayload';
 import { TokenServiceInterface } from '../../application/services/TokenServiceInterface';
 
 @Service()

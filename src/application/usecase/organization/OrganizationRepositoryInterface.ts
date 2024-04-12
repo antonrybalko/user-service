@@ -1,0 +1,33 @@
+import { Organization } from 'domain/entity/Organization';
+import { OrganizationMember } from 'domain/entity/OrganizationMember';
+import { User } from 'domain/entity/User';
+
+export interface OrganizationRepositoryInterface {
+  create(
+    title: string,
+    phoneNumber: string,
+    email: string,
+    cityGuid: string,
+    createdByUserGuid: string,
+    registrationNumber?: string,
+  ): Promise<Organization>;
+
+  update(
+    guid: string,
+    title?: string,
+    phoneNumber?: string,
+    email?: string,
+    cityGuid?: string,
+    registrationNumber?: string,
+  ): Promise<Organization>;
+
+  findByGuid(guid: string): Promise<Organization>;
+
+  checkIfExists(guid: string): Promise<boolean>;
+
+  addMember(
+    organization: Organization,
+    user: User,
+    isOrgAdmin: boolean,
+  ): Promise<OrganizationMember>;
+}

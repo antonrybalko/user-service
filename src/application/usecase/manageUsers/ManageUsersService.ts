@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi';
-import User, { UserStatus } from 'domain/entity/User';
+import { User, UserStatus } from 'domain/entity/User';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { ManageUsersRepositoryInterface } from './ManageUsersRepositoryInterface';
 import BaseUseCaseService from 'application/usecase/shared/BaseUseCaseService';
