@@ -14,7 +14,7 @@ export const UserStatuses = [
 
 export const DefaultUserStatus = UserStatus.ACTIVE;
 
-export default class User {
+export class User {
   constructor(
     public guid: string,
     public username: string,

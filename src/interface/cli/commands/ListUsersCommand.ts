@@ -13,6 +13,7 @@ export class ListUsersCommand extends BaseCommand {
     try {
       const manageUsersService = Container.get(ManageUsersService);
       const users = await manageUsersService.getAllUsers();
+      // eslint-disable-next-line no-console
       console.log('List of Users:', users);
     } catch (error) {
       this.handleError(program, error);

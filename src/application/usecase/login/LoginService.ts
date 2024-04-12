@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi';
-import UserAndPassword from 'domain/valueObject/UserAndPassword';
+import { UserAndPassword } from 'domain/valueObject/UserAndPassword';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { PasswordServiceInterface } from 'application/services/PasswordServiceInterface';

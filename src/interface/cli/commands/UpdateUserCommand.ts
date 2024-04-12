@@ -10,6 +10,7 @@ export class UpdateUserCommand extends BaseCommand {
     super();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async execute(program: Command, guid: string, options: any): Promise<void> {
     try {
       const updateUserDto = new UpdateUserDto(options);
@@ -18,6 +19,7 @@ export class UpdateUserCommand extends BaseCommand {
         guid,
         updateUserDto,
       );
+      // eslint-disable-next-line no-console
       console.log('Updated User:', updatedUser);
     } catch (error) {
       this.handleError(program, error);

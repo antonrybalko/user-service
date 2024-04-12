@@ -1,8 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import User, {
-  DefaultUserStatus,
-  UserStatus,
-} from '../../../domain/entity/User';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { User, DefaultUserStatus, UserStatus } from 'domain/entity/User';
+import { OrganizationMemberEntity } from './OrganizationMemberEntity';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -44,6 +49,18 @@ export class UserEntity {
 
   @Column('int', { default: DefaultUserStatus })
   status: UserStatus;
+
+  @OneToMany(
+    () => OrganizationMemberEntity,
+    (organizationMember) => organizationMember.user,
+  )
+  organizationMembers: OrganizationMemberEntity[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   public toDomainEntity(): User {
     return new User(

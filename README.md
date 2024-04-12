@@ -41,9 +41,9 @@ npm run typeorm migration:create  src/infrastructure/persistence/migration/Migra
 ```
 
 ### Run migrations
+
 ```bash
-npm run build
-npm run typeorm migration:run -- -d src/data-source.ts
+npm run migration:run
 ```
 
 or
@@ -53,6 +53,7 @@ npm run migration:run:dev
 ```
 
 ### Rollback migrations
+
 ```bash
 npm run migration:revert:dev
 ```
@@ -60,5 +61,5 @@ npm run migration:revert:dev
 or
 
 ```
-npm run typeorm migration:revert -- -d src/data-source.ts
+npm run migration:revert
 ```

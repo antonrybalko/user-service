@@ -36,7 +36,7 @@ export class RegisterCommand extends BaseCommand {
     try {
       const registeredUser =
         await this.registrationService.registerUser(registerDto);
-      /* eslint-disable-next-line no-console */
+      // eslint-disable-next-line no-console
       console.log('User successfully registered: ', registeredUser);
     } catch (error) {
       this.handleError(program, error);

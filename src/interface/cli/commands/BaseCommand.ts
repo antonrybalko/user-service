@@ -3,6 +3,7 @@ import { ConflictException } from 'shared/exception/ConflictException';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
 import { Command } from 'commander';
+import { NotFoundException } from 'shared/exception/NotFoundException';
 
 export default abstract class BaseCommand {
   @Inject('ValidatorInterface')
@@ -17,6 +18,8 @@ export default abstract class BaseCommand {
       program.error(error.message, { exitCode: 2 });
     } else if (error instanceof UnauthorizedException) {
       program.error(error.message, { exitCode: 3 });
+    } else if (error instanceof NotFoundException) {
+      program.error(error.message, { exitCode: 4 });
     } else {
       throw error;
     }

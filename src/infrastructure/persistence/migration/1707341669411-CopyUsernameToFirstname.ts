@@ -7,5 +7,5 @@ export class CopyUsernameToFirstname1707341669411
     await queryRunner.query(`UPDATE "user" SET "firstname" = "username"`);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(): Promise<void> {}
 }

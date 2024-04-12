@@ -1,6 +1,6 @@
-import User from 'domain/entity/User';
+import { User } from 'domain/entity/User';
 
-export default class UserAndPassword {
+export class UserAndPassword {
   constructor(
     public user: User,
     public password: string,

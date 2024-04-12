@@ -1,7 +1,8 @@
 import { Service } from 'typedi';
-import User from 'domain/entity/User';
+import { User } from 'domain/entity/User';
 import { ManageUsersRepositoryInterface } from 'application/usecase/manageUsers/ManageUsersRepositoryInterface';
 import { BaseUserRepository } from './BaseUserRepository';
+import { NotFoundException } from 'shared/exception/NotFoundException';
 
 @Service()
 export class ManageUsersRepository
@@ -16,7 +17,7 @@ export class ManageUsersRepository
   async findByGuid(guid: string): Promise<User> {
     const user = await this.findUserByGuid(guid);
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
     return user.toDomainEntity();
   }
@@ -34,7 +35,7 @@ export class ManageUsersRepository
   ): Promise<User> {
     const userToUpdate = await this.userRepository.findOne({ where: { guid } });
     if (!userToUpdate) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     if (username !== undefined) userToUpdate.username = username;

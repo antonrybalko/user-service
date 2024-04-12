@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
@@ -21,12 +21,12 @@ server.use(morgan('tiny'));
 server.use(router);
 
 // Return 404 for all other routes
-server.use((req: Request, res: Response, next: NextFunction) => {
+server.use((req: Request, res: Response) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
 // Error handler
-server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+server.use((err: Error, req: Request, res: Response) => {
   logger.error(err);
   res.status(500).json({ error: 'Unexpected error' });
 });

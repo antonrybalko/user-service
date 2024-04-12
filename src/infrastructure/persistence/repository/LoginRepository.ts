@@ -1,5 +1,5 @@
 import { LoginRepositoryInterface } from 'application/usecase/login/LoginRepositoryInterface';
-import UserAndPassword from 'domain/valueObject/UserAndPassword';
+import { UserAndPassword } from 'domain/valueObject/UserAndPassword';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { Service } from 'typedi';
 import { BaseUserRepository } from './BaseUserRepository';

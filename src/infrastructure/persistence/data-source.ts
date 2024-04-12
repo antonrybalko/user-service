@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
+import { OrganizationEntity } from './entity/OrganizationEntity';
+import { OrganizationMemberEntity } from './entity/OrganizationMemberEntity';
 
 dotenv.config();
 
@@ -13,7 +15,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   logging: process.env.NODE_ENV === 'development',
-  entities: [UserEntity],
+  entities: [UserEntity, OrganizationEntity, OrganizationMemberEntity],
   migrations: ['dist/infrastructure/persistence/migration/*.js'],
 });
 
