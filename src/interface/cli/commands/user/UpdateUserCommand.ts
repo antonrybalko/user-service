@@ -1,21 +1,23 @@
 import { Command } from 'commander';
-import { Service, Container } from 'typedi';
+import { Service, Inject } from 'typedi';
 import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
 import { UpdateUserDto } from 'application/usecase/manageUsers/UpdateUserDto';
-import BaseCommand from './BaseCommand';
+import BaseCommand from '../BaseCommand';
 
 @Service()
-export class UpdateUserCommand extends BaseCommand {
-  constructor() {
-    super();
-  }
+export default class UpdateUserCommand extends BaseCommand {
+  @Inject()
+  private manageUsersService: ManageUsersService;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async execute(program: Command, guid: string, options: any): Promise<void> {
+  async execute(
+    program: Command,
+    guid: string,
+    options: UpdateUserDto,
+  ): Promise<void> {
     try {
       const updateUserDto = new UpdateUserDto(options);
-      const manageUsersService = Container.get(ManageUsersService);
-      const updatedUser = await manageUsersService.updateUser(
+      const updatedUser = await this.manageUsersService.updateUser(
         guid,
         updateUserDto,
       );

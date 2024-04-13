@@ -44,12 +44,11 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     organization.phoneNumber = phoneNumber;
     organization.email = email;
     organization.cityGuid = cityGuid;
-    organization.createdByUserGuid = createdByUserGuid;
+    organization.createdByUser = createdByUser;
     organization.registrationNumber = registrationNumber;
 
     const createdOrganization =
       await this.organizationRepository.save(organization);
-    createdOrganization.createdByUser = createdByUser;
     createdOrganization.organizationMembers = [];
     return createdOrganization.toDomainEntity();
   }
@@ -84,6 +83,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
 
     const updatedOrganization =
       await this.organizationRepository.save(organization);
+
     return updatedOrganization.toDomainEntity();
   }
 

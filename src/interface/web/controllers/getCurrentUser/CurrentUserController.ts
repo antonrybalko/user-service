@@ -8,7 +8,7 @@ import { CurrentUserDto } from './CurrentUserDto';
 
 @Service()
 export default class CurrentUserController extends BaseController {
-  @Inject('ManageUsersService')
+  @Inject()
   private manageUsersService: ManageUsersService;
 
   public async getCurrentUser(
