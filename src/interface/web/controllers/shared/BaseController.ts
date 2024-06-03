@@ -6,6 +6,7 @@ import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
 import { SanitizerInterface } from 'shared/interface/SanitizerInterface';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { NotFoundException } from 'shared/exception/NotFoundException';
+import { TokenPayload } from 'domain/valueObject/TokenPayload';
 
 @Service()
 class BaseController {
@@ -20,6 +21,13 @@ class BaseController {
 
   protected async validate(dto: object): Promise<void> {
     await this.validator.validate(this.sanitizer.sanitize(dto));
+  }
+
+  protected async getTokenPayload(req: any): Promise<TokenPayload> {
+    if (!req.tokenPayload) {
+      throw new UnauthorizedException('No token payload found.');
+    }
+    return req.tokenPayload;
   }
 
   protected async handleError(

@@ -25,6 +25,8 @@ export interface OrganizationRepositoryInterface {
 
   checkIfExists(guid: string): Promise<boolean>;
 
+  checkIsAdmin(userGuid: string, organizationGuid: string): Promise<boolean>;
+
   addMember(
     organization: Organization,
     user: User,

@@ -100,6 +100,19 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     return !!organization;
   }
 
+  async checkIsAdmin(
+    userGuid: string,
+    organizationGuid: string,
+  ): Promise<boolean> {
+    const organizationMember =
+      await this.organizationMemberRepository.findOneBy({
+        organizationGuid: organizationGuid,
+        userGuid: userGuid,
+        isOrgAdmin: true,
+      });
+    return !!organizationMember;
+  }
+
   async addMember(
     organization: Organization,
     user: User,

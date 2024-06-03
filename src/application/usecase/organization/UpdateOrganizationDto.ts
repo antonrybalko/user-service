@@ -17,6 +17,7 @@ export class UpdateOrganizationDto {
 
   @IsOptional()
   @IsUUID()
+  @Trim()
   cityGuid?: string;
 
   @IsOptional()
