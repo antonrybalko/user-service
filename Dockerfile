@@ -8,6 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install all dependencies (including 'devDependencies' for development tools like nodemon)
+RUN npm install -g typescript
 RUN npm install
 
 # Copy the rest of your application's source code
