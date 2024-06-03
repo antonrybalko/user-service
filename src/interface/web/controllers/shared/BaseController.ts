@@ -7,6 +7,7 @@ import { SanitizerInterface } from 'shared/interface/SanitizerInterface';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { TokenPayload } from 'domain/valueObject/TokenPayload';
+import { RequestInterface } from 'interface/web/middleware/RequestInterface';
 
 @Service()
 class BaseController {
@@ -23,7 +24,9 @@ class BaseController {
     await this.validator.validate(this.sanitizer.sanitize(dto));
   }
 
-  protected async getTokenPayload(req: any): Promise<TokenPayload> {
+  protected async getTokenPayload(
+    req: RequestInterface,
+  ): Promise<TokenPayload> {
     if (!req.tokenPayload) {
       throw new UnauthorizedException('No token payload found.');
     }

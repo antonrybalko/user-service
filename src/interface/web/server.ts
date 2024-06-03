@@ -4,14 +4,13 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import 'diconfig';
+import '../../diconfig';
 import { router } from './routes';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
 
 dotenv.config();
 
 const server = express();
-const PORT = process.env.APP_PORT || 3000;
 
 const logger: LoggerInterface = Container.get('LoggerInterface');
 
@@ -31,6 +30,4 @@ server.use((err: Error, req: Request, res: Response) => {
   res.status(500).json({ error: 'Unexpected error' });
 });
 
-server.listen(PORT, () => {
-  logger.info(`User Service is running on port ${PORT}`);
-});
+export default server;

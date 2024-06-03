@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { Service, Inject } from 'typedi';
 import { OrganizationService } from 'application/usecase/organization/OrganizationService';
 import { CreateOrganizationDto } from 'application/usecase/organization/CreateOrganizationDto';

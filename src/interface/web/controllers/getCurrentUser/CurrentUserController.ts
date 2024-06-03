@@ -3,7 +3,6 @@ import { Service, Inject } from 'typedi';
 import { RequestInterface } from '../../middleware/RequestInterface';
 import BaseController from '../shared/BaseController';
 import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
-import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { CurrentUserDto } from './CurrentUserDto';
 
 @Service()
