@@ -46,21 +46,51 @@ export class OrganizationService extends BaseUseCaseService {
   }
 
   async updateOrganization(
-    guid: string,
+    organizationGuid: string,
     organizationData: UpdateOrganizationDto,
   ): Promise<Organization> {
     await this.validate(organizationData);
     const { title, phoneNumber, email, cityGuid, registrationNumber } =
       organizationData;
 
-    if (!(await this.organizationRepository.checkIfExists(guid))) {
+    if (!(await this.organizationRepository.checkIfExists(organizationGuid))) {
       throw new NotFoundException(
-        `Organization with GUID ${guid} does not exist`,
+        `Organization with GUID ${organizationGuid} does not exist`,
       );
     }
 
     return await this.organizationRepository.update(
-      guid,
+      organizationGuid,
+      title,
+      phoneNumber,
+      email,
+      cityGuid,
+      registrationNumber,
+    );
+  }
+
+  async updateUserOrganization(
+    userGuid: string,
+    organizationGuid: string,
+    organizationData: UpdateOrganizationDto,
+  ): Promise<Organization> {
+    await this.validate(organizationData);
+    const { title, phoneNumber, email, cityGuid, registrationNumber } =
+      organizationData;
+
+    if (
+      !(await this.organizationRepository.checkIsAdmin(
+        userGuid,
+        organizationGuid,
+      ))
+    ) {
+      throw new NotFoundException(
+        `Organization with GUID ${organizationGuid} does not exist or not controlled by you`,
+      );
+    }
+
+    return await this.organizationRepository.update(
+      organizationGuid,
       title,
       phoneNumber,
       email,

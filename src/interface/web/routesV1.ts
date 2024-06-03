@@ -6,6 +6,7 @@ import { AuthenticateMiddleware } from './middleware/AuthenticateMiddleware';
 import { EnsureAdminUser } from './middleware/EnsureAdminUser';
 import UserController from './controllers/manageUser/UserController';
 import CurrentUserController from './controllers/getCurrentUser/CurrentUserController';
+import { OrganizationController } from './controllers/organization/OrganizationController';
 
 const router = Router();
 
@@ -26,6 +27,7 @@ router.post('/login', (request: Request, response: Response) => {
 const authenticateMiddleware = Container.get(AuthenticateMiddleware);
 const ensureAdminUser = Container.get(EnsureAdminUser);
 const userController = Container.get(UserController);
+const organizationController = Container.get(OrganizationController);
 
 // Middleware to authenticate and ensure the user is an admin for certain routes
 const authenticateAndAuthorize = [
@@ -42,6 +44,23 @@ router.get(
   (req: Request, res: Response) => {
     const meController = Container.get(CurrentUserController);
     return meController.getCurrentUser(req, res);
+  },
+);
+
+// Organization
+router.post(
+  '/me/organizations',
+  authenticateMiddleware.authenticate.bind(authenticateMiddleware),
+  (req: Request, res: Response) => {
+    return organizationController.createOrganization(req, res);
+  },
+);
+
+router.put(
+  '/me/organizations/:guid',
+  authenticateMiddleware.authenticate.bind(authenticateMiddleware),
+  (req: Request, res: Response) => {
+    return organizationController.updateOrganization(req, res);
   },
 );
 

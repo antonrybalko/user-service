@@ -16,14 +16,8 @@ export default class CurrentUserController extends BaseController {
     res: Response,
   ): Promise<Response> {
     try {
-      if (!req.tokenPayload) {
-        return this.handleError(
-          res,
-          new UnauthorizedException('No token payload found.'),
-        );
-      }
-      const userGuid = req.tokenPayload.guid;
-      const user = await this.manageUsersService.getUserByGuid(userGuid);
+      const { guid } = await this.getTokenPayload(req);
+      const user = await this.manageUsersService.getUserByGuid(guid);
       // const { guid, username, isAdmin, isVendor } = user;
       return res.json(CurrentUserDto.fromUser(user));
     } catch (error) {
