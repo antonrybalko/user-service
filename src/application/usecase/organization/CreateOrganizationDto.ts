@@ -15,6 +15,7 @@ export class CreateOrganizationDto {
   title: string;
 
   @IsUUID()
+  @Trim()
   cityGuid: string;
 
   @IsPhoneNumber('RU')
