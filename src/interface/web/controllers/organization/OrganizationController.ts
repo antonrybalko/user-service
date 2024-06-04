@@ -5,6 +5,7 @@ import { CreateOrganizationDto } from 'application/usecase/organization/CreateOr
 import { UpdateOrganizationDto } from 'application/usecase/organization/UpdateOrganizationDto';
 import BaseController from '../shared/BaseController';
 import { RequestInterface } from 'interface/web/middleware/RequestInterface';
+import { OrganizationDto } from './OrganizationDto';
 
 @Service()
 export class OrganizationController extends BaseController {
@@ -22,7 +23,7 @@ export class OrganizationController extends BaseController {
         guid,
         organizationData,
       );
-      return res.status(201).json(organization);
+      return res.status(201).json(OrganizationDto.fromDomainEntity(organization));
     } catch (error) {
       return this.handleError(res, error);
     }
@@ -42,7 +43,7 @@ export class OrganizationController extends BaseController {
           organizationGuid,
           organizationData,
         );
-      return res.status(200).json(organization);
+      return res.status(200).json(OrganizationDto.fromDomainEntity(organization));
     } catch (error) {
       return this.handleError(res, error);
     }
