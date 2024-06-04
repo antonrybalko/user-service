@@ -4,17 +4,30 @@ import { AppDataSource } from 'infrastructure/persistence/data-source';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 
 const testUsers = [
+    // User with email
     {
         username: 'userwithemail',
         password: 'userwithemail',
         email: 'userwithemail@example.com',
         firstname: 'John Email',
     },
+    // User with phone
     {
         username: 'userwithphone',
         password: 'userwithphone',
         phoneNumber: '79129921234',
         firstname: 'John Phone',
+    },
+    // User with full data
+    {
+        username: 'userwithfulldata',
+        password: 'userwithfulldata',
+        email: 'userwithfulldata@example.com',
+        phoneNumber: '79129921235',
+        firstname: 'John Full',
+        lastname: 'Data',
+        isAdmin: true,
+        isVendor: true,
     },
 ];
 
@@ -43,6 +56,21 @@ describe('POST /v1/register', () => {
 
         expect(response.status).toBe(201);
         expect(response.body.username).toBe('userwithphone');
+    });
+
+    it('should register a new user with valid data (full)', async () => {
+        const response = await request(app).post('/v1/register').send(testUsers[2]);
+
+        expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty('guid');
+        expect(response.body).toMatchObject({
+            username: 'userwithfulldata',
+            email: 'userwithfulldata@example.com',
+            phoneNumber: '79129921235',
+            firstname: 'John Full',
+            lastname: 'Data',
+            isVendor: true,
+        });
     });
 
     it('should return 400 for missing username', async () => {

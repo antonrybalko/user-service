@@ -1,7 +1,7 @@
 import { Inject, Service } from 'typedi';
 import { NextFunction, Response } from 'express';
-import { LoggerInterface } from '../../../shared/interface/LoggerInterface';
-import { TokenServiceInterface } from '../../../application/services/TokenServiceInterface';
+import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { TokenServiceInterface } from 'application/services/TokenServiceInterface';
 import { RequestInterface } from './RequestInterface';
 
 @Service()
