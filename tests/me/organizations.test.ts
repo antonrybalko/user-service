@@ -6,13 +6,16 @@ import { OrganizationEntity } from 'infrastructure/persistence/entity/Organizati
 import { createUserAndToken } from '../factories/tokenFactory';
 import { createOrganization } from '../factories/organizationFactory';
 import { Sanitizer } from 'class-sanitizer';
+import { OrganizationStatus } from 'domain/entity/Organization';
 
-describe('POST /v1/me/organizations', () => {
+describe('Organizations', () => {
   let token: string;
   let user: UserEntity;
   const organizationData = createOrganization();
+  let organizationGuid: string;
 
   beforeAll(async () => {
+    await AppDataSource.initialize();
     const userAndToken = await createUserAndToken();
     user = userAndToken.user;
     token = userAndToken.token;
@@ -22,47 +25,148 @@ describe('POST /v1/me/organizations', () => {
     const organizationRepository =
       AppDataSource.getRepository(OrganizationEntity);
     await organizationRepository.delete({ title: organizationData.title });
+    await organizationRepository.delete({ guid: organizationGuid });
     await AppDataSource.manager.remove(user);
     await AppDataSource.destroy();
   });
 
-  it('should create a new organization', async () => {
-    const response = await request(app)
-      .post('/v1/me/organizations')
-      .set('Authorization', `Bearer ${token}`)
-      .send(organizationData);
+  describe('POST /v1/me/organizations', () => {
+    it('should create a new organization', async () => {
+      const response = await request(app)
+        .post('/v1/me/organizations')
+        .set('Authorization', `Bearer ${token}`)
+        .send(organizationData);
 
-    expect(response.body).toMatchObject({
-      guid: expect.any(String),
-      title: organizationData.title,
-      cityGuid: organizationData.cityGuid,
-      phoneNumber: organizationData.phoneNumber,
-      email: Sanitizer.normalizeEmail(organizationData.email),
-      registrationNumber: organizationData.registrationNumber,
-      status: 'suspended',
+      organizationGuid = response.body.guid;
+
+      expect(response.body).toMatchObject({
+        guid: expect.any(String),
+        title: organizationData.title,
+        cityGuid: organizationData.cityGuid,
+        phoneNumber: organizationData.phoneNumber,
+        email: Sanitizer.normalizeEmail(organizationData.email),
+        registrationNumber: organizationData.registrationNumber,
+        status: 'suspended',
+      });
+      expect(response.status).toBe(201);
     });
-    expect(response.status).toBe(201);
+
+    it('should return 400 for invalid input', async () => {
+      const response = await request(app)
+        .post('/v1/me/organizations')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          title: '',
+          cityGuid: 'invalid-guid',
+          phoneNumber: '12345',
+          email: 'invalidemail',
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    it('should return 401 for missing token', async () => {
+      const response = await request(app)
+        .post('/v1/me/organizations')
+        .send(organizationData);
+
+      expect(response.status).toBe(401);
+    });
   });
 
-  it('should return 400 for invalid input', async () => {
-    const response = await request(app)
-      .post('/v1/me/organizations')
-      .set('Authorization', `Bearer ${token}`)
-      .send({
-        title: '',
-        cityGuid: 'invalid-guid',
-        phoneNumber: '12345',
-        email: 'invalidemail',
+  describe('PUT /v1/me/organizations/:guid', () => {
+    it('should update an existing organization', async () => {
+      const updatedData = createOrganization({
+        status: OrganizationStatus.ACTIVE,
       });
 
-    expect(response.status).toBe(400);
+      const response = await request(app)
+        .put(`/v1/me/organizations/${organizationGuid}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(updatedData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toMatchObject({
+        guid: organizationGuid,
+        title: updatedData.title,
+        cityGuid: updatedData.cityGuid,
+        phoneNumber: updatedData.phoneNumber,
+        email: Sanitizer.normalizeEmail(updatedData.email),
+        registrationNumber: updatedData.registrationNumber,
+      });
+    });
+
+    it('should return 400 for invalid input', async () => {
+      const response = await request(app)
+        .put(`/v1/me/organizations/${organizationGuid}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          title: '',
+          cityGuid: 'invalid-guid',
+          phoneNumber: '12345',
+          email: 'invalidemail',
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    it('should return 401 for missing token', async () => {
+      const response = await request(app)
+        .put(`/v1/me/organizations/${organizationGuid}`)
+        .send(organizationData);
+
+      expect(response.status).toBe(401);
+    });
   });
 
-  it('should return 401 for missing token', async () => {
-    const response = await request(app)
-      .post('/v1/me/organizations')
-      .send(organizationData);
+  describe('GET /v1/me', () => {
+    let token: string;
+    let user: UserEntity;
+    const organizationData1 = createOrganization();
+    const organizationData2 = createOrganization();
 
-    expect(response.status).toBe(401);
+    beforeAll(async () => {
+      const userAndToken = await createUserAndToken();
+      user = userAndToken.user;
+      token = userAndToken.token;
+    });
+
+    afterAll(async () => {
+      const organizationRepository =
+        AppDataSource.getRepository(OrganizationEntity);
+      await organizationRepository.delete({ title: organizationData1.title });
+      await organizationRepository.delete({ title: organizationData2.title });
+      await AppDataSource.manager.remove(user);
+    });
+
+    it('should return user info including two organizations', async () => {
+      const orgResponse1 = await request(app)
+        .post('/v1/me/organizations')
+        .set('Authorization', `Bearer ${token}`)
+        .send(organizationData1);
+
+      const orgResponse2 = await request(app)
+        .post('/v1/me/organizations')
+        .set('Authorization', `Bearer ${token}`)
+        .send(organizationData2);
+
+      const response = await request(app)
+        .get('/v1/me')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.organizations).toEqual([
+        {
+          guid: orgResponse1.body.guid,
+          title: organizationData1.title,
+          status: 'suspended',
+        },
+        {
+          guid: orgResponse2.body.guid,
+          title: organizationData2.title,
+          status: 'suspended',
+        },
+      ]);
+    });
   });
 });

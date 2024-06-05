@@ -6,8 +6,6 @@ import { createUser } from './userFactory';
 export const createUserAndToken = async (
   overrides: Partial<UserEntity> = {},
 ) => {
-  await AppDataSource.initialize();
-
   const user = await createUser(overrides);
   await AppDataSource.manager.save(user);
 

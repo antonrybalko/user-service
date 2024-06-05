@@ -2,14 +2,14 @@ export enum UserStatus {
   REGISTERED = 0,
   ACTIVE = 1,
   DELETED = 2,
-  BLOCKED = 3,
+  SUSPENDED = 3,
 }
 
 export const UserStatuses = [
   UserStatus.REGISTERED,
   UserStatus.ACTIVE,
   UserStatus.DELETED,
-  UserStatus.BLOCKED,
+  UserStatus.SUSPENDED,
 ];
 
 export const DefaultUserStatus = UserStatus.ACTIVE;
@@ -35,7 +35,7 @@ export class User {
   }
 
   public isBlocked(): boolean {
-    return this.status === UserStatus.BLOCKED;
+    return this.status === UserStatus.SUSPENDED;
   }
 
   public isDeleted(): boolean {
