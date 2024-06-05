@@ -4,11 +4,14 @@ import { RequestInterface } from '../../middleware/RequestInterface';
 import BaseController from '../shared/BaseController';
 import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
 import { CurrentUserDto } from './CurrentUserDto';
+import { OrganizationService } from 'application/usecase/organization/OrganizationService';
 
 @Service()
 export default class CurrentUserController extends BaseController {
   @Inject()
   private manageUsersService: ManageUsersService;
+  @Inject()
+  private organizationService: OrganizationService;
 
   public async getCurrentUser(
     req: RequestInterface,
@@ -17,8 +20,11 @@ export default class CurrentUserController extends BaseController {
     try {
       const { guid } = await this.getTokenPayload(req);
       const user = await this.manageUsersService.getUserByGuid(guid);
-      // const { guid, username, isAdmin, isVendor } = user;
-      return res.json(CurrentUserDto.fromUser(user));
+      const organizations =
+        await this.organizationService.getOrganizationsByAdminGuid(guid);
+      return res.json(
+        CurrentUserDto.fromUserAndOrganization(user, organizations),
+      );
     } catch (error) {
       return this.handleError(res, error);
     }

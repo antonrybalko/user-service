@@ -50,6 +50,7 @@ describe('GET /v1/me', () => {
       status: user.status,
       isAdmin: user.isAdmin,
       isVendor: user.isVendor,
+      organizations: [],
     });
   });
 

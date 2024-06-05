@@ -79,7 +79,7 @@ describe('POST /v1/register', () => {
       .post('/v1/register')
       .send(usersData.userFull);
 
-    expect(response.body).toMatchObject({
+    expect(response.body).toEqual({
       guid: expect.any(String),
       username: usersData.userFull.username,
       email: Sanitizer.normalizeEmail(usersData.userFull.email ?? ''),
@@ -87,6 +87,7 @@ describe('POST /v1/register', () => {
       lastname: usersData.userFull.lastname,
       phoneNumber: usersData.userFull.phoneNumber,
       isVendor: usersData.userFull.isVendor,
+      status: 1, // ACTIVE
     });
     expect(response.status).toBe(201);
   });

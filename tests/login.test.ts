@@ -48,7 +48,9 @@ describe('POST /login', () => {
       .send({ username: user.username, password: user.password });
 
     expect(response.status).toBe(200);
-    expect(response.body.token).toBeDefined();
+    expect(response.body).toEqual({
+      token: expect.any(String),
+    });
   });
 
   it('should return 400 for missing credentials', async () => {

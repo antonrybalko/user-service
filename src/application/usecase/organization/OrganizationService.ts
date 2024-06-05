@@ -98,4 +98,8 @@ export class OrganizationService extends BaseUseCaseService {
       registrationNumber,
     );
   }
+
+  async getOrganizationsByAdminGuid(userGuid: string): Promise<Organization[]> {
+    return await this.organizationRepository.findByAdminGuid(userGuid);
+  }
 }

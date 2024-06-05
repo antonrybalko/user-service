@@ -95,6 +95,20 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     return organization.toDomainEntity();
   }
 
+  async findByAdminGuid(guid: string): Promise<Organization[]> {
+    const organizations = await this.organizationRepository
+      .createQueryBuilder('organization')
+      .innerJoinAndSelect(
+        'organization.organizationMembers',
+        'member',
+        'member.userGuid = :guid AND member.isOrgAdmin = true',
+        { guid },
+      )
+      .getMany();
+
+    return organizations.map((organization) => organization.toDomainEntity());
+  }
+
   async checkIfExists(guid: string): Promise<boolean> {
     const organization = await this.organizationRepository.findOneBy({ guid });
     return !!organization;

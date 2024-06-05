@@ -1,4 +1,22 @@
+import { Organization } from 'domain/entity/Organization';
 import { UserStatus } from 'domain/entity/User';
+
+class OrganizationShortDto {
+  guid: string;
+  title: string;
+  status: string;
+  static fromOrganization({
+    guid,
+    title,
+    status,
+  }: Organization): OrganizationShortDto {
+    return {
+      guid,
+      title,
+      status,
+    };
+  }
+}
 
 export class CurrentUserDto {
   guid: string;
@@ -8,6 +26,7 @@ export class CurrentUserDto {
   status: UserStatus;
   firstname: string;
   lastname?: string;
+  organizations: OrganizationShortDto[];
 
   constructor(user: {
     guid: string;
@@ -16,6 +35,7 @@ export class CurrentUserDto {
     isVendor: boolean;
     status: UserStatus;
     firstname: string;
+    organizations: Organization[];
     lastname?: string;
   }) {
     this.guid = user.guid;
@@ -25,17 +45,26 @@ export class CurrentUserDto {
     this.status = user.status;
     this.firstname = user.firstname;
     this.lastname = user.lastname;
+    this.organizations = user.organizations.map(
+      OrganizationShortDto.fromOrganization,
+    );
   }
 
-  static fromUser(user: {
-    guid: string;
-    username: string;
-    isAdmin: boolean;
-    isVendor: boolean;
-    status: UserStatus;
-    firstname: string;
-    lastname?: string;
-  }): CurrentUserDto {
-    return new CurrentUserDto(user);
+  static fromUserAndOrganization(
+    user: {
+      guid: string;
+      username: string;
+      isAdmin: boolean;
+      isVendor: boolean;
+      status: UserStatus;
+      firstname: string;
+      lastname?: string;
+    },
+    organizations: Organization[],
+  ): CurrentUserDto {
+    return new CurrentUserDto({
+      ...user,
+      organizations,
+    });
   }
 }

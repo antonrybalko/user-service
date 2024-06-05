@@ -23,6 +23,8 @@ export interface OrganizationRepositoryInterface {
 
   findByGuid(guid: string): Promise<Organization>;
 
+  findByAdminGuid(guid: string): Promise<Organization[]>;
+
   checkIfExists(guid: string): Promise<boolean>;
 
   checkIsAdmin(userGuid: string, organizationGuid: string): Promise<boolean>;
