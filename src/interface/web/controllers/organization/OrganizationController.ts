@@ -23,7 +23,9 @@ export class OrganizationController extends BaseController {
         guid,
         organizationData,
       );
-      return res.status(201).json(OrganizationDto.fromDomainEntity(organization));
+      return res
+        .status(201)
+        .json(OrganizationDto.fromDomainEntity(organization));
     } catch (error) {
       return this.handleError(res, error);
     }
@@ -43,7 +45,9 @@ export class OrganizationController extends BaseController {
           organizationGuid,
           organizationData,
         );
-      return res.status(200).json(OrganizationDto.fromDomainEntity(organization));
+      return res
+        .status(200)
+        .json(OrganizationDto.fromDomainEntity(organization));
     } catch (error) {
       return this.handleError(res, error);
     }

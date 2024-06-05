@@ -15,6 +15,7 @@ export class RegisterDto {
   @MinLength(3)
   @MaxLength(30)
   @Trim()
+  @Whitelist(/a-zA-Z0-9_/)
   username: string;
 
   @IsString()

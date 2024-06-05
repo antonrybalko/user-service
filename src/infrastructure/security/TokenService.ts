@@ -18,7 +18,10 @@ export class TokenService implements TokenServiceInterface {
   }
 
   verifyToken(token: string): TokenPayload {
-    const payload = jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
+    const payload = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as TokenPayload;
 
     if (!payload.guid || !payload.username) {
       throw new Error('Invalid token payload');
