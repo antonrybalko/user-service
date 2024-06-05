@@ -8,14 +8,14 @@ import {
   ValidateIf,
   IsPhoneNumber,
   MaxLength,
+  Matches,
 } from 'class-validator';
 
 export class RegisterDto {
-  @IsString()
+  @Matches(/^[a-zA-Z0-9_]+$/)
   @MinLength(3)
   @MaxLength(30)
   @Trim()
-  @Whitelist(/a-zA-Z0-9_/)
   username: string;
 
   @IsString()

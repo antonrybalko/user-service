@@ -1,59 +1,40 @@
 import request from 'supertest';
-import bcrypt from 'bcrypt';
 import app from 'interface/web/server';
 import { AppDataSource } from 'infrastructure/persistence/data-source';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
+import { createUser } from './factories/userFactory';
+import { PasswordService } from 'infrastructure/security/PasswordService';
 
-const testUsers = [
-  {
-    username: 'testuser',
-    password: 'testuser',
-    email: 'testuser@example.com',
-    firstname: 'John',
-    status: 1, // Active
-  },
-  {
-    username: 'inactiveuser',
-    password: 'inactiveuser',
-    email: 'inactiveuser@example.com',
-    firstname: 'Inactive',
-    status: 0, // Inactive
-  },
-  {
-    username: 'deleteduser',
-    password: 'deleteduser',
-    email: 'deleteduser@example.com',
-    firstname: 'Deleted',
-    status: 2, // Deleted
-  },
-  {
-    username: 'blockeduser',
-    password: 'blockeduser',
-    email: 'blockeduser@example.com',
-    firstname: 'Blocked',
-    status: 3, // Blocked
-  },
-];
+let usersData: UserEntity[] = [];
 
 beforeAll(async () => {
-  await AppDataSource.initialize();
+  usersData = await Promise.all([
+    createUser({ status: 1 }), // Active user
+    createUser({ status: 0 }), // Inactive user
+    createUser({ status: 2 }), // Deleted user
+    createUser({ status: 3 }), // Blocked user
+  ]);
 
+  await AppDataSource.initialize();
   const userRepository = AppDataSource.getRepository(UserEntity);
-  for (const userData of testUsers) {
-    const user = new UserEntity();
-    user.username = userData.username;
-    user.password = await bcrypt.hash(userData.password, 3);
-    user.email = userData.email;
-    user.firstname = userData.firstname;
-    user.status = userData.status;
-    await userRepository.save(user);
-  }
+  const passwordService = new PasswordService();
+
+  await userRepository.save(
+    await Promise.all(
+      usersData.map(async (user) => {
+        return {
+          ...user,
+          password: await passwordService.hashPassword(user.password),
+        };
+      }),
+    ),
+  );
 });
 
 afterAll(async () => {
   const userRepository = AppDataSource.getRepository(UserEntity);
-  for (const userData of testUsers) {
-    await userRepository.delete({ username: userData.username });
+  for (const user of usersData) {
+    await userRepository.delete({ username: user.username });
   }
 
   await AppDataSource.destroy();
@@ -61,9 +42,10 @@ afterAll(async () => {
 
 describe('POST /login', () => {
   it('should return a token for valid credentials', async () => {
+    const user = usersData[0];
     const response = await request(app)
       .post('/v1/login')
-      .send({ username: 'testuser', password: 'testuser' });
+      .send({ username: user.username, password: user.password });
 
     expect(response.status).toBe(200);
     expect(response.body.token).toBeDefined();
@@ -75,10 +57,10 @@ describe('POST /login', () => {
     expect(response.status).toBe(400);
   });
 
-  it('should return 401 for invalid credentials', async () => {
+  it('should return 401 for invalid password', async () => {
     const response = await request(app)
       .post('/v1/login')
-      .send({ username: 'testuser', password: 'invalidpassword' });
+      .send({ username: usersData[0].username, password: 'invalidpassword' });
 
     expect(response.status).toBe(401);
     expect(response.body.error).toBe('Invalid username or password');
@@ -94,30 +76,33 @@ describe('POST /login', () => {
   });
 
   it('should return 401 for inactive user', async () => {
+    const user = usersData[1];
     const response = await request(app)
       .post('/v1/login')
-      .send({ username: 'inactiveuser', password: 'inactiveuser' });
+      .send({ username: user.username, password: user.password });
 
     expect(response.status).toBe(401);
     expect(response.body.error).toBe('User is not active');
   });
 
   it('should return 401 for blocked user', async () => {
+    const user = usersData[3];
     const response = await request(app)
       .post('/v1/login')
-      .send({ username: 'blockeduser', password: 'blockeduser' });
+      .send({ username: user.username, password: user.password });
 
     expect(response.status).toBe(401);
     expect(response.body.error).toBe('User is not active');
   });
 
   it('should return 401 for deleted user', async () => {
+    const user = usersData[2];
     const response = await request(app)
       .post('/v1/login')
-      .send({ username: 'deleteduser', password: 'deleteduser' });
+      .send({ username: user.username, password: user.password });
 
-    expect(response.status).toBe(401);
     expect(response.body.error).toBe('User is not active');
+    expect(response.status).toBe(401);
   });
 
   it('should return 400 for invalid request body', async () => {
@@ -130,5 +115,7 @@ describe('POST /login', () => {
     const response = await request(app)
       .post('/v1/login')
       .send({ username: 'testuser', password: '12345' });
+
+    expect(response.status).toBe(400);
   });
 });

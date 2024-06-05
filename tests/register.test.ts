@@ -2,75 +2,93 @@ import request from 'supertest';
 import app from 'interface/web/server';
 import { AppDataSource } from 'infrastructure/persistence/data-source';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
+import { faker } from '@faker-js/faker';
+import { createUser } from './factories/userFactory';
+import { Sanitizer } from 'class-sanitizer';
+import {
+  generatePassword,
+  generatePhoneNumber,
+  generateUserName,
+} from './factories/helpers';
 
-const testUsers = [
-  // User with email
-  {
-    username: 'userwithemail',
-    password: 'userwithemail',
-    email: 'userwithemail@example.com',
-    firstname: 'John Email',
-  },
-  // User with phone
-  {
-    username: 'userwithphone',
-    password: 'userwithphone',
-    phoneNumber: '79129921234',
-    firstname: 'John Phone',
-  },
-  // User with full data
-  {
-    username: 'userwithfulldata',
-    password: 'userwithfulldata',
-    email: 'userwithfulldata@example.com',
-    phoneNumber: '79129921235',
-    firstname: 'John Full',
-    lastname: 'Data',
-    isAdmin: true,
-    isVendor: true,
-  },
-];
+let usersData: {
+  userWithEmail: Partial<UserEntity>;
+  userWithPhone: Partial<UserEntity>;
+  userFull: Partial<UserEntity>;
+};
 
 beforeAll(async () => {
+  const createUserShort = (extraFields: Partial<UserEntity>) => {
+    return {
+      username: generateUserName(),
+      password: generatePassword(),
+      firstname: faker.person.firstName(),
+      ...extraFields,
+    };
+  };
+
+  usersData = {
+    userWithEmail: createUserShort({
+      email: faker.internet.email(),
+    }),
+    userWithPhone: createUserShort({
+      phoneNumber: generatePhoneNumber(),
+    }),
+    userFull: await createUser(),
+  };
   await AppDataSource.initialize();
 });
 
 afterAll(async () => {
   const userRepository = AppDataSource.getRepository(UserEntity);
-  for (const userData of testUsers) {
-    await userRepository.delete({ username: userData.username });
+  for (const user of Object.values(usersData)) {
+    await userRepository.delete({ username: user.username });
   }
   await AppDataSource.destroy();
 });
 
 describe('POST /v1/register', () => {
   it('should register a new user with valid data (email)', async () => {
-    const response = await request(app).post('/v1/register').send(testUsers[0]);
+    const response = await request(app)
+      .post('/v1/register')
+      .send(usersData.userWithEmail);
 
+    expect(response.body).toMatchObject({
+      username: usersData.userWithEmail.username,
+      email: Sanitizer.normalizeEmail(usersData.userWithEmail.email ?? ''),
+      firstname: usersData.userWithEmail.firstname,
+    });
     expect(response.status).toBe(201);
-    expect(response.body.username).toBe('userwithemail');
   });
 
   it('should register a new user with valid data (phone)', async () => {
-    const response = await request(app).post('/v1/register').send(testUsers[1]);
+    const response = await request(app)
+      .post('/v1/register')
+      .send(usersData.userWithPhone);
 
+    expect(response.body).toMatchObject({
+      username: usersData.userWithPhone.username,
+      phoneNumber: usersData.userWithPhone.phoneNumber,
+      firstname: usersData.userWithPhone.firstname,
+    });
     expect(response.status).toBe(201);
-    expect(response.body.username).toBe('userwithphone');
   });
 
   it('should register a new user with valid data (full)', async () => {
-    const response = await request(app).post('/v1/register').send(testUsers[2]);
+    const response = await request(app)
+      .post('/v1/register')
+      .send(usersData.userFull);
 
-    expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('guid');
     expect(response.body).toMatchObject({
-      username: 'userwithfulldata',
-      email: 'userwithfulldata@example.com',
-      phoneNumber: '79129921235',
-      firstname: 'John Full',
-      lastname: 'Data',
-      isVendor: true,
+      guid: expect.any(String),
+      username: usersData.userFull.username,
+      email: Sanitizer.normalizeEmail(usersData.userFull.email ?? ''),
+      firstname: usersData.userFull.firstname,
+      lastname: usersData.userFull.lastname,
+      phoneNumber: usersData.userFull.phoneNumber,
+      isVendor: usersData.userFull.isVendor,
     });
+    expect(response.status).toBe(201);
   });
 
   it('should return 400 for missing username', async () => {
@@ -115,10 +133,10 @@ describe('POST /v1/register', () => {
 
   it('should return 409 for duplicate username', async () => {
     const response = await request(app).post('/v1/register').send({
-      username: 'userwithemail',
-      password: 'duplicateuser',
-      email: 'duplicateuser@example.com',
-      firstname: 'Duplicate User',
+      username: usersData.userFull.username,
+      password: 'validpassword',
+      email: faker.internet.email(),
+      firstname: 'Duplicate username',
     });
 
     expect(response.status).toBe(409);
@@ -126,9 +144,9 @@ describe('POST /v1/register', () => {
 
   it('should return 409 for duplicate email', async () => {
     const response = await request(app).post('/v1/register').send({
-      username: 'testuser',
-      password: 'testuser',
-      email: 'userwithemail@example.com',
+      username: generateUserName(),
+      password: 'validpassword',
+      email: usersData.userFull.email,
       firstname: 'Duplicate Email',
     });
 
@@ -140,7 +158,7 @@ describe('POST /v1/register', () => {
       username: 'invalidemailuser',
       password: 'password123',
       email: 'invalidemail',
-      firstname: 'Invalid',
+      firstname: 'Invalid email',
     });
 
     expect(response.status).toBe(400);
@@ -162,8 +180,7 @@ describe('POST /v1/register', () => {
       username: 'ab',
       password: 'validpassword',
       email: 'shortusername@example.com',
-      firstname: 'Short',
-      lastname: 'Username',
+      firstname: 'Short Username',
     });
 
     expect(response.status).toBe(400);

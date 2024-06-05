@@ -1,10 +1,8 @@
 import request from 'supertest';
-import { Container } from 'typedi';
-import { Application } from 'express';
 import jwt from 'jsonwebtoken';
+import app from 'interface/web/server';
 import { AppDataSource } from 'infrastructure/persistence/data-source';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
-import app from 'interface/web/server';
 import { TokenServiceInterface } from 'application/services/TokenServiceInterface';
 import { TokenService } from 'infrastructure/security/TokenService';
 

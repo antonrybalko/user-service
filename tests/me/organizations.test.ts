@@ -5,7 +5,7 @@ import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 import { OrganizationEntity } from 'infrastructure/persistence/entity/OrganizationEntity';
 import { createUserAndToken } from '../factories/tokenFactory';
 import { createOrganization } from '../factories/organizationFactory';
-import { NormalizeEmail } from 'class-sanitizer';
+import { Sanitizer } from 'class-sanitizer';
 
 describe('POST /v1/me/organizations', () => {
   let token: string;
@@ -37,7 +37,7 @@ describe('POST /v1/me/organizations', () => {
       title: organizationData.title,
       cityGuid: organizationData.cityGuid,
       phoneNumber: organizationData.phoneNumber,
-      email: NormalizeEmail.call(organizationData.email),
+      email: Sanitizer.normalizeEmail(organizationData.email),
       registrationNumber: organizationData.registrationNumber,
       status: 'suspended',
     });

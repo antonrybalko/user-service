@@ -1,5 +1,6 @@
 import { OrganizationEntity } from 'infrastructure/persistence/entity/OrganizationEntity';
 import { faker } from '@faker-js/faker';
+import { generatePhoneNumber } from './helpers';
 
 export const createOrganization = (
   overrides: Partial<OrganizationEntity> = {},
@@ -8,7 +9,7 @@ export const createOrganization = (
   organization.guid = faker.string.uuid();
   organization.title = faker.company.name();
   organization.cityGuid = faker.string.uuid();
-  organization.phoneNumber = '79' + faker.string.numeric(9);
+  organization.phoneNumber = generatePhoneNumber();
   organization.email = faker.internet.email();
   organization.registrationNumber = faker.string.uuid();
   organization.createdByUserGuid = faker.string.uuid();
