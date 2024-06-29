@@ -16,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   logging: process.env.NODE_ENV === 'development',
   entities: [UserEntity, OrganizationEntity, OrganizationMemberEntity],
-  migrations: ['dist/infrastructure/persistence/migration/*.js'],
+  migrations: ['dist/src/infrastructure/persistence/migration/*.js'],
 });
 
 AppDataSource.initialize()

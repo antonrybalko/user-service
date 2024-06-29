@@ -60,6 +60,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     email?: string,
     cityGuid?: string,
     registrationNumber?: string,
+    published?: boolean,
   ): Promise<Organization> {
     const organization = await this.organizationRepository.findOneBy({ guid });
     if (!organization) {
@@ -79,6 +80,9 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     }
     if (registrationNumber) {
       organization.registrationNumber = registrationNumber;
+    }
+    if (published !== undefined) {
+      organization.published = published;
     }
 
     const updatedOrganization =

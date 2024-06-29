@@ -228,7 +228,7 @@ npm run migration:revert
     "phoneNumber": "string",
     "email": "string",
     "registrationNumber": "string",
-    "status": "suspended"
+    "status": "BLOCKED"
   }
   ```
 - **400 Bad Request:**

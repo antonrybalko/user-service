@@ -1,7 +1,5 @@
-import { Organization } from 'domain/entity/Organization';
+import { Organization, OrganizationStatus } from 'domain/entity/Organization';
 import { UserStatus } from 'domain/entity/User';
-
-type CurrentUserStatusDto = 'active' | 'blocked';
 
 class OrganizationShortDto {
   guid: string;
@@ -9,25 +7,28 @@ class OrganizationShortDto {
   cityGuid: string;
   phoneNumber: string;
   email: string;
-  status: string;
+  published: boolean;
+  status: 'active' | 'blocked';
   registrationNumber?: string;
   static fromOrganization({
     guid,
     title,
     cityGuid,
-    status,
     phoneNumber,
     email,
-    registrationNumber
+    registrationNumber,
+    published,
+    status,
   }: Organization): OrganizationShortDto {
     return {
       guid,
       title,
       cityGuid,
-      status,
       phoneNumber,
       email,
-      registrationNumber
+      registrationNumber,
+      published,
+      status: status === OrganizationStatus.ACTIVE ? 'active' : 'blocked',
     };
   }
 }
@@ -37,7 +38,7 @@ export class CurrentUserDto {
   username: string;
   isAdmin: boolean;
   isVendor: boolean;
-  status: CurrentUserStatusDto;
+  status: 'active' | 'blocked';
   firstname: string;
   lastname?: string;
   phoneNumber?: string;

@@ -6,7 +6,6 @@ import { OrganizationEntity } from 'infrastructure/persistence/entity/Organizati
 import { createUserAndToken } from '../factories/tokenFactory';
 import { createOrganization } from '../factories/organizationFactory';
 import { Sanitizer } from 'class-sanitizer';
-import { OrganizationStatus } from 'domain/entity/Organization';
 
 describe('Organizations', () => {
   let token: string;
@@ -46,7 +45,8 @@ describe('Organizations', () => {
         phoneNumber: organizationData.phoneNumber,
         email: Sanitizer.normalizeEmail(organizationData.email),
         registrationNumber: organizationData.registrationNumber,
-        status: 'suspended',
+        published: false,
+        status: 'active',
       });
       expect(response.status).toBe(201);
     });
@@ -77,7 +77,7 @@ describe('Organizations', () => {
   describe('PUT /v1/me/organizations/:guid', () => {
     it('should update an existing organization', async () => {
       const updatedData = createOrganization({
-        status: OrganizationStatus.ACTIVE,
+        published: true,
       });
 
       const response = await request(app)
@@ -93,7 +93,21 @@ describe('Organizations', () => {
         phoneNumber: updatedData.phoneNumber,
         email: Sanitizer.normalizeEmail(updatedData.email),
         registrationNumber: updatedData.registrationNumber,
+        published: true,
       });
+    });
+
+    it('should not allow a non-admin user to update an organization', async () => {
+      const newUserAndToken = await createUserAndToken();
+
+      const updateResponse = await request(app)
+        .put(`/v1/me/organizations/${organizationGuid}`)
+        .set('Authorization', `Bearer ${newUserAndToken.token}`)
+        .send({
+          title: 'Updated Organization Title',
+        });
+
+      expect(updateResponse.status).toBe(404);
     });
 
     it('should return 400 for invalid input', async () => {
@@ -159,12 +173,22 @@ describe('Organizations', () => {
         {
           guid: orgResponse1.body.guid,
           title: organizationData1.title,
-          status: 'suspended',
+          email: Sanitizer.normalizeEmail(organizationData1.email),
+          phoneNumber: organizationData1.phoneNumber,
+          cityGuid: organizationData1.cityGuid,
+          registrationNumber: organizationData1.registrationNumber,
+          published: false,
+          status: 'active',
         },
         {
           guid: orgResponse2.body.guid,
           title: organizationData2.title,
-          status: 'suspended',
+          email: Sanitizer.normalizeEmail(organizationData2.email),
+          phoneNumber: organizationData2.phoneNumber,
+          cityGuid: organizationData2.cityGuid,
+          registrationNumber: organizationData2.registrationNumber,
+          published: false,
+          status: 'active',
         },
       ]);
     });

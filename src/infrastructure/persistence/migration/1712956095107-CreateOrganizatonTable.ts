@@ -5,7 +5,7 @@ export class CreateOrganizatonTable1712956095107 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "organization" ("guid" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL, "cityGuid" uuid NOT NULL, "phoneNumber" character varying NOT NULL, "email" character varying NOT NULL, "registrationNumber" character varying, "status" character varying NOT NULL DEFAULT 'suspended', "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "createdByUserGuid" uuid, CONSTRAINT "PK_daa509c9129c158bef9739000b7" PRIMARY KEY ("guid"))`,
+      `CREATE TABLE "organization" ("guid" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL, "cityGuid" uuid NOT NULL, "phoneNumber" character varying NOT NULL, "email" character varying NOT NULL, "registrationNumber" character varying, "status" character varying NOT NULL DEFAULT 'BLOCKED', "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "createdByUserGuid" uuid, CONSTRAINT "PK_daa509c9129c158bef9739000b7" PRIMARY KEY ("guid"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "organization_member" ("guid" uuid NOT NULL DEFAULT uuid_generate_v4(), "userGuid" uuid NOT NULL, "organizationGuid" uuid NOT NULL, "isOrgAdmin" boolean NOT NULL DEFAULT false, CONSTRAINT "organization_member_user_organization" UNIQUE ("userGuid", "organizationGuid"), CONSTRAINT "PK_b875474e38576649cd8125ca0ee" PRIMARY KEY ("guid"))`,

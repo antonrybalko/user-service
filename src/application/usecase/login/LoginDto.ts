@@ -1,5 +1,5 @@
 import { Trim } from 'class-sanitizer';
-import { IsString, MaxLength, MinLength } from 'class-validator';
+import { IsString, MaxLength } from 'class-validator';
 
 export class LoginDto {
   @IsString()

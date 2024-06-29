@@ -9,7 +9,11 @@ import {
   OneToMany,
 } from 'typeorm';
 import { UserEntity } from './UserEntity';
-import { Organization, OrganizationStatus } from 'domain/entity/Organization';
+import {
+  DefaultOrganizationStatus,
+  Organization,
+  OrganizationStatus,
+} from 'domain/entity/Organization';
 import { OrganizationMemberEntity } from './OrganizationMemberEntity';
 
 @Entity('organization')
@@ -39,7 +43,10 @@ export class OrganizationEntity {
   @JoinColumn({ name: 'createdByUserGuid' })
   createdByUser: UserEntity;
 
-  @Column({ default: 'suspended' })
+  @Column('bool', { default: false })
+  published: boolean;
+
+  @Column('int', { default: DefaultOrganizationStatus })
   status: OrganizationStatus;
 
   @OneToMany(
@@ -64,6 +71,7 @@ export class OrganizationEntity {
       this.createdByUser?.toDomainEntity(),
       this.organizationMembers?.map((member) => member.toDomainEntity()),
       this.registrationNumber,
+      this.published,
       this.status,
     );
   }

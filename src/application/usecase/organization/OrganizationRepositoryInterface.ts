@@ -19,6 +19,7 @@ export interface OrganizationRepositoryInterface {
     email?: string,
     cityGuid?: string,
     registrationNumber?: string,
+    published?: boolean,
   ): Promise<Organization>;
 
   findByGuid(guid: string): Promise<Organization>;

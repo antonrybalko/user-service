@@ -1,4 +1,4 @@
-import { Organization } from 'domain/entity/Organization';
+import { Organization, OrganizationStatus } from 'domain/entity/Organization';
 
 export class OrganizationDto {
   constructor(
@@ -7,7 +7,8 @@ export class OrganizationDto {
     public cityGuid: string,
     public phoneNumber: string,
     public email: string,
-    public status: string,
+    public published: boolean,
+    public status: 'active' | 'blocked',
     public registrationNumber?: string,
   ) {}
 
@@ -18,7 +19,8 @@ export class OrganizationDto {
       organization.cityGuid,
       organization.phoneNumber,
       organization.email,
-      organization.status,
+      organization.published,
+      organization.status === OrganizationStatus.ACTIVE ? 'active' : 'blocked',
       organization.registrationNumber,
     );
   }

@@ -75,8 +75,14 @@ export class OrganizationService extends BaseUseCaseService {
     organizationData: UpdateOrganizationDto,
   ): Promise<Organization> {
     await this.validate(organizationData);
-    const { title, phoneNumber, email, cityGuid, registrationNumber } =
-      organizationData;
+    const {
+      title,
+      phoneNumber,
+      email,
+      cityGuid,
+      registrationNumber,
+      published,
+    } = organizationData;
 
     if (
       !(await this.organizationRepository.checkIsAdmin(
@@ -96,6 +102,7 @@ export class OrganizationService extends BaseUseCaseService {
       email,
       cityGuid,
       registrationNumber,
+      published,
     );
   }
 

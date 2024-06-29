@@ -1,5 +1,6 @@
 import { NormalizeEmail, Trim, Whitelist } from 'class-sanitizer';
 import {
+  IsBoolean,
   IsEmail,
   IsOptional,
   IsPhoneNumber,
@@ -37,17 +38,23 @@ export class UpdateOrganizationDto {
   @Trim()
   registrationNumber?: string;
 
+  @IsOptional()
+  @IsBoolean()
+  published?: boolean;
+
   constructor({
     title,
     cityGuid,
     phoneNumber,
     email,
     registrationNumber,
+    published,
   }: UpdateOrganizationDto) {
     this.title = title;
     this.cityGuid = cityGuid;
     this.phoneNumber = phoneNumber;
     this.email = email;
     this.registrationNumber = registrationNumber;
+    this.published = published;
   }
 }

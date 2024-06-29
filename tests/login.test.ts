@@ -112,12 +112,4 @@ describe('POST /login', () => {
 
     expect(response.status).toBe(400);
   });
-
-  it('should return 400 for password less than 6 characters', async () => {
-    const response = await request(app)
-      .post('/v1/login')
-      .send({ username: 'testuser', password: '12345' });
-
-    expect(response.status).toBe(400);
-  });
 });

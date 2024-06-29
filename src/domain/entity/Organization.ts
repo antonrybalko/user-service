@@ -2,9 +2,12 @@ import { OrganizationMember } from './OrganizationMember';
 import { User } from './User';
 
 export enum OrganizationStatus {
-  ACTIVE = 'active',
-  SUSPENDED = 'suspended',
+  ACTIVE = 1,
+  DELETED = 2,
+  BLOCKED = 3,
 }
+
+export const DefaultOrganizationStatus = OrganizationStatus.ACTIVE;
 
 export class Organization {
   constructor(
@@ -16,6 +19,7 @@ export class Organization {
     public createdByUser: User,
     public organizationMembers: OrganizationMember[],
     public registrationNumber?: string,
-    public status: OrganizationStatus = OrganizationStatus.SUSPENDED,
+    public published: boolean = false,
+    public status: OrganizationStatus = DefaultOrganizationStatus,
   ) {}
 }

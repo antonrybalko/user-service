@@ -4,25 +4,25 @@ import { OrganizationEntity } from 'infrastructure/persistence/entity/Organizati
 import { OrganizationMemberEntity } from 'infrastructure/persistence/entity/OrganizationMemberEntity';
 
 interface CreateOrganizationMemberParams {
-    user: UserEntity;
-    organization: OrganizationEntity;
-    isOrgAdmin?: boolean;
+  user: UserEntity;
+  organization: OrganizationEntity;
+  isOrgAdmin?: boolean;
 }
 
 export const createOrganizationMember = async ({
+  user,
+  organization,
+  isOrgAdmin = false,
+}: CreateOrganizationMemberParams): Promise<OrganizationMemberEntity> => {
+  const organizationMemberRepository = AppDataSource.getRepository(
+    OrganizationMemberEntity,
+  );
+
+  const organizationMember = organizationMemberRepository.create({
     user,
     organization,
-    isOrgAdmin = false,
-}: CreateOrganizationMemberParams): Promise<OrganizationMemberEntity> => {
-    const organizationMemberRepository = AppDataSource.getRepository(
-        OrganizationMemberEntity,
-    );
+    isOrgAdmin,
+  });
 
-    const organizationMember = organizationMemberRepository.create({
-        user,
-        organization,
-        isOrgAdmin,
-    });
-
-    return organizationMemberRepository.save(organizationMember);
+  return organizationMemberRepository.save(organizationMember);
 };
