@@ -6,16 +6,28 @@ type CurrentUserStatusDto = 'active' | 'blocked';
 class OrganizationShortDto {
   guid: string;
   title: string;
+  cityGuid: string;
+  phoneNumber: string;
+  email: string;
   status: string;
+  registrationNumber?: string;
   static fromOrganization({
     guid,
     title,
+    cityGuid,
     status,
+    phoneNumber,
+    email,
+    registrationNumber
   }: Organization): OrganizationShortDto {
     return {
       guid,
       title,
+      cityGuid,
       status,
+      phoneNumber,
+      email,
+      registrationNumber
     };
   }
 }
