@@ -1,6 +1,8 @@
 import { Organization } from 'domain/entity/Organization';
 import { UserStatus } from 'domain/entity/User';
 
+type CurrentUserStatusDto = 'active' | 'blocked';
+
 class OrganizationShortDto {
   guid: string;
   title: string;
@@ -23,9 +25,11 @@ export class CurrentUserDto {
   username: string;
   isAdmin: boolean;
   isVendor: boolean;
-  status: UserStatus;
+  status: CurrentUserStatusDto;
   firstname: string;
   lastname?: string;
+  phoneNumber?: string;
+  email?: string;
   organizations: OrganizationShortDto[];
 
   constructor(user: {
@@ -37,14 +41,18 @@ export class CurrentUserDto {
     firstname: string;
     organizations: Organization[];
     lastname?: string;
+    phoneNumber?: string;
+    email?: string;
   }) {
     this.guid = user.guid;
     this.username = user.username;
     this.isAdmin = user.isAdmin;
     this.isVendor = user.isVendor;
-    this.status = user.status;
+    this.status = user.status === UserStatus.ACTIVE ? 'active' : 'blocked';
     this.firstname = user.firstname;
     this.lastname = user.lastname;
+    this.phoneNumber = user.phoneNumber;
+    this.email = user.email;
     this.organizations = user.organizations.map(
       OrganizationShortDto.fromOrganization,
     );

@@ -46,7 +46,7 @@ const runProgram = async () => {
     .option('-f, --firstname <firstname>', 'First name')
     .option('-l, --lastname <lastname>', 'Last name (optional)')
     .option('-e, --email <email>', 'Email')
-    .option('-ph, --phone <phone>', 'Phone number')
+    .option('-ph, --phoneNumber <phone>', 'Phone number')
     .option('-a, --isAdmin', 'Is admin', false)
     .option('-v, --isVendor', 'Is vendor', false)
     .option('-s, --status <status>', 'User status')
