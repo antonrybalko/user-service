@@ -5,7 +5,7 @@ class OrganizationShortDto {
   guid: string;
   title: string;
   cityGuid: string;
-  phoneNumber: string;
+  phone: string;
   email: string;
   published: boolean;
   status: 'active' | 'blocked';
@@ -14,7 +14,7 @@ class OrganizationShortDto {
     guid,
     title,
     cityGuid,
-    phoneNumber,
+    phone,
     email,
     registrationNumber,
     published,
@@ -24,7 +24,7 @@ class OrganizationShortDto {
       guid,
       title,
       cityGuid,
-      phoneNumber,
+      phone,
       email,
       registrationNumber,
       published,
@@ -41,7 +41,7 @@ export class CurrentUserDto {
   status: 'active' | 'blocked';
   firstname: string;
   lastname?: string;
-  phoneNumber?: string;
+  phone?: string;
   email?: string;
   organizations: OrganizationShortDto[];
 
@@ -54,7 +54,7 @@ export class CurrentUserDto {
     firstname: string;
     organizations: Organization[];
     lastname?: string;
-    phoneNumber?: string;
+    phone?: string;
     email?: string;
   }) {
     this.guid = user.guid;
@@ -64,7 +64,7 @@ export class CurrentUserDto {
     this.status = user.status === UserStatus.ACTIVE ? 'active' : 'blocked';
     this.firstname = user.firstname;
     this.lastname = user.lastname;
-    this.phoneNumber = user.phoneNumber;
+    this.phone = user.phone;
     this.email = user.email;
     this.organizations = user.organizations.map(
       OrganizationShortDto.fromOrganization,

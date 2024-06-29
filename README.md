@@ -89,7 +89,7 @@ npm run migration:revert
   "username": "string",
   "password": "string",
   "email": "string",
-  "phoneNumber": "string",
+  "phone": "string",
   "firstname": "string",
   "lastname": "string",
   "isVendor": "boolean"
@@ -105,9 +105,9 @@ npm run migration:revert
     "email": "string",
     "firstname": "string",
     "lastname": "string",
-    "phoneNumber": "string",
+    "phone": "string",
     "isVendor": "boolean",
-    "status": 1
+    "status": "string"
   }
   ```
 - **400 Bad Request:**
@@ -174,7 +174,7 @@ npm run migration:revert
     "username": "string",
     "firstname": "string",
     "lastname": "string",
-    "status": "integer",
+    "status": "string",
     "isAdmin": "boolean",
     "isVendor": "boolean",
     "organizations": [
@@ -212,7 +212,7 @@ npm run migration:revert
 {
   "title": "string",
   "cityGuid": "string",
-  "phoneNumber": "string",
+  "phone": "string",
   "email": "string",
   "registrationNumber": "string"
 }
@@ -225,10 +225,11 @@ npm run migration:revert
     "guid": "string",
     "title": "string",
     "cityGuid": "string",
-    "phoneNumber": "string",
+    "phone": "string",
     "email": "string",
     "registrationNumber": "string",
-    "status": "BLOCKED"
+    "published": "string",
+    "status": "string"
   }
   ```
 - **400 Bad Request:**
@@ -256,9 +257,10 @@ npm run migration:revert
 {
   "title": "string",
   "cityGuid": "string",
-  "phoneNumber": "string",
+  "phone": "string",
   "email": "string",
   "registrationNumber": "string",
+  "published": "string",
   "status": "string"
 }
 ```
@@ -270,9 +272,10 @@ npm run migration:revert
     "guid": "string",
     "title": "string",
     "cityGuid": "string",
-    "phoneNumber": "string",
+    "phone": "string",
     "email": "string",
     "registrationNumber": "string",
+    "published": "string",
     "status": "string"
   }
   ```
@@ -308,7 +311,7 @@ npm run migration:revert
       "firstname": "string",
       "lastname": "string",
       "email": "string",
-      "phoneNumber": "string",
+      "phone": "string",
       "isAdmin": "boolean",
       "isVendor": "boolean",
       "status": "integer"
@@ -338,7 +341,7 @@ npm run migration:revert
     "firstname": "string",
     "lastname": "string",
     "email": "string",
-    "phoneNumber": "string",
+    "phone": "string",
     "isAdmin": "boolean",
     "isVendor": "boolean",
     "status": "integer"
@@ -369,7 +372,7 @@ npm run migration:revert
 {
   "username": "string",
   "email": "string",
-  "phoneNumber": "string",
+  "phone": "string",
   "firstname": "string",
   "lastname": "string",
   "isAdmin": "boolean",
@@ -387,7 +390,7 @@ npm run migration:revert
     "firstname": "string",
     "lastname": "string",
     "email": "string",
-    "phoneNumber": "string",
+    "phone": "string",
     "isAdmin": "boolean",
     "isVendor": "boolean",
     "status": "integer"

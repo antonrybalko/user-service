@@ -5,7 +5,7 @@ import { User } from 'domain/entity/User';
 export interface OrganizationRepositoryInterface {
   create(
     title: string,
-    phoneNumber: string,
+    phone: string,
     email: string,
     cityGuid: string,
     createdByUserGuid: string,
@@ -15,7 +15,7 @@ export interface OrganizationRepositoryInterface {
   update(
     guid: string,
     title?: string,
-    phoneNumber?: string,
+    phone?: string,
     email?: string,
     cityGuid?: string,
     registrationNumber?: string,

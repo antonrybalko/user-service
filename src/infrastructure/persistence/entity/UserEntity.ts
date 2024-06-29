@@ -21,7 +21,7 @@ export class UserEntity {
   password: string;
 
   @Column({ nullable: true, unique: true })
-  phoneNumber?: string;
+  phone?: string;
 
   @Column()
   firstname: string;
@@ -70,7 +70,7 @@ export class UserEntity {
       this.isVendor ?? false,
       this.firstname,
       this.lastname,
-      this.phoneNumber,
+      this.phone,
       this.email,
       this.oauthProvider,
       this.vkId,

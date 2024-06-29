@@ -24,7 +24,7 @@ export class RegisterDto {
   @Trim()
   password: string;
 
-  @ValidateIf((person: RegisterDto) => person.phoneNumber === undefined)
+  @ValidateIf((person: RegisterDto) => person.phone === undefined)
   @MaxLength(255)
   @IsEmail()
   @Trim()
@@ -34,7 +34,7 @@ export class RegisterDto {
   @ValidateIf((person: RegisterDto) => person.email === undefined)
   @IsPhoneNumber('RU')
   @Whitelist(/0123456789/)
-  phoneNumber?: string;
+  phone?: string;
 
   @IsString()
   @MinLength(2)
@@ -56,7 +56,7 @@ export class RegisterDto {
     username,
     password,
     email,
-    phoneNumber,
+    phone,
     firstname,
     lastname,
     isVendor,
@@ -64,7 +64,7 @@ export class RegisterDto {
     this.username = username;
     this.password = password;
     this.email = email;
-    this.phoneNumber = phoneNumber;
+    this.phone = phone;
     this.firstname = firstname;
     this.lastname = lastname;
     this.isVendor = isVendor;

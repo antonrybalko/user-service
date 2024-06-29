@@ -22,7 +22,7 @@ export class User {
     public isVendor: boolean,
     public firstname: string,
     public lastname?: string,
-    public phoneNumber?: string,
+    public phone?: string,
     public email?: string,
     public oauthProvider?: string,
     public vkId?: string,

@@ -9,7 +9,7 @@ export class RegisteredUserDto {
     public firstname: string,
     public lastname?: string,
     public email?: string,
-    public phoneNumber?: string,
+    public phone?: string,
   ) {}
 
   public static fromDomainEntity(user: User): RegisteredUserDto {
@@ -21,7 +21,7 @@ export class RegisteredUserDto {
       user.firstname,
       user.lastname,
       user.email,
-      user.phoneNumber,
+      user.phone,
     );
   }
 }

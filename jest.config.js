@@ -10,10 +10,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
-  coveragePathIgnorePatterns: [
-    "/node_modules/",
-    "/dist/"
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
   moduleNameMapper: {
     '^infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1',
     '^interface/(.*)$': '<rootDir>/src/interface/$1',

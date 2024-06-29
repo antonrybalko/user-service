@@ -7,7 +7,7 @@ export interface ManageUsersRepositoryInterface {
     guid: string,
     username?: string,
     email?: string,
-    phoneNumber?: string,
+    phone?: string,
     firstname?: string,
     lastname?: string,
     isAdmin?: boolean,

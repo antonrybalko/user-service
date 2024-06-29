@@ -24,7 +24,7 @@ export class UpdateOrganizationDto {
   @IsOptional()
   @IsPhoneNumber('RU')
   @Whitelist(/0123456789/)
-  phoneNumber?: string;
+  phone?: string;
 
   @IsOptional()
   @MaxLength(255)
@@ -45,14 +45,14 @@ export class UpdateOrganizationDto {
   constructor({
     title,
     cityGuid,
-    phoneNumber,
+    phone,
     email,
     registrationNumber,
     published,
   }: UpdateOrganizationDto) {
     this.title = title;
     this.cityGuid = cityGuid;
-    this.phoneNumber = phoneNumber;
+    this.phone = phone;
     this.email = email;
     this.registrationNumber = registrationNumber;
     this.published = published;

@@ -23,12 +23,12 @@ export class OrganizationService extends BaseUseCaseService {
 
     const creatorUser = await this.userRepository.findByGuid(creatorUserGuid);
 
-    const { title, phoneNumber, email, cityGuid, registrationNumber } =
+    const { title, phone, email, cityGuid, registrationNumber } =
       organizationData;
 
     const createdOrganization = await this.organizationRepository.create(
       title,
-      phoneNumber,
+      phone,
       email,
       cityGuid,
       creatorUserGuid,
@@ -50,7 +50,7 @@ export class OrganizationService extends BaseUseCaseService {
     organizationData: UpdateOrganizationDto,
   ): Promise<Organization> {
     await this.validate(organizationData);
-    const { title, phoneNumber, email, cityGuid, registrationNumber } =
+    const { title, phone, email, cityGuid, registrationNumber } =
       organizationData;
 
     if (!(await this.organizationRepository.checkIfExists(organizationGuid))) {
@@ -62,7 +62,7 @@ export class OrganizationService extends BaseUseCaseService {
     return await this.organizationRepository.update(
       organizationGuid,
       title,
-      phoneNumber,
+      phone,
       email,
       cityGuid,
       registrationNumber,
@@ -75,14 +75,8 @@ export class OrganizationService extends BaseUseCaseService {
     organizationData: UpdateOrganizationDto,
   ): Promise<Organization> {
     await this.validate(organizationData);
-    const {
-      title,
-      phoneNumber,
-      email,
-      cityGuid,
-      registrationNumber,
-      published,
-    } = organizationData;
+    const { title, phone, email, cityGuid, registrationNumber, published } =
+      organizationData;
 
     if (
       !(await this.organizationRepository.checkIsAdmin(
@@ -98,7 +92,7 @@ export class OrganizationService extends BaseUseCaseService {
     return await this.organizationRepository.update(
       organizationGuid,
       title,
-      phoneNumber,
+      phone,
       email,
       cityGuid,
       registrationNumber,

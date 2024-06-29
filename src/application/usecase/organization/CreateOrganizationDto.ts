@@ -20,7 +20,7 @@ export class CreateOrganizationDto {
 
   @IsPhoneNumber('RU')
   @Whitelist(/0123456789/)
-  phoneNumber: string;
+  phone: string;
 
   @MaxLength(255)
   @IsEmail()
@@ -36,13 +36,13 @@ export class CreateOrganizationDto {
   constructor({
     title,
     cityGuid,
-    phoneNumber,
+    phone,
     email,
     registrationNumber,
   }: CreateOrganizationDto) {
     this.title = title;
     this.cityGuid = cityGuid;
-    this.phoneNumber = phoneNumber;
+    this.phone = phone;
     this.email = email;
     this.registrationNumber = registrationNumber;
   }

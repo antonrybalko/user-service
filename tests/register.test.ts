@@ -32,7 +32,7 @@ beforeAll(async () => {
       email: faker.internet.email(),
     }),
     userWithPhone: createUserShort({
-      phoneNumber: generatePhoneNumber(),
+      phone: generatePhoneNumber(),
     }),
     userFull: await createUser(),
   };
@@ -68,7 +68,7 @@ describe('POST /v1/register', () => {
 
     expect(response.body).toMatchObject({
       username: usersData.userWithPhone.username,
-      phoneNumber: usersData.userWithPhone.phoneNumber,
+      phone: usersData.userWithPhone.phone,
       firstname: usersData.userWithPhone.firstname,
     });
     expect(response.status).toBe(201);
@@ -85,7 +85,7 @@ describe('POST /v1/register', () => {
       email: Sanitizer.normalizeEmail(usersData.userFull.email ?? ''),
       firstname: usersData.userFull.firstname,
       lastname: usersData.userFull.lastname,
-      phoneNumber: usersData.userFull.phoneNumber,
+      phone: usersData.userFull.phone,
       isVendor: usersData.userFull.isVendor,
       status: 1, // ACTIVE
     });

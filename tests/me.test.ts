@@ -48,7 +48,7 @@ describe('GET /v1/me', () => {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
-      phoneNumber: user.phoneNumber,
+      phone: user.phone,
       status: 'active',
       isAdmin: user.isAdmin,
       isVendor: user.isVendor,

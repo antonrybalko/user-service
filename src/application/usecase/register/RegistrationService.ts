@@ -26,7 +26,7 @@ export class RegistrationService extends BaseUseCaseService {
     if (
       await this.registrationRepository.checkIfEmailOrPhoneExists(
         userData.email,
-        userData.phoneNumber,
+        userData.phone,
       )
     ) {
       throw new ConflictException(
@@ -34,15 +34,8 @@ export class RegistrationService extends BaseUseCaseService {
       );
     }
 
-    const {
-      username,
-      password,
-      email,
-      phoneNumber,
-      isVendor,
-      firstname,
-      lastname,
-    } = userData;
+    const { username, password, email, phone, isVendor, firstname, lastname } =
+      userData;
     const hashedPassword = await this.passwordService.hashPassword(password);
 
     return await this.registrationRepository.createUser(
@@ -51,7 +44,7 @@ export class RegistrationService extends BaseUseCaseService {
       firstname,
       lastname,
       email,
-      phoneNumber,
+      phone,
       isVendor,
     );
   }

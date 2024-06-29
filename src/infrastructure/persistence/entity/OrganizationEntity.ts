@@ -28,7 +28,7 @@ export class OrganizationEntity {
   cityGuid: string;
 
   @Column()
-  phoneNumber: string;
+  phone: string;
 
   @Column()
   email: string;
@@ -66,7 +66,7 @@ export class OrganizationEntity {
       this.guid,
       this.title,
       this.cityGuid,
-      this.phoneNumber,
+      this.phone,
       this.email,
       this.createdByUser?.toDomainEntity(),
       this.organizationMembers?.map((member) => member.toDomainEntity()),

@@ -14,7 +14,7 @@ export class Organization {
     public guid: string,
     public title: string,
     public cityGuid: string,
-    public phoneNumber: string,
+    public phone: string,
     public email: string,
     public createdByUser: User,
     public organizationMembers: OrganizationMember[],

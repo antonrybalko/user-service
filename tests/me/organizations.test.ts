@@ -42,7 +42,7 @@ describe('Organizations', () => {
         guid: expect.any(String),
         title: organizationData.title,
         cityGuid: organizationData.cityGuid,
-        phoneNumber: organizationData.phoneNumber,
+        phone: organizationData.phone,
         email: Sanitizer.normalizeEmail(organizationData.email),
         registrationNumber: organizationData.registrationNumber,
         published: false,
@@ -58,7 +58,7 @@ describe('Organizations', () => {
         .send({
           title: '',
           cityGuid: 'invalid-guid',
-          phoneNumber: '12345',
+          phone: '12345',
           email: 'invalidemail',
         });
 
@@ -90,7 +90,7 @@ describe('Organizations', () => {
         guid: organizationGuid,
         title: updatedData.title,
         cityGuid: updatedData.cityGuid,
-        phoneNumber: updatedData.phoneNumber,
+        phone: updatedData.phone,
         email: Sanitizer.normalizeEmail(updatedData.email),
         registrationNumber: updatedData.registrationNumber,
         published: true,
@@ -117,7 +117,7 @@ describe('Organizations', () => {
         .send({
           title: '',
           cityGuid: 'invalid-guid',
-          phoneNumber: '12345',
+          phone: '12345',
           email: 'invalidemail',
         });
 
@@ -174,7 +174,7 @@ describe('Organizations', () => {
           guid: orgResponse1.body.guid,
           title: organizationData1.title,
           email: Sanitizer.normalizeEmail(organizationData1.email),
-          phoneNumber: organizationData1.phoneNumber,
+          phone: organizationData1.phone,
           cityGuid: organizationData1.cityGuid,
           registrationNumber: organizationData1.registrationNumber,
           published: false,
@@ -184,7 +184,7 @@ describe('Organizations', () => {
           guid: orgResponse2.body.guid,
           title: organizationData2.title,
           email: Sanitizer.normalizeEmail(organizationData2.email),
-          phoneNumber: organizationData2.phoneNumber,
+          phone: organizationData2.phone,
           cityGuid: organizationData2.cityGuid,
           registrationNumber: organizationData2.registrationNumber,
           published: false,

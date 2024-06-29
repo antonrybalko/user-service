@@ -27,7 +27,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
 
   async create(
     title: string,
-    phoneNumber: string,
+    phone: string,
     email: string,
     cityGuid: string,
     createdByUserGuid: string,
@@ -41,7 +41,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     }
     const organization = new OrganizationEntity();
     organization.title = title;
-    organization.phoneNumber = phoneNumber;
+    organization.phone = phone;
     organization.email = email;
     organization.cityGuid = cityGuid;
     organization.createdByUser = createdByUser;
@@ -56,7 +56,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
   async update(
     guid: string,
     title?: string,
-    phoneNumber?: string,
+    phone?: string,
     email?: string,
     cityGuid?: string,
     registrationNumber?: string,
@@ -69,8 +69,8 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     if (title) {
       organization.title = title;
     }
-    if (phoneNumber) {
-      organization.phoneNumber = phoneNumber;
+    if (phone) {
+      organization.phone = phone;
     }
     if (email) {
       organization.email = email;

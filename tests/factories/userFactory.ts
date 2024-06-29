@@ -16,7 +16,7 @@ export const createUser = async (overrides: Partial<UserEntity> = {}) => {
   user.firstname = faker.person.firstName();
   user.lastname = faker.person.lastName();
   user.email = faker.internet.email();
-  user.phoneNumber = generatePhoneNumber();
+  user.phone = generatePhoneNumber();
 
   return Object.assign(user, overrides);
 };

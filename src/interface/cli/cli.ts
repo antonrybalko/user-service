@@ -19,7 +19,7 @@ const runProgram = async () => {
     .requiredOption('-f, --firstname <firstname>', 'First name')
     .option('-l, --lastname <lastname>', 'Last name (optional)')
     .option('-e, --email <email>', 'Email')
-    .option('-ph, --phoneNumber <phone>', 'Phone number')
+    .option('-ph, --phone <phone>', 'Phone number')
     .option('-v, --isVendor', 'Is vendor', false)
     .action(async (options) => {
       const registerCommand = Container.get(RegisterCommand);
@@ -46,7 +46,7 @@ const runProgram = async () => {
     .option('-f, --firstname <firstname>', 'First name')
     .option('-l, --lastname <lastname>', 'Last name (optional)')
     .option('-e, --email <email>', 'Email')
-    .option('-ph, --phoneNumber <phone>', 'Phone number')
+    .option('-ph, --phone <phone>', 'Phone number')
     .option('-a, --isAdmin', 'Is admin', false)
     .option('-v, --isVendor', 'Is vendor', false)
     .option('-s, --status <status>', 'User status')
@@ -61,10 +61,7 @@ const runProgram = async () => {
       'Create a new organization. User GUID is a creator of the organization',
     )
     .requiredOption('-t, --title <title>', 'Title of the organization')
-    .requiredOption(
-      '-p, --phoneNumber <phoneNumber>',
-      'Phone number of the organization',
-    )
+    .requiredOption('-p, --phone <phone>', 'Phone number of the organization')
     .requiredOption('-e, --email <email>', 'Email address of the organization')
     .requiredOption(
       '-c, --cityGuid <cityGuid>',
@@ -83,10 +80,7 @@ const runProgram = async () => {
     .command('orgs/update <organizationGuid>')
     .description('Update organization attributes')
     .option('-t, --title <title>', 'Title of the organization')
-    .option(
-      '-p, --phoneNumber <phoneNumber>',
-      'Phone number of the organization',
-    )
+    .option('-p, --phone <phone>', 'Phone number of the organization')
     .option('-e, --email <email>', 'Email address of the organization')
     .option('-c, --cityGuid <cityGuid>', 'City GUID of the organization')
     .option(

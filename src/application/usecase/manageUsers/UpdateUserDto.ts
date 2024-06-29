@@ -30,7 +30,7 @@ export class UpdateUserDto {
   @IsOptional()
   @IsPhoneNumber('RU')
   @Whitelist(/0123456789/)
-  phoneNumber?: string;
+  phone?: string;
 
   @IsOptional()
   @IsString()
@@ -61,7 +61,7 @@ export class UpdateUserDto {
   constructor({
     username,
     email,
-    phoneNumber,
+    phone,
     firstname,
     lastname,
     isAdmin,
@@ -70,7 +70,7 @@ export class UpdateUserDto {
   }: UpdateUserDto) {
     this.username = username;
     this.email = email;
-    this.phoneNumber = phoneNumber;
+    this.phone = phone;
     this.firstname = firstname;
     this.lastname = lastname;
     this.isAdmin = isAdmin;

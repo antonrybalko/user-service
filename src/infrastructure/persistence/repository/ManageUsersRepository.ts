@@ -26,7 +26,7 @@ export class ManageUsersRepository
     guid: string,
     username?: string,
     email?: string,
-    phoneNumber?: string,
+    phone?: string,
     firstname?: string,
     lastname?: string,
     isAdmin?: boolean,
@@ -40,7 +40,7 @@ export class ManageUsersRepository
 
     if (username !== undefined) userToUpdate.username = username;
     if (email !== undefined) userToUpdate.email = email;
-    if (phoneNumber !== undefined) userToUpdate.phoneNumber = phoneNumber;
+    if (phone !== undefined) userToUpdate.phone = phone;
     if (firstname !== undefined) userToUpdate.firstname = firstname;
     if (lastname !== undefined) userToUpdate.lastname = lastname;
     if (isAdmin !== undefined) userToUpdate.isAdmin = isAdmin;

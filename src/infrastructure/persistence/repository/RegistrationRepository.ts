@@ -16,10 +16,10 @@ export class RegistrationRepository
 
   async checkIfEmailOrPhoneExists(
     email?: string,
-    phoneNumber?: string,
+    phone?: string,
   ): Promise<boolean> {
     const emailOrPhoneExists = await this.userRepository.findOne({
-      where: [{ email }, { phoneNumber }],
+      where: [{ email }, { phone }],
     });
     return !!emailOrPhoneExists;
   }
@@ -30,14 +30,14 @@ export class RegistrationRepository
     firstname: string,
     lastname?: string,
     email?: string,
-    phoneNumber?: string,
+    phone?: string,
     isVendor?: boolean,
   ): Promise<User> {
     const user = new UserEntity();
     user.username = username;
     user.password = password;
     user.email = email;
-    user.phoneNumber = phoneNumber;
+    user.phone = phone;
     user.isVendor = isVendor;
     user.firstname = firstname;
     user.lastname = lastname;
