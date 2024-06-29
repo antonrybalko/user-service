@@ -19,7 +19,7 @@ const runProgram = async () => {
     .requiredOption('-f, --firstname <firstname>', 'First name')
     .option('-l, --lastname <lastname>', 'Last name (optional)')
     .option('-e, --email <email>', 'Email')
-    .option('-ph, --phone <phone>', 'Phone number')
+    .option('-ph, --phoneNumber <phone>', 'Phone number')
     .option('-v, --isVendor', 'Is vendor', false)
     .action(async (options) => {
       const registerCommand = Container.get(RegisterCommand);
