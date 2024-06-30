@@ -11,6 +11,7 @@ export const createOrganization = (
   organization.cityGuid = faker.string.uuid();
   organization.phone = generatePhoneNumber();
   organization.email = faker.internet.email();
+  organization.description = faker.lorem.sentence(100);
   organization.registrationNumber = faker.string.uuid();
   organization.createdByUserGuid = faker.string.uuid();
 

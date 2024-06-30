@@ -43,6 +43,9 @@ export class OrganizationEntity {
   @JoinColumn({ name: 'createdByUserGuid' })
   createdByUser: UserEntity;
 
+  @Column({ type: 'varchar', length: 1000, nullable: true })
+  description?: string;
+
   @Column('bool', { default: false })
   published: boolean;
 
@@ -70,6 +73,7 @@ export class OrganizationEntity {
       this.email,
       this.createdByUser?.toDomainEntity(),
       this.organizationMembers?.map((member) => member.toDomainEntity()),
+      this.description,
       this.registrationNumber,
       this.published,
       this.status,

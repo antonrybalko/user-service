@@ -85,15 +85,13 @@ describe('Organizations', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(updatedData);
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { createdByUserGuid, ...expectedData } = updatedData;
       expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
+        ...expectedData,
         guid: organizationGuid,
-        title: updatedData.title,
-        cityGuid: updatedData.cityGuid,
-        phone: updatedData.phone,
         email: Sanitizer.normalizeEmail(updatedData.email),
-        registrationNumber: updatedData.registrationNumber,
-        published: true,
       });
     });
 

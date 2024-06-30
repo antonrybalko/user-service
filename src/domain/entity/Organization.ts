@@ -18,6 +18,7 @@ export class Organization {
     public email: string,
     public createdByUser: User,
     public organizationMembers: OrganizationMember[],
+    public description?: string,
     public registrationNumber?: string,
     public published: boolean = false,
     public status: OrganizationStatus = DefaultOrganizationStatus,

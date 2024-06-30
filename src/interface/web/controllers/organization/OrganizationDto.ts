@@ -9,6 +9,7 @@ export class OrganizationDto {
     public email: string,
     public published: boolean,
     public status: 'active' | 'blocked',
+    public description?: string,
     public registrationNumber?: string,
   ) {}
 
@@ -21,6 +22,7 @@ export class OrganizationDto {
       organization.email,
       organization.published,
       organization.status === OrganizationStatus.ACTIVE ? 'active' : 'blocked',
+      organization.description,
       organization.registrationNumber,
     );
   }

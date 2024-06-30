@@ -18,6 +18,7 @@ export interface OrganizationRepositoryInterface {
     phone?: string,
     email?: string,
     cityGuid?: string,
+    description?: string,
     registrationNumber?: string,
     published?: boolean,
   ): Promise<Organization>;

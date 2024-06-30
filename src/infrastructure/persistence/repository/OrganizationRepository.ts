@@ -59,6 +59,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     phone?: string,
     email?: string,
     cityGuid?: string,
+    description?: string,
     registrationNumber?: string,
     published?: boolean,
   ): Promise<Organization> {
@@ -77,6 +78,9 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     }
     if (cityGuid) {
       organization.cityGuid = cityGuid;
+    }
+    if (description) {
+      organization.description = description;
     }
     if (registrationNumber) {
       organization.registrationNumber = registrationNumber;

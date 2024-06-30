@@ -34,6 +34,11 @@ export class UpdateOrganizationDto {
   email?: string;
 
   @IsOptional()
+  @MaxLength(1000)
+  @Trim()
+  description?: string;
+
+  @IsOptional()
   @MaxLength(100)
   @Trim()
   registrationNumber?: string;
@@ -47,6 +52,7 @@ export class UpdateOrganizationDto {
     cityGuid,
     phone,
     email,
+    description,
     registrationNumber,
     published,
   }: UpdateOrganizationDto) {
@@ -54,6 +60,7 @@ export class UpdateOrganizationDto {
     this.cityGuid = cityGuid;
     this.phone = phone;
     this.email = email;
+    this.description = description;
     this.registrationNumber = registrationNumber;
     this.published = published;
   }
