@@ -9,6 +9,7 @@ export interface OrganizationRepositoryInterface {
     email: string,
     cityGuid: string,
     createdByUserGuid: string,
+    description?: string,
     registrationNumber?: string,
   ): Promise<Organization>;
 

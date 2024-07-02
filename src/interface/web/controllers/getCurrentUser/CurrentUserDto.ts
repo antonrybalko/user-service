@@ -9,6 +9,7 @@ class OrganizationShortDto {
   email: string;
   published: boolean;
   status: 'active' | 'blocked';
+  description?: string;
   registrationNumber?: string;
   static fromOrganization({
     guid,
@@ -16,6 +17,7 @@ class OrganizationShortDto {
     cityGuid,
     phone,
     email,
+    description,
     registrationNumber,
     published,
     status,
@@ -26,6 +28,7 @@ class OrganizationShortDto {
       cityGuid,
       phone,
       email,
+      description,
       registrationNumber,
       published,
       status: status === OrganizationStatus.ACTIVE ? 'active' : 'blocked',

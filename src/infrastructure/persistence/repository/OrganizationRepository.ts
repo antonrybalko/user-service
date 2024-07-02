@@ -31,6 +31,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     email: string,
     cityGuid: string,
     createdByUserGuid: string,
+    description?: string,
     registrationNumber?: string,
   ): Promise<Organization> {
     const createdByUser = await this.userRepository.findOneBy({
@@ -45,6 +46,7 @@ export class OrganizationRepository implements OrganizationRepositoryInterface {
     organization.email = email;
     organization.cityGuid = cityGuid;
     organization.createdByUser = createdByUser;
+    organization.description = description;
     organization.registrationNumber = registrationNumber;
 
     const createdOrganization =

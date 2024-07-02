@@ -23,7 +23,7 @@ export class OrganizationService extends BaseUseCaseService {
 
     const creatorUser = await this.userRepository.findByGuid(creatorUserGuid);
 
-    const { title, phone, email, cityGuid, registrationNumber } =
+    const { title, phone, email, cityGuid, description, registrationNumber } =
       organizationData;
 
     const createdOrganization = await this.organizationRepository.create(
@@ -32,6 +32,7 @@ export class OrganizationService extends BaseUseCaseService {
       email,
       cityGuid,
       creatorUserGuid,
+      description,
       registrationNumber,
     );
 
