@@ -24,7 +24,7 @@ describe('GET /v1/me', () => {
     user.firstname = 'Test';
     user.lastname = 'User';
     user.status = 1;
-    await AppDataSource.manager.remove(user);
+
     await AppDataSource.manager.save(user);
 
     tokenService = new TokenService();
@@ -32,7 +32,8 @@ describe('GET /v1/me', () => {
   });
 
   afterAll(async () => {
-    await AppDataSource.manager.remove(user);
+    const userRepository = AppDataSource.getRepository(UserEntity);
+    await userRepository.delete({ username: user.username });
     await AppDataSource.destroy();
   });
 

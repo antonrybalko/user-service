@@ -23,9 +23,10 @@ describe('Organizations', () => {
   afterAll(async () => {
     const organizationRepository =
       AppDataSource.getRepository(OrganizationEntity);
+    const userRepository = AppDataSource.getRepository(UserEntity);
     await organizationRepository.delete({ title: organizationData.title });
     await organizationRepository.delete({ guid: organizationGuid });
-    await AppDataSource.manager.remove(user);
+    await userRepository.delete({ username: user.username });
     await AppDataSource.destroy();
   });
 
