@@ -1,5 +1,6 @@
 import { Organization, OrganizationStatus } from 'domain/entity/Organization';
 import { UserStatus } from 'domain/entity/User';
+import { UserImage } from 'domain/entity/UserImage';
 
 class OrganizationShortDto {
   guid: string;
@@ -47,6 +48,7 @@ export class CurrentUserDto {
   phone?: string;
   email?: string;
   organizations: OrganizationShortDto[];
+  imageUrl?: string;
 
   constructor(user: {
     guid: string;
@@ -59,6 +61,7 @@ export class CurrentUserDto {
     lastname?: string;
     phone?: string;
     email?: string;
+    userImage?: UserImage;
   }) {
     this.guid = user.guid;
     this.username = user.username;
@@ -72,9 +75,10 @@ export class CurrentUserDto {
     this.organizations = user.organizations.map(
       OrganizationShortDto.fromOrganization,
     );
+    this.imageUrl = user.userImage?.smallUrl;
   }
 
-  static fromUserAndOrganization(
+  static fromUserAndOrganizationsAndImages(
     user: {
       guid: string;
       username: string;
@@ -85,10 +89,12 @@ export class CurrentUserDto {
       lastname?: string;
     },
     organizations: Organization[],
+    userImage?: UserImage,
   ): CurrentUserDto {
     return new CurrentUserDto({
       ...user,
       organizations,
+      userImage,
     });
   }
 }

@@ -5,6 +5,7 @@ import BaseController from '../shared/BaseController';
 import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
 import { CurrentUserDto } from './CurrentUserDto';
 import { OrganizationService } from 'application/usecase/organization/OrganizationService';
+import { UserImageService } from 'application/usecase/manageUsers/UserImageService';
 
 @Service()
 export default class CurrentUserController extends BaseController {
@@ -12,6 +13,8 @@ export default class CurrentUserController extends BaseController {
   private manageUsersService: ManageUsersService;
   @Inject()
   private organizationService: OrganizationService;
+  @Inject()
+  private userImageService: UserImageService;
 
   public async getCurrentUser(
     req: RequestInterface,
@@ -22,8 +25,13 @@ export default class CurrentUserController extends BaseController {
       const user = await this.manageUsersService.getUserByGuid(guid);
       const organizations =
         await this.organizationService.getOrganizationsByAdminGuid(guid);
+      const userImage = await this.userImageService.getUserImage(guid);
       return res.json(
-        CurrentUserDto.fromUserAndOrganization(user, organizations),
+        CurrentUserDto.fromUserAndOrganizationsAndImages(
+          user,
+          organizations,
+          userImage,
+        ),
       );
     } catch (error) {
       return this.handleError(res, error);

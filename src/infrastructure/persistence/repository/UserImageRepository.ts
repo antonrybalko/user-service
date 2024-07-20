@@ -36,10 +36,10 @@ export class UserImageRepository {
     await this.userImageRepository.delete({ guid: imageGuid });
   }
 
-  async findImageByUserGuid(userGuid: string): Promise<UserImage | null> {
+  async findImageByUserGuid(userGuid: string): Promise<UserImage | undefined> {
     const image = await this.userImageRepository.findOne({
       where: { userGuid },
     });
-    return image?.toDomainEntity() ?? null;
+    return image?.toDomainEntity();
   }
 }
