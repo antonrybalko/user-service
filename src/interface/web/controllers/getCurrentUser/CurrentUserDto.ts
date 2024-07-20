@@ -48,7 +48,9 @@ export class CurrentUserDto {
   phone?: string;
   email?: string;
   organizations: OrganizationShortDto[];
-  imageUrl?: string;
+  imageSmallUrl?: string;
+  imageMediumUrl?: string;
+  imageFullUrl?: string;
 
   constructor(user: {
     guid: string;
@@ -75,7 +77,9 @@ export class CurrentUserDto {
     this.organizations = user.organizations.map(
       OrganizationShortDto.fromOrganization,
     );
-    this.imageUrl = user.userImage?.smallUrl;
+    this.imageSmallUrl = user.userImage?.smallUrl;
+    this.imageMediumUrl = user.userImage?.mediumUrl;
+    this.imageFullUrl = user.userImage?.fullUrl;
   }
 
   static fromUserAndOrganizationsAndImages(
