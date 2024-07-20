@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 import { OrganizationEntity } from './entity/OrganizationEntity';
 import { OrganizationMemberEntity } from './entity/OrganizationMemberEntity';
+import { UserImageEntity } from './entity/UserImageEntity';
 
 dotenv.config();
 
@@ -15,7 +16,12 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   logging: process.env.NODE_ENV === 'development',
-  entities: [UserEntity, OrganizationEntity, OrganizationMemberEntity],
+  entities: [
+    UserEntity,
+    OrganizationEntity,
+    OrganizationMemberEntity,
+    UserImageEntity,
+  ],
   migrations: ['dist/src/infrastructure/persistence/migration/*.js'],
 });
 
