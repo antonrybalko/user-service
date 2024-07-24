@@ -1,9 +1,8 @@
-// src/interface/web/middleware/ParseBinaryBodyMiddleware.ts
 import { Request, Response, NextFunction, raw } from 'express';
 import { Inject, Service } from 'typedi';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
 
-const MAX_UPLOAD_SIZE = 2 * 1024 * 1024; // 2MB in bytes
+const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 2MB in bytes
 
 interface ParserError {
   type: string;

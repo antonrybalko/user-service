@@ -5,6 +5,7 @@ import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 import { OrganizationEntity } from './entity/OrganizationEntity';
 import { OrganizationMemberEntity } from './entity/OrganizationMemberEntity';
 import { UserImageEntity } from './entity/UserImageEntity';
+import { OrganizationImageEntity } from './entity/OrganizationImageEntity';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ export const AppDataSource = new DataSource({
     OrganizationEntity,
     OrganizationMemberEntity,
     UserImageEntity,
+    OrganizationImageEntity,
   ],
   migrations: ['dist/src/infrastructure/persistence/migration/*.js'],
 });

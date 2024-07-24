@@ -67,7 +67,7 @@ export class UploadUserImageService {
 
     // Resize images
     const fullImageBuffer = await sharp(file.buffer)
-      .resize({ width: 400, height: 400, fit: 'inside' })
+      .resize(800, 800)
       .jpeg(jpegOptions)
       .toBuffer();
 
@@ -77,7 +77,7 @@ export class UploadUserImageService {
       .toBuffer();
 
     const smallImageBuffer = await sharp(file.buffer)
-      .resize(40, 40)
+      .resize(50, 50)
       .jpeg(jpegOptions)
       .toBuffer();
 

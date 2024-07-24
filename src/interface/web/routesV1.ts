@@ -9,6 +9,7 @@ import CurrentUserController from './controllers/getCurrentUser/CurrentUserContr
 import { OrganizationController } from './controllers/organization/OrganizationController';
 import UploadUserImageController from './controllers/uploadUserImage/UploadUserImageController';
 import { BinaryImageMiddleware } from './middleware/BinaryImageMiddleware';
+import UploadOrganizationImageController from './controllers/uploadOrganizationImage/UploadOrganizationImageController';
 
 const router = Router();
 
@@ -53,9 +54,9 @@ const binaryImageMiddleware = Container.get(BinaryImageMiddleware);
 
 router.put(
   '/me/image/binary',
+  authenticateMiddleware.authenticate.bind(authenticateMiddleware),
   binaryImageMiddleware.parseBinaryBody,
   binaryImageMiddleware.handleParseError,
-  authenticateMiddleware.authenticate.bind(authenticateMiddleware),
   (req: Request, res: Response) =>
     Container.get(UploadUserImageController).uploadUserImage(req, res),
 );
@@ -75,6 +76,18 @@ router.put(
   (req: Request, res: Response) => {
     return organizationController.updateOrganization(req, res);
   },
+);
+
+router.put(
+  '/me/organizations/:guid/image/binary',
+  authenticateMiddleware.authenticate.bind(authenticateMiddleware),
+  binaryImageMiddleware.parseBinaryBody,
+  binaryImageMiddleware.handleParseError,
+  (req: Request, res: Response) =>
+    Container.get(UploadOrganizationImageController).uploadOrganizationImage(
+      req,
+      res,
+    ),
 );
 
 // User management routes
