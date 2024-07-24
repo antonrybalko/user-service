@@ -5,6 +5,8 @@ import { StorageService } from 'infrastructure/cloud/StorageService';
 import { UserImageRepository } from 'infrastructure/persistence/repository/UserImageRepository';
 import { UserImage } from 'domain/entity/UserImage';
 
+const jpegOptions = { quality: 100, mozjpeg: true };
+
 @Service()
 export class UploadUserImageService {
   @Inject()
@@ -66,13 +68,18 @@ export class UploadUserImageService {
     // Resize images
     const fullImageBuffer = await sharp(file.buffer)
       .resize({ width: 400, height: 400, fit: 'inside' })
+      .jpeg(jpegOptions)
       .toBuffer();
 
     const mediumImageBuffer = await sharp(file.buffer)
       .resize(100, 100)
+      .jpeg(jpegOptions)
       .toBuffer();
 
-    const smallImageBuffer = await sharp(file.buffer).resize(40, 40).toBuffer();
+    const smallImageBuffer = await sharp(file.buffer)
+      .resize(40, 40)
+      .jpeg(jpegOptions)
+      .toBuffer();
 
     // Upload images to S3
     const fullUrl = await this.storageService.uploadFile(

@@ -8,9 +8,11 @@ import UserController from './controllers/manageUser/UserController';
 import CurrentUserController from './controllers/getCurrentUser/CurrentUserController';
 import { OrganizationController } from './controllers/organization/OrganizationController';
 import UploadUserImageController from './controllers/uploadUserImage/UploadUserImageController';
+import { LoggerInterface } from 'shared/interface/LoggerInterface';
 
 const MAX_UPLOAD_SIZE = 2 * 1024 * 1024; // 2MB in bytes
 
+const logger: LoggerInterface = Container.get('LoggerInterface');
 const router = Router();
 
 router.get('/', (request: Request, response: Response) => {
@@ -67,13 +69,12 @@ const handleParseError = (
   next: NextFunction,
 ) => {
   if (err.type === 'entity.too.large') {
-    console.error(err);
     return res.status(413).json({
       error: 'Image too large',
     });
   }
   if (err) {
-    console.error(err);
+    logger.error(err);
     return res.status(500).json({
       error: 'Internal error',
     });
