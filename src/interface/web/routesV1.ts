@@ -1,5 +1,5 @@
 import Container from 'typedi';
-import { Router, Request, Response, NextFunction, raw } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import LoginController from './controllers/login/LoginController';
 import RegisterController from './controllers/register/RegisterController';
 import { AuthenticateMiddleware } from './middleware/AuthenticateMiddleware';
@@ -8,11 +8,8 @@ import UserController from './controllers/manageUser/UserController';
 import CurrentUserController from './controllers/getCurrentUser/CurrentUserController';
 import { OrganizationController } from './controllers/organization/OrganizationController';
 import UploadUserImageController from './controllers/uploadUserImage/UploadUserImageController';
-import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { BinaryImageMiddleware } from './middleware/BinaryImageMiddleware';
 
-const MAX_UPLOAD_SIZE = 2 * 1024 * 1024; // 2MB in bytes
-
-const logger: LoggerInterface = Container.get('LoggerInterface');
 const router = Router();
 
 router.get('/', (request: Request, response: Response) => {
@@ -52,40 +49,12 @@ router.get(
   },
 );
 
-// @todo: Move to middleware
-const parseBinaryBody = raw({
-  limit: MAX_UPLOAD_SIZE,
-  type: ['image/jpeg', 'image/png'],
-});
-
-interface ParserError {
-  type: string;
-}
-
-const handleParseError = (
-  err: ParserError,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  if (err.type === 'entity.too.large') {
-    return res.status(413).json({
-      error: 'Image too large',
-    });
-  }
-  if (err) {
-    logger.error(err);
-    return res.status(500).json({
-      error: 'Internal error',
-    });
-  }
-  next();
-};
+const binaryImageMiddleware = Container.get(BinaryImageMiddleware);
 
 router.put(
   '/me/image/binary',
-  parseBinaryBody,
-  handleParseError,
+  binaryImageMiddleware.parseBinaryBody,
+  binaryImageMiddleware.handleParseError,
   authenticateMiddleware.authenticate.bind(authenticateMiddleware),
   (req: Request, res: Response) =>
     Container.get(UploadUserImageController).uploadUserImage(req, res),
