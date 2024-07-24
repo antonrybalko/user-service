@@ -36,7 +36,7 @@ export class UploadUserImageService {
     imageGuid: string,
     size: 'full' | 'medium' | 'small',
   ): string {
-    return `images/${userGuid}/${imageGuid}/${size}.jpg`;
+    return `images/user/${userGuid}/${imageGuid}/${size}.jpg`;
   }
 
   private async removeExistingImage(userGuid: string): Promise<void> {
