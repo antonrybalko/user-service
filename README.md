@@ -1,3 +1,7 @@
+# User Service
+
+User service for a marketplace. Register customers and vendors, login and get JWT token, manage users and organizations. REST API and CLI.
+
 ## Install
 
 ```bash
@@ -17,13 +21,6 @@ npm run format
 npm run typeorm
 npm run migration:run:dev
 npm run migration:revert:dev
-```
-
-## CLI
-
-```bash
-yarn cli help
-yarn cli register -u vendor1 -p password123 -e vendor1@example.com --isVendor
 ```
 
 ## Migrations
@@ -62,6 +59,15 @@ or
 
 ```
 npm run migration:revert
+```
+
+# CLI
+
+```bash
+yarn cli help
+yarn cli users/list
+yarn cli register -u user1 -p password123 -e user1@example.com --isVendor
+yarn cli orgs/update 123e4567-e89b-12d3-a456-426614174000 -e "neworg@example.com"
 ```
 
 # API
