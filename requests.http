@@ -1,0 +1,36 @@
+
+### Variables
+@baseUrl = http://localhost:3001
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiZDJlM2QzZjEtNGUwZi00YzY5LWE1MzItZTI5YzUwZmI2MTdmIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTc0ODI2OTY5OSwiZXhwIjoxNzQ4MjcxNDk5fQ._kAr_5HuHLJAL7DJRPyF995aB4jvsh1nx7UNFZW5laQ
+@userId = d2e3d3f1-4e0f-4c69-a532-e29c50fb617f
+
+### Login user
+POST {{baseUrl}}/v1/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### Get my profile
+GET {{baseUrl}}/v1/me
+Authorization: Bearer {{token}}
+
+### Get user by ID
+GET http://localhost:3001/v1/users/d2e3d3f1-4e0f-4c69-a532-e29c50fb617f
+Authorization: Bearer {{token}}
+
+### Get all users
+GET http://localhost:3001/v1/users
+Authorization: Bearer {{token}}
+
+### Update user by ID
+PATCH http://localhost:3001/v1/users/d2e3d3f1-4e0f-4c69-a532-e29c50fb617f
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "firstname": "John",
+  "lastname": "Doe"
+}
