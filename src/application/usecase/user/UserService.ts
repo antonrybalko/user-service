@@ -4,11 +4,12 @@ import { NotFoundException } from 'shared/exception/NotFoundException';
 import { UserRepositoryInterface } from './UserRepositoryInterface';
 import BaseUseCaseService from 'application/usecase/shared/BaseUseCaseService';
 import { UpdateUserDto } from './UpdateUserDto';
+import { UserRepositoryInterfaceToken } from 'di/tokens';
 
 @Service()
 export class UserService extends BaseUseCaseService {
-  @Inject('UserRepositoryInterface')
-  private manageUsersRepository: UserRepositoryInterface;
+  @Inject(UserRepositoryInterfaceToken)
+  private manageUsersRepository!: UserRepositoryInterface;
 
   /**
    * Get all users

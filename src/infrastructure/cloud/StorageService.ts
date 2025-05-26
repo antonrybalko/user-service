@@ -5,11 +5,12 @@ import {
 } from '@aws-sdk/client-s3';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
 import { Inject, Service } from 'typedi';
+import { LoggerInterfaceToken } from 'di/tokens';
 
 @Service()
 export class StorageService {
-  @Inject('LoggerInterface')
-  private logger: LoggerInterface;
+  @Inject(LoggerInterfaceToken)
+  private logger!: LoggerInterface;
 
   private s3: S3Client;
 
@@ -22,7 +23,9 @@ export class StorageService {
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
     if (!this.region || !this.bucketName || !accessKeyId || !secretAccessKey) {
-      this.logger.error('AWS S3 configuration is missing');
+      if (this.logger) {
+        this.logger.error('AWS S3 configuration is missing');
+      }
       throw new Error('AWS S3 configuration is missing');
     }
 

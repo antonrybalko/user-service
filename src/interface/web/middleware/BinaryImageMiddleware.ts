@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, raw } from 'express';
 import { Inject, Service } from 'typedi';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { LoggerInterfaceToken } from 'di/tokens';
 
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 2MB in bytes
 
@@ -10,8 +11,8 @@ interface ParserError {
 
 @Service()
 export class BinaryImageMiddleware {
-  @Inject('LoggerInterface')
-  private logger: LoggerInterface;
+  @Inject(LoggerInterfaceToken)
+  private logger!: LoggerInterface;
 
   public parseBinaryBody(req: Request, res: Response, next: NextFunction) {
     const middleware = raw({

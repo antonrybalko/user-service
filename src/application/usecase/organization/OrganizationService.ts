@@ -6,14 +6,15 @@ import { CreateOrganizationDto } from './CreateOrganizationDto';
 import { UpdateOrganizationDto } from './UpdateOrganizationDto';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { UserRepositoryInterface } from '../user/UserRepositoryInterface';
+import { UserRepositoryInterfaceToken, OrganizationRepositoryInterfaceToken } from 'di/tokens';
 
 @Service()
 export class OrganizationService extends BaseUseCaseService {
-  @Inject('UserRepositoryInterface')
-  private userRepository: UserRepositoryInterface;
+  @Inject(UserRepositoryInterfaceToken)
+  private userRepository!: UserRepositoryInterface;
 
-  @Inject('OrganizationRepositoryInterface')
-  private organizationRepository: OrganizationRepositoryInterface;
+  @Inject(OrganizationRepositoryInterfaceToken)
+  private organizationRepository!: OrganizationRepositoryInterface;
 
   async createOrganization(
     creatorUserGuid: string,

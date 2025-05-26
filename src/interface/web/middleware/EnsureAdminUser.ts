@@ -3,14 +3,15 @@ import { NextFunction, Response } from 'express';
 import { RequestInterface } from './RequestInterface';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
 import { UserService } from 'application/usecase/user/UserService';
+import { LoggerInterfaceToken } from 'di/tokens';
 
 @Service()
 export class EnsureAdminUser {
   @Inject()
   private manageUsersService: UserService;
 
-  @Inject('LoggerInterface')
-  private logger: LoggerInterface;
+  @Inject(LoggerInterfaceToken)
+  private logger!: LoggerInterface;
 
   async ensure(req: RequestInterface, res: Response, next: NextFunction) {
     try {

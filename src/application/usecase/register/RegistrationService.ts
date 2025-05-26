@@ -5,14 +5,15 @@ import { User } from 'domain/entity/User';
 import { PasswordServiceInterface } from 'application/services/PasswordServiceInterface';
 import { RegisterDto } from './RegisterDto';
 import BaseUseCaseService from 'application/usecase/shared/BaseUseCaseService';
+import { RegistrationRepositoryInterfaceToken, PasswordServiceInterfaceToken } from 'di/tokens';
 
 @Service()
 export class RegistrationService extends BaseUseCaseService {
-  @Inject('RegistrationRepositoryInterface')
-  private registrationRepository: RegistrationRepositoryInterface;
+  @Inject(RegistrationRepositoryInterfaceToken)
+  private registrationRepository!: RegistrationRepositoryInterface;
 
-  @Inject('PasswordServiceInterface')
-  private passwordService: PasswordServiceInterface;
+  @Inject(PasswordServiceInterfaceToken)
+  private passwordService!: PasswordServiceInterface;
 
   async registerUser(userData: RegisterDto): Promise<User> {
     await this.validate(userData);

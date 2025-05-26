@@ -13,32 +13,34 @@ import { UserRepository } from 'infrastructure/persistence/repository/UserReposi
 import { OrganizationRepository } from 'infrastructure/persistence/repository/OrganizationRepository';
 import { OrganizationService } from 'application/usecase/organization/OrganizationService';
 import { StorageService } from 'infrastructure/cloud/StorageService';
+import {
+  PasswordServiceInterfaceToken,
+  TokenServiceInterfaceToken,
+  LoggerInterfaceToken as LoggerServiceToken,
+  ValidatorInterfaceToken as ValidatorServiceToken,
+  SanitizerInterfaceToken as SanitizerServiceToken,
+  LoginRepositoryInterfaceToken,
+  RegistrationRepositoryInterfaceToken,
+  UserRepositoryInterfaceToken,
+  OrganizationRepositoryInterfaceToken,
+} from 'di/tokens';
 
-Container.set('PasswordServiceInterface', Container.get(PasswordService));
-Container.set('TokenServiceInterface', Container.get(TokenService));
-Container.set('LoggerInterface', Container.get(LoggerService));
-Container.set('ValidatorInterface', Container.get(ValidatorService));
-Container.set('SanitizerInterface', Container.get(SanitizerService));
+Container.set(PasswordServiceInterfaceToken, Container.get(PasswordService));
+Container.set(TokenServiceInterfaceToken, Container.get(TokenService));
+Container.set(LoggerServiceToken, Container.get(LoggerService));
+Container.set(ValidatorServiceToken, Container.get(ValidatorService));
+Container.set(SanitizerServiceToken, Container.get(SanitizerService));
 
-Container.set('LoginRepositoryInterface', Container.get(LoginRepository));
+Container.set(LoginRepositoryInterfaceToken, Container.get(LoginRepository));
 Container.set('LoginService', Container.get(LoginService));
 
-Container.set(StorageService, new StorageService());
+Container.set(StorageService, Container.get(StorageService));
 
-Container.set(
-  'RegistrationRepositoryInterface',
-  Container.get(RegistrationRepository),
-);
+Container.set(RegistrationRepositoryInterfaceToken, Container.get(RegistrationRepository));
 Container.set('RegistrationService', Container.get(RegistrationService));
 
-Container.set(
-  'UserRepositoryInterface',
-  Container.get(UserRepository),
-);
+Container.set(UserRepositoryInterfaceToken, Container.get(UserRepository));
 Container.set('UserService', Container.get(UserService));
 
-Container.set(
-  'OrganizationRepositoryInterface',
-  Container.get(OrganizationRepository),
-);
+Container.set(OrganizationRepositoryInterfaceToken, Container.get(OrganizationRepository));
 Container.set('OrganizationService', Container.get(OrganizationService));

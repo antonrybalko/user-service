@@ -8,17 +8,18 @@ import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { TokenPayload } from 'domain/valueObject/TokenPayload';
 import { RequestInterface } from 'interface/web/middleware/RequestInterface';
+import { LoggerInterfaceToken, ValidatorInterfaceToken, SanitizerInterfaceToken } from 'di/tokens';
 
 @Service()
 class BaseController {
-  @Inject('LoggerInterface')
-  private logger: LoggerInterface;
+  @Inject(LoggerInterfaceToken)
+  private logger!: LoggerInterface;
 
-  @Inject('ValidatorInterface')
-  protected validator: ValidatorInterface;
+  @Inject(ValidatorInterfaceToken)
+  protected validator!: ValidatorInterface;
 
-  @Inject('SanitizerInterface')
-  protected sanitizer: SanitizerInterface;
+  @Inject(SanitizerInterfaceToken)
+  protected sanitizer!: SanitizerInterface;
 
   protected async validate(dto: object): Promise<void> {
     await this.validator.validate(this.sanitizer.sanitize(dto));

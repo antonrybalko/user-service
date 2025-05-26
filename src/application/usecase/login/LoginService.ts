@@ -7,17 +7,18 @@ import { TokenServiceInterface } from 'application/services/TokenServiceInterfac
 import BaseUseCaseService from 'application/usecase/shared/BaseUseCaseService';
 import { LoginRepositoryInterface } from './LoginRepositoryInterface';
 import { LoginDto } from './LoginDto';
+import { LoginRepositoryInterfaceToken, PasswordServiceInterfaceToken, TokenServiceInterfaceToken } from 'di/tokens';
 
 @Service()
 export class LoginService extends BaseUseCaseService {
-  @Inject('LoginRepositoryInterface')
-  private loginRepository: LoginRepositoryInterface;
+  @Inject(LoginRepositoryInterfaceToken)
+  private loginRepository!: LoginRepositoryInterface;
 
-  @Inject('PasswordServiceInterface')
-  private passwordService: PasswordServiceInterface;
+  @Inject(PasswordServiceInterfaceToken)
+  private passwordService!: PasswordServiceInterface;
 
-  @Inject('TokenServiceInterface')
-  private tokenService: TokenServiceInterface;
+  @Inject(TokenServiceInterfaceToken)
+  private tokenService!: TokenServiceInterface;
 
   /**
    * Login user and return JWT token

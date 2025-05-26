@@ -11,6 +11,13 @@ import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { User } from 'domain/entity/User';
 import { UserAndPassword } from 'domain/valueObject/UserAndPassword';
 import { NotFoundException } from 'shared/exception/NotFoundException';
+import { 
+  LoginRepositoryInterfaceToken, 
+  PasswordServiceInterfaceToken, 
+  TokenServiceInterfaceToken, 
+  ValidatorInterfaceToken, 
+  SanitizerInterfaceToken 
+} from 'di/tokens';
 
 describe('LoginService', () => {
   let loginService: LoginService;
@@ -43,11 +50,11 @@ describe('LoginService', () => {
       sanitize: jest.fn((dto) => dto),
     } as unknown as SanitizerInterface;
 
-    Container.set('LoginRepositoryInterface', loginRepository);
-    Container.set('PasswordServiceInterface', passwordService);
-    Container.set('TokenServiceInterface', tokenService);
-    Container.set('ValidatorInterface', validator);
-    Container.set('SanitizerInterface', sanitizer);
+    Container.set(LoginRepositoryInterfaceToken, loginRepository);
+    Container.set(PasswordServiceInterfaceToken, passwordService);
+    Container.set(TokenServiceInterfaceToken, tokenService);
+    Container.set(ValidatorInterfaceToken, validator);
+    Container.set(SanitizerInterfaceToken, sanitizer);
 
     loginService = Container.get(LoginService);
   });

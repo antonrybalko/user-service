@@ -4,16 +4,17 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import '../../diconfig';
+import '../../di/diconfig';
 import { router } from './routes';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
 import { JsonValidatorMiddleware } from './middleware/JsonValidatorMiddleware';
+import { LoggerInterfaceToken } from 'di/tokens';
 
 dotenv.config();
 
 const server = express();
 
-const logger: LoggerInterface = Container.get('LoggerInterface');
+const logger: LoggerInterface = Container.get(LoggerInterfaceToken);
 const jsonValidatorMiddleware = Container.get(JsonValidatorMiddleware);
 
 server.use(express.json());

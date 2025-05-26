@@ -3,14 +3,15 @@ import { NextFunction, Response } from 'express';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
 import { TokenServiceInterface } from 'application/services/TokenServiceInterface';
 import { RequestInterface } from './RequestInterface';
+import { LoggerInterfaceToken, TokenServiceInterfaceToken } from 'di/tokens';
 
 @Service()
 export class AuthenticateMiddleware {
-  @Inject('LoggerInterface')
-  private logger: LoggerInterface;
+  @Inject(LoggerInterfaceToken)
+  private logger!: LoggerInterface;
 
-  @Inject('TokenServiceInterface')
-  private tokenService: TokenServiceInterface;
+  @Inject(TokenServiceInterfaceToken)
+  private tokenService!: TokenServiceInterface;
 
   async authenticate(req: RequestInterface, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;

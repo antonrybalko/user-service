@@ -4,10 +4,11 @@ import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
 import { Command } from 'commander';
 import { NotFoundException } from 'shared/exception/NotFoundException';
+import { ValidatorInterfaceToken } from 'di/tokens';
 
 export default abstract class BaseCommand {
-  @Inject('ValidatorInterface')
-  protected validator: ValidatorInterface;
+  @Inject(ValidatorInterfaceToken)
+  protected validator!: ValidatorInterface;
 
   protected async handleError(program: Command, error: unknown): Promise<void> {
     if (this.validator.isValidationError(error)) {

@@ -1,11 +1,12 @@
 import { Inject, Service } from 'typedi';
 import { NextFunction, Request, Response } from 'express';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { LoggerInterfaceToken } from 'di/tokens';
 
 @Service()
 export class JsonValidatorMiddleware {
-  @Inject('LoggerInterface')
-  private logger: LoggerInterface;
+  @Inject(LoggerInterfaceToken)
+  private logger!: LoggerInterface;
 
   validateJson(req: Request, res: Response, next: NextFunction) {
     // This middleware will be called after express.json() has already parsed the body

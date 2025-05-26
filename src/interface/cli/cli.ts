@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import '../../diconfig';
+import '../../di/diconfig';
 import Container from 'typedi';
 import { Command } from 'commander';
 import { AppDataSource } from 'infrastructure/persistence/data-source';
