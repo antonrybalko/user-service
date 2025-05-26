@@ -2,14 +2,14 @@ import Container from 'typedi';
 import { Router, Request, Response, NextFunction } from 'express';
 import LoginController from './controllers/login/LoginController';
 import RegisterController from './controllers/register/RegisterController';
-import { AuthenticateMiddleware } from './middleware/AuthenticateMiddleware';
-import { EnsureAdminUser } from './middleware/EnsureAdminUser';
 import UserController from './controllers/manageUser/UserController';
 import CurrentUserController from './controllers/getCurrentUser/CurrentUserController';
 import { OrganizationController } from './controllers/organization/OrganizationController';
 import UploadUserImageController from './controllers/uploadUserImage/UploadUserImageController';
-import { BinaryImageMiddleware } from './middleware/BinaryImageMiddleware';
 import UploadOrganizationImageController from './controllers/uploadOrganizationImage/UploadOrganizationImageController';
+import { BinaryImageMiddleware } from './middleware/BinaryImageMiddleware';
+import { AuthenticateMiddleware } from './middleware/AuthenticateMiddleware';
+import { EnsureAdminUser } from './middleware/EnsureAdminUser';
 
 const router = Router();
 
@@ -70,7 +70,7 @@ router.post(
   },
 );
 
-router.put(
+router.patch(
   '/me/organizations/:guid',
   authenticateMiddleware.authenticate.bind(authenticateMiddleware),
   (req: Request, res: Response) => {
@@ -99,7 +99,7 @@ router.get(
   authenticateAndAuthorize,
   (req: Request, res: Response) => userController.getUserByGuid(req, res),
 );
-router.put(
+router.patch(
   '/users/:guid',
   authenticateAndAuthorize,
   (req: Request, res: Response) => userController.updateUser(req, res),

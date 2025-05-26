@@ -75,14 +75,14 @@ describe('Organizations', () => {
     });
   });
 
-  describe('PUT /v1/me/organizations/:guid', () => {
+  describe('PATCH /v1/me/organizations/:guid', () => {
     it('should update an existing organization', async () => {
       const updatedData = createOrganization({
         published: true,
       });
 
       const response = await request(app)
-        .put(`/v1/me/organizations/${organizationGuid}`)
+        .patch(`/v1/me/organizations/${organizationGuid}`)
         .set('Authorization', `Bearer ${token}`)
         .send(updatedData);
 
@@ -100,7 +100,7 @@ describe('Organizations', () => {
       const newUserAndToken = await createUserAndToken();
 
       const updateResponse = await request(app)
-        .put(`/v1/me/organizations/${organizationGuid}`)
+        .patch(`/v1/me/organizations/${organizationGuid}`)
         .set('Authorization', `Bearer ${newUserAndToken.token}`)
         .send({
           title: 'Updated Organization Title',
@@ -111,7 +111,7 @@ describe('Organizations', () => {
 
     it('should return 400 for invalid input', async () => {
       const response = await request(app)
-        .put(`/v1/me/organizations/${organizationGuid}`)
+        .patch(`/v1/me/organizations/${organizationGuid}`)
         .set('Authorization', `Bearer ${token}`)
         .send({
           title: '',
@@ -125,7 +125,7 @@ describe('Organizations', () => {
 
     it('should return 401 for missing token', async () => {
       const response = await request(app)
-        .put(`/v1/me/organizations/${organizationGuid}`)
+        .patch(`/v1/me/organizations/${organizationGuid}`)
         .send(organizationData);
 
       expect(response.status).toBe(401);
