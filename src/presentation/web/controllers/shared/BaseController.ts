@@ -7,7 +7,7 @@ import { SanitizerInterface } from 'shared/interface/SanitizerInterface';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { TokenPayload } from 'domain/valueObject/TokenPayload';
-import { RequestInterface } from 'interface/web/middleware/RequestInterface';
+import { RequestInterface } from 'presentation/web/middleware/RequestInterface';
 import { LoggerInterfaceToken, ValidatorInterfaceToken, SanitizerInterfaceToken } from 'di/tokens';
 
 @Service()
