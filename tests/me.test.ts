@@ -1,6 +1,6 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
-import app from 'interface/web/server';
+import app from 'presentation/web/server';
 import { AppDataSource } from 'infrastructure/persistence/data-source';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 import { TokenServiceInterface } from 'application/services/TokenServiceInterface';

@@ -4,7 +4,7 @@ import { OrganizationService } from 'application/usecase/organization/Organizati
 import { CreateOrganizationDto } from 'application/usecase/organization/CreateOrganizationDto';
 import { UpdateOrganizationDto } from 'application/usecase/organization/UpdateOrganizationDto';
 import BaseController from '../shared/BaseController';
-import { RequestInterface } from 'interface/web/middleware/RequestInterface';
+import { RequestInterface } from 'presentation/web/middleware/RequestInterface';
 import { OrganizationDto } from './OrganizationDto';
 
 @Service()

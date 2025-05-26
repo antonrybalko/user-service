@@ -3,7 +3,7 @@ import { Inject, Service } from 'typedi';
 import { RegistrationService } from 'application/usecase/register/RegistrationService';
 import { RegisterDto } from 'application/usecase/register/RegisterDto';
 import { RegisteredUserDto } from './RegisteredUserDto';
-import BaseController from 'interface/web/controllers/shared/BaseController';
+import BaseController from 'presentation/web/controllers/shared/BaseController';
 
 @Service()
 export default class RegisterController extends BaseController {

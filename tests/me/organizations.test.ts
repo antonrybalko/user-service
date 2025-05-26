@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from 'interface/web/server';
+import app from 'presentation/web/server';
 import { AppDataSource } from 'infrastructure/persistence/data-source';
 import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
 import { OrganizationEntity } from 'infrastructure/persistence/entity/OrganizationEntity';

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Service, Inject } from 'typedi';
 import { UserService } from 'application/usecase/user/UserService';
-import BaseController from 'interface/web/controllers/shared/BaseController';
+import BaseController from 'presentation/web/controllers/shared/BaseController';
 
 @Service()
 class UserController extends BaseController {
