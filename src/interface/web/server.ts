@@ -7,14 +7,18 @@ import morgan from 'morgan';
 import '../../diconfig';
 import { router } from './routes';
 import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { JsonValidatorMiddleware } from './middleware/JsonValidatorMiddleware';
 
 dotenv.config();
 
 const server = express();
 
 const logger: LoggerInterface = Container.get('LoggerInterface');
+const jsonValidatorMiddleware = Container.get(JsonValidatorMiddleware);
 
 server.use(express.json());
+// JSON error handler must come immediately after express.json()
+server.use(jsonValidatorMiddleware.handleJsonError.bind(jsonValidatorMiddleware));
 server.use(cors());
 server.use(morgan('tiny'));
 server.use(router);
@@ -24,7 +28,7 @@ server.use((req: Request, res: Response) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
-// Error handler
+// General error handler
 server.use((err: Error, req: Request, res: Response) => {
   logger.error(err);
   res.status(500).json({ error: 'Unexpected error' });
