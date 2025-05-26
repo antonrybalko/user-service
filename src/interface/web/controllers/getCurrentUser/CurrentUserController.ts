@@ -2,15 +2,15 @@ import { Response } from 'express';
 import { Service, Inject } from 'typedi';
 import { RequestInterface } from '../../middleware/RequestInterface';
 import BaseController from '../shared/BaseController';
-import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
+import { UserService } from 'application/usecase/user/UserService';
 import { CurrentUserDto } from './CurrentUserDto';
 import { OrganizationService } from 'application/usecase/organization/OrganizationService';
-import { UserImageService } from 'application/usecase/manageUsers/UserImageService';
+import { UserImageService } from 'application/usecase/user/UserImageService';
 
 @Service()
 export default class CurrentUserController extends BaseController {
   @Inject()
-  private manageUsersService: ManageUsersService;
+  private manageUsersService: UserService;
   @Inject()
   private organizationService: OrganizationService;
   @Inject()

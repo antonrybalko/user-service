@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { Service, Inject } from 'typedi';
-import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
+import { UserService } from 'application/usecase/user/UserService';
 import BaseController from 'interface/web/controllers/shared/BaseController';
 
 @Service()
 class UserController extends BaseController {
   @Inject()
-  private manageUsersService: ManageUsersService;
+  private manageUsersService: UserService;
 
   public async getAllUsers(req: Request, res: Response): Promise<Response> {
     try {

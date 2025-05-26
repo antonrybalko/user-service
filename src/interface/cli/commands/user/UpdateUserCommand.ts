@@ -1,13 +1,13 @@
 import { Command } from 'commander';
 import { Service, Inject } from 'typedi';
-import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
-import { UpdateUserDto } from 'application/usecase/manageUsers/UpdateUserDto';
+import { UserService } from 'application/usecase/user/UserService';
+import { UpdateUserDto } from 'application/usecase/user/UpdateUserDto';
 import BaseCommand from '../BaseCommand';
 
 @Service()
 export default class UpdateUserCommand extends BaseCommand {
   @Inject()
-  private manageUsersService: ManageUsersService;
+  private manageUsersService: UserService;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async execute(

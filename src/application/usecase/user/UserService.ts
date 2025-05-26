@@ -1,14 +1,14 @@
 import { Service, Inject } from 'typedi';
 import { User, UserStatus } from 'domain/entity/User';
 import { NotFoundException } from 'shared/exception/NotFoundException';
-import { ManageUsersRepositoryInterface } from './ManageUsersRepositoryInterface';
+import { UserRepositoryInterface } from './UserRepositoryInterface';
 import BaseUseCaseService from 'application/usecase/shared/BaseUseCaseService';
 import { UpdateUserDto } from './UpdateUserDto';
 
 @Service()
-export class ManageUsersService extends BaseUseCaseService {
-  @Inject('ManageUsersRepositoryInterface')
-  private manageUsersRepository: ManageUsersRepositoryInterface;
+export class UserService extends BaseUseCaseService {
+  @Inject('UserRepositoryInterface')
+  private manageUsersRepository: UserRepositoryInterface;
 
   /**
    * Get all users

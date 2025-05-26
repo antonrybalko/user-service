@@ -1,12 +1,12 @@
 import { Command } from 'commander';
 import { Service, Inject } from 'typedi';
-import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
+import { UserService } from 'application/usecase/user/UserService';
 import BaseCommand from '../BaseCommand';
 
 @Service()
 export default class ListUsersCommand extends BaseCommand {
   @Inject()
-  private manageUsersService: ManageUsersService;
+  private manageUsersService: UserService;
 
   async execute(program: Command): Promise<void> {
     try {

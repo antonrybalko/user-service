@@ -1,13 +1,13 @@
 import { Service } from 'typedi';
 import { User } from 'domain/entity/User';
-import { ManageUsersRepositoryInterface } from 'application/usecase/manageUsers/ManageUsersRepositoryInterface';
+import { UserRepositoryInterface } from 'application/usecase/user/UserRepositoryInterface';
 import { BaseUserRepository } from './BaseUserRepository';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 
 @Service()
-export class ManageUsersRepository
+export class UserRepository
   extends BaseUserRepository
-  implements ManageUsersRepositoryInterface
+  implements UserRepositoryInterface
 {
   async findAll(): Promise<User[]> {
     const users = await this.userRepository.find();

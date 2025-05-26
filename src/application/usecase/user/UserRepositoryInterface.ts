@@ -1,6 +1,6 @@
 import { User } from 'domain/entity/User';
 
-export interface ManageUsersRepositoryInterface {
+export interface UserRepositoryInterface {
   findAll(): Promise<User[]>;
   findByGuid(guid: string): Promise<User>;
   updateUser(

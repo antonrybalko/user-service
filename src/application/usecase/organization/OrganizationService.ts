@@ -5,12 +5,12 @@ import { OrganizationRepositoryInterface } from './OrganizationRepositoryInterfa
 import { CreateOrganizationDto } from './CreateOrganizationDto';
 import { UpdateOrganizationDto } from './UpdateOrganizationDto';
 import { NotFoundException } from 'shared/exception/NotFoundException';
-import { ManageUsersRepositoryInterface } from '../manageUsers/ManageUsersRepositoryInterface';
+import { UserRepositoryInterface } from '../user/UserRepositoryInterface';
 
 @Service()
 export class OrganizationService extends BaseUseCaseService {
-  @Inject('ManageUsersRepositoryInterface')
-  private userRepository: ManageUsersRepositoryInterface;
+  @Inject('UserRepositoryInterface')
+  private userRepository: UserRepositoryInterface;
 
   @Inject('OrganizationRepositoryInterface')
   private organizationRepository: OrganizationRepositoryInterface;

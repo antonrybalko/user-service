@@ -8,8 +8,8 @@ import { PasswordService } from 'infrastructure/security/PasswordService';
 import { TokenService } from 'infrastructure/security/TokenService';
 import { LoginRepository } from 'infrastructure/persistence/repository/LoginRepository';
 import { LoginService } from 'application/usecase/login/LoginService';
-import { ManageUsersService } from 'application/usecase/manageUsers/ManageUsersService';
-import { ManageUsersRepository } from 'infrastructure/persistence/repository/ManageUsersRepository';
+import { UserService } from 'application/usecase/user/UserService';
+import { UserRepository } from 'infrastructure/persistence/repository/UserRepository';
 import { OrganizationRepository } from 'infrastructure/persistence/repository/OrganizationRepository';
 import { OrganizationService } from 'application/usecase/organization/OrganizationService';
 import { StorageService } from 'infrastructure/cloud/StorageService';
@@ -32,10 +32,10 @@ Container.set(
 Container.set('RegistrationService', Container.get(RegistrationService));
 
 Container.set(
-  'ManageUsersRepositoryInterface',
-  Container.get(ManageUsersRepository),
+  'UserRepositoryInterface',
+  Container.get(UserRepository),
 );
-Container.set('ManageUsersService', Container.get(ManageUsersService));
+Container.set('UserService', Container.get(UserService));
 
 Container.set(
   'OrganizationRepositoryInterface',
