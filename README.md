@@ -5,22 +5,22 @@ User service for a marketplace. Register customers and vendors, login and get JW
 ## Install
 
 ```bash
-npm install -g typescript
-npm install
+yarn global add typescript
+yarn install
 ```
 
 ## Scripts
 
 ```bash
-npm run dev
-npm run build
-npm run cli
-npm run test
-npm run lint
-npm run format
-npm run typeorm
-npm run migration:run:dev
-npm run migration:revert:dev
+yarn dev
+yarn build
+yarn cli
+yarn test
+yarn lint
+yarn format
+yarn typeorm
+yarn migration:run:dev
+yarn migration:revert:dev
 ```
 
 ## Migrations
@@ -28,37 +28,37 @@ npm run migration:revert:dev
 ### Generate a migration
 
 ```bash
-npm run typeorm migration:generate -- src/infrastructure/persistence/migration/MigrationName -d src/infrastructure/persistence/data-source.ts
+yarn typeorm migration:generate -- src/adapter/persistence/migration/MigrationName -d src/adapter/persistence/data-source.ts
 ```
 
 ### Create a migration
 
 ```bash
-npm run typeorm migration:create  src/infrastructure/persistence/migration/MigrationName
+yarn typeorm migration:create  src/adapter/persistence/migration/MigrationName
 ```
 
 ### Run migrations
 
 ```bash
-npm run migration:run
+yarn migration:run
 ```
 
 or
 
 ```bash
-npm run migration:run:dev
+yarn migration:run:dev
 ```
 
 ### Rollback migrations
 
 ```bash
-npm run migration:revert:dev
+yarn migration:revert:dev
 ```
 
 or
 
 ```
-npm run migration:revert
+yarn migration:revert
 ```
 
 # CLI

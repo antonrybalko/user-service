@@ -38,11 +38,17 @@ Container.set('LoginService', Container.get(LoginService));
 
 Container.set(StorageService, Container.get(StorageService));
 
-Container.set(RegistrationRepositoryInterfaceToken, Container.get(RegistrationRepository));
+Container.set(
+  RegistrationRepositoryInterfaceToken,
+  Container.get(RegistrationRepository),
+);
 Container.set('RegistrationService', Container.get(RegistrationService));
 
 Container.set(UserRepositoryInterfaceToken, Container.get(UserRepository));
 Container.set('UserService', Container.get(UserService));
 
-Container.set(OrganizationRepositoryInterfaceToken, Container.get(OrganizationRepository));
+Container.set(
+  OrganizationRepositoryInterfaceToken,
+  Container.get(OrganizationRepository),
+);
 Container.set('OrganizationService', Container.get(OrganizationService));

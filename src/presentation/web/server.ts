@@ -19,7 +19,9 @@ const jsonValidatorMiddleware = Container.get(JsonValidatorMiddleware);
 
 server.use(express.json());
 // JSON error handler must come immediately after express.json()
-server.use(jsonValidatorMiddleware.handleJsonError.bind(jsonValidatorMiddleware));
+server.use(
+  jsonValidatorMiddleware.handleJsonError.bind(jsonValidatorMiddleware),
+);
 server.use(cors());
 server.use(morgan('tiny'));
 server.use(router);

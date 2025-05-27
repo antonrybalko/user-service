@@ -4,15 +4,16 @@ FROM node:20-bullseye
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Clear npm cache to avoid any caching issues
-RUN npm cache clean --force
+# Enable yarn and clear cache
+RUN corepack enable
+RUN yarn cache clean
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock* ./
 
 # Install all dependencies (including 'devDependencies' for development tools like nodemon)
-RUN npm install -g typescript
-RUN npm install
+RUN yarn global add typescript
+RUN yarn install
 
 # Copy the rest of your application's source code
 COPY . .

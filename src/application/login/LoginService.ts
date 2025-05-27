@@ -7,7 +7,11 @@ import { TokenServiceInterface } from 'application/shared/port/TokenServiceInter
 import BaseUseCaseService from 'application/shared/BaseUseCaseService';
 import { LoginRepositoryInterface } from './port/LoginRepositoryInterface';
 import { LoginDto } from './dto/LoginDto';
-import { LoginRepositoryInterfaceToken, PasswordServiceInterfaceToken, TokenServiceInterfaceToken } from 'di/tokens';
+import {
+  LoginRepositoryInterfaceToken,
+  PasswordServiceInterfaceToken,
+  TokenServiceInterfaceToken,
+} from 'di/tokens';
 
 @Service()
 export class LoginService extends BaseUseCaseService {

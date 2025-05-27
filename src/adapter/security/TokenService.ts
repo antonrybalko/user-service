@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { isUUID } from 'class-validator';
 import { Service } from 'typedi';
 import { User } from 'entity/User';
@@ -12,16 +12,33 @@ export class TokenService implements TokenServiceInterface {
       guid: user.guid,
       username: user.username,
     };
-    return jwt.sign(payload, process.env.JWT_SECRET as string, {
-      expiresIn: process.env.JWT_EXPIRES_IN as string,
-    });
+    
+    const jwtSecret = process.env.JWT_SECRET;
+    const jwtExpiresIn = process.env.JWT_EXPIRES_IN;
+    
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
+    
+    if (!jwtExpiresIn) {
+      throw new Error('JWT_EXPIRES_IN environment variable is not set');
+    }
+    
+    const options: SignOptions = {
+      expiresIn: Number(jwtExpiresIn),
+    };
+    
+    return jwt.sign(payload, jwtSecret, options);
   }
 
   verifyToken(token: string): TokenPayload {
-    const payload = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string,
-    ) as TokenPayload;
+    const jwtSecret = process.env.JWT_SECRET;
+    
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
+    
+    const payload = jwt.verify(token, jwtSecret) as TokenPayload;
 
     if (!payload.guid || !payload.username) {
       throw new Error('Invalid token payload');

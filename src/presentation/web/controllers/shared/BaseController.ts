@@ -8,7 +8,11 @@ import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { TokenPayload } from 'entity/TokenPayload';
 import { RequestInterface } from 'presentation/web/middleware/RequestInterface';
-import { LoggerInterfaceToken, ValidatorInterfaceToken, SanitizerInterfaceToken } from 'di/tokens';
+import {
+  LoggerInterfaceToken,
+  ValidatorInterfaceToken,
+  SanitizerInterfaceToken,
+} from 'di/tokens';
 
 @Service()
 class BaseController {

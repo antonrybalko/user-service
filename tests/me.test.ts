@@ -87,7 +87,7 @@ describe('GET /v1/me', () => {
       username: 'invalidusername',
     };
     const invalidToken = jwt.sign(payload, process.env.JWT_SECRET as string, {
-      expiresIn: process.env.JWT_EXPIRES_IN as string,
+      expiresIn: Number(process.env.JWT_EXPIRES_IN),
     });
 
     await request(app)
@@ -101,7 +101,7 @@ describe('GET /v1/me', () => {
       username: 'testusername',
     };
     const invalidToken = jwt.sign(payload, process.env.JWT_SECRET as string, {
-      expiresIn: process.env.JWT_EXPIRES_IN as string,
+      expiresIn: Number(process.env.JWT_EXPIRES_IN),
     });
 
     await request(app)

@@ -1,12 +1,12 @@
 #!/bin/sh
 
-npm install -g typescript
-npm install
+yarn global add typescript
+yarn install
 
 # Run migrations
 echo "Running migrations..."
-npm run migration:run:dev
+yarn migration:run:dev
 
 # Start the application
 echo "Starting the application..."
-npm run dev
+yarn dev

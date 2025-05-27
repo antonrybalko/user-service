@@ -24,7 +24,7 @@ export const AppDataSource = new DataSource({
     UserImageEntity,
     OrganizationImageEntity,
   ],
-  migrations: ['dist/src/infrastructure/persistence/migration/*.js'],
+  migrations: ['dist/src/adapter/persistence/migration/*.js'],
 });
 
 AppDataSource.initialize()

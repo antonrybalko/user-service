@@ -6,7 +6,10 @@ import { CreateOrganizationDto } from './dto/CreateOrganizationDto';
 import { UpdateOrganizationDto } from './dto/UpdateOrganizationDto';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { UserRepositoryInterface } from '../user/port/UserRepositoryInterface';
-import { UserRepositoryInterfaceToken, OrganizationRepositoryInterfaceToken } from 'di/tokens';
+import {
+  UserRepositoryInterfaceToken,
+  OrganizationRepositoryInterfaceToken,
+} from 'di/tokens';
 
 @Service()
 export class OrganizationService extends BaseUseCaseService {

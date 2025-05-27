@@ -11,12 +11,12 @@ import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { User } from 'entity/User';
 import { UserAndPassword } from 'entity/UserAndPassword';
 import { NotFoundException } from 'shared/exception/NotFoundException';
-import { 
-  LoginRepositoryInterfaceToken, 
-  PasswordServiceInterfaceToken, 
-  TokenServiceInterfaceToken, 
-  ValidatorInterfaceToken, 
-  SanitizerInterfaceToken 
+import {
+  LoginRepositoryInterfaceToken,
+  PasswordServiceInterfaceToken,
+  TokenServiceInterfaceToken,
+  ValidatorInterfaceToken,
+  SanitizerInterfaceToken,
 } from 'di/tokens';
 
 describe('LoginService', () => {

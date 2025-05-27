@@ -5,16 +5,16 @@
   "author": "Anton Rybalko",
   "license": "UNLICENSED",
   "private": true,
-  "main": "interface/web/serverListener.js",
+  "main": "presentation/web/serverListener.js",
   "scripts": {
     "build": "tsc --build",
-    "dev": "nodemon --config nodemon.json src/interface/web/serverListener.ts",
-    "cli": "ts-node src/interface/cli/cli.ts",
+    "dev": "nodemon --config nodemon.json src/presentation/web/serverListener.ts",
+    "cli": "ts-node src/presentation/cli/cli.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:run": "rm -rf dist/src/infrastructure/persistence/migration/* && npm run build && npm run typeorm migration:run -- -d src/infrastructure/persistence/data-source.ts",
-    "migration:run:dev": "rm -rf dist/src/infrastructure/persistence/migration/* && npm run build && NODE_ENV=development npm run typeorm migration:run -- -d src/infrastructure/persistence/data-source.ts",
-    "migration:revert": "npm run build && npm run typeorm migration:revert -- -d src/infrastructure/persistence/data-source.ts",
-    "migration:revert:dev": "npm run build && NODE_ENV=development npm run typeorm migration:revert -- -d src/infrastructure/persistence/data-source.ts",
+    "migration:run": "rm -rf dist/src/adapter/persistence/migration/* && yarn build && yarn typeorm migration:run -- -d src/adapter/persistence/data-source.ts",
+    "migration:run:dev": "rm -rf dist/src/adapter/persistence/migration/* && yarn build && NODE_ENV=development yarn typeorm migration:run -- -d src/adapter/persistence/data-source.ts",
+    "migration:revert": "yarn build && yarn typeorm migration:revert -- -d src/adapter/persistence/data-source.ts",
+    "migration:revert:dev": "yarn build && NODE_ENV=development yarn typeorm migration:revert -- -d src/adapter/persistence/data-source.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "test": "jest"
@@ -68,5 +68,6 @@
     "tslog": "^4.9.2",
     "typedi": "^0.10.0",
     "typeorm": "^0.3.17"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

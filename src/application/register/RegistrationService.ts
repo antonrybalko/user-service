@@ -5,7 +5,10 @@ import { User } from 'entity/User';
 import { PasswordServiceInterface } from 'application/shared/port/PasswordServiceInterface';
 import { RegisterDto } from './dto/RegisterDto';
 import BaseUseCaseService from 'application/shared/BaseUseCaseService';
-import { RegistrationRepositoryInterfaceToken, PasswordServiceInterfaceToken } from 'di/tokens';
+import {
+  RegistrationRepositoryInterfaceToken,
+  PasswordServiceInterfaceToken,
+} from 'di/tokens';
 
 @Service()
 export class RegistrationService extends BaseUseCaseService {
