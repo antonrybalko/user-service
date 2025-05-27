@@ -4,7 +4,7 @@
 output_file="sources-all.txt"
 dir_structure_file="sources-tree.txt"
 file_masks=(".ts") # File extensions to include (".ts" ".json" ".js" ".html" ".css")
-ignore_dirs=("node_modules" "dist") # Directories to ignore
+ignore_dirs=("node_modules" "dist" "coverage") # Directories to ignore
 
 # Clear the output file if it already exists
 > "$output_file"
@@ -51,4 +51,4 @@ concat_files "."
 echo "Concatenation complete. Output in $output_file"
 echo "Directory structure generated in $dir_structure_file"
 
-tree -I "node_modules|dist" > "$dir_structure_file"
+tree -I "node_modules|dist|coverage" > "$dir_structure_file"
