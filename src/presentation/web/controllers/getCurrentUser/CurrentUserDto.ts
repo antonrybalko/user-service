@@ -1,6 +1,6 @@
-import { Organization, OrganizationStatus } from 'domain/entity/Organization';
-import { UserStatus } from 'domain/entity/User';
-import { UserImage } from 'domain/entity/UserImage';
+import { Organization, OrganizationStatus } from 'entity/Organization';
+import { UserStatus } from 'entity/User';
+import { UserImage } from 'entity/UserImage';
 
 class OrganizationShortDto {
   guid: string;

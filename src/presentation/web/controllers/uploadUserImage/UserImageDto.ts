@@ -1,3 +1,3 @@
-import { UserImage } from 'domain/entity/UserImage';
+import { UserImage } from 'entity/UserImage';
 
 export type UserImageDto = UserImage;

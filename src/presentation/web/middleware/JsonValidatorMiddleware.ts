@@ -1,6 +1,6 @@
 import { Inject, Service } from 'typedi';
 import { NextFunction, Request, Response } from 'express';
-import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { LoggerInterface } from 'shared/port/LoggerInterface';
 import { LoggerInterfaceToken } from 'di/tokens';
 
 @Service()

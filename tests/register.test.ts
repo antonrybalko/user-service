@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from 'presentation/web/server';
-import { AppDataSource } from 'infrastructure/persistence/data-source';
-import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
+import { AppDataSource } from 'adapter/persistence/data-source';
+import { UserEntity } from 'adapter/persistence/entity/UserEntity';
 import { faker } from '@faker-js/faker';
 import { createUser } from './factories/userFactory';
 import { Sanitizer } from 'class-sanitizer';

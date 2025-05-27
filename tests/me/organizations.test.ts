@@ -1,8 +1,8 @@
 import request from 'supertest';
 import app from 'presentation/web/server';
-import { AppDataSource } from 'infrastructure/persistence/data-source';
-import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
-import { OrganizationEntity } from 'infrastructure/persistence/entity/OrganizationEntity';
+import { AppDataSource } from 'adapter/persistence/data-source';
+import { UserEntity } from 'adapter/persistence/entity/UserEntity';
+import { OrganizationEntity } from 'adapter/persistence/entity/OrganizationEntity';
 import { createUserAndToken } from '../factories/tokenFactory';
 import { createOrganization } from '../factories/organizationFactory';
 import { Sanitizer } from 'class-sanitizer';

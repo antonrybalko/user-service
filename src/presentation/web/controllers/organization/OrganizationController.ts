@@ -1,8 +1,8 @@
 import { Response } from 'express';
 import { Service, Inject } from 'typedi';
-import { OrganizationService } from 'application/usecase/organization/OrganizationService';
-import { CreateOrganizationDto } from 'application/usecase/organization/CreateOrganizationDto';
-import { UpdateOrganizationDto } from 'application/usecase/organization/UpdateOrganizationDto';
+import { OrganizationService } from 'application/organization/OrganizationService';
+import { CreateOrganizationDto } from 'application/organization/dto/CreateOrganizationDto';
+import { UpdateOrganizationDto } from 'application/organization/dto/UpdateOrganizationDto';
 import BaseController from '../shared/BaseController';
 import { RequestInterface } from 'presentation/web/middleware/RequestInterface';
 import { OrganizationDto } from './OrganizationDto';

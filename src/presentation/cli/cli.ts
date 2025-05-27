@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import '../../di/diconfig';
 import Container from 'typedi';
 import { Command } from 'commander';
-import { AppDataSource } from 'infrastructure/persistence/data-source';
+import { AppDataSource } from 'adapter/persistence/data-source';
 import RegisterCommand from './commands/user/RegisterCommand';
 import ListUsersCommand from './commands/user/ListUsersCommand';
 import UpdateUserCommand from './commands/user/UpdateUserCommand';

@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { Service, Inject } from 'typedi';
-import { UserService } from 'application/usecase/user/UserService';
+import { UserService } from 'application/user/UserService';
 import BaseCommand from '../BaseCommand';
 
 @Service()

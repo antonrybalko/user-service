@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Inject, Service } from 'typedi';
-import { LoginService } from 'application/usecase/login/LoginService';
-import { LoginDto } from 'application/usecase/login/LoginDto';
+import { LoginService } from 'application/login/LoginService';
+import { LoginDto } from 'application/login/dto/LoginDto';
 import BaseController from 'presentation/web/controllers/shared/BaseController';
 import TokenDto from './TokenDto';
 

@@ -1,10 +1,10 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import app from 'presentation/web/server';
-import { AppDataSource } from 'infrastructure/persistence/data-source';
-import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
-import { TokenServiceInterface } from 'application/services/TokenServiceInterface';
-import { TokenService } from 'infrastructure/security/TokenService';
+import { AppDataSource } from 'adapter/persistence/data-source';
+import { UserEntity } from 'adapter/persistence/entity/UserEntity';
+import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
+import { TokenService } from 'adapter/security/TokenService';
 
 describe('GET /v1/me', () => {
   let user: UserEntity;

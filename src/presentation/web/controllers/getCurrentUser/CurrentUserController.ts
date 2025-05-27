@@ -2,10 +2,10 @@ import { Response } from 'express';
 import { Service, Inject } from 'typedi';
 import { RequestInterface } from '../../middleware/RequestInterface';
 import BaseController from '../shared/BaseController';
-import { UserService } from 'application/usecase/user/UserService';
+import { UserService } from 'application/user/UserService';
 import { CurrentUserDto } from './CurrentUserDto';
-import { OrganizationService } from 'application/usecase/organization/OrganizationService';
-import { UserImageService } from 'application/usecase/user/UserImageService';
+import { OrganizationService } from 'application/organization/OrganizationService';
+import { UserImageService } from 'application/user/UserImageService';
 
 @Service()
 export default class CurrentUserController extends BaseController {

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, raw } from 'express';
 import { Inject, Service } from 'typedi';
-import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { LoggerInterface } from 'shared/port/LoggerInterface';
 import { LoggerInterfaceToken } from 'di/tokens';
 
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 2MB in bytes

@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { Inject, Service } from 'typedi';
-import { RegistrationService } from 'application/usecase/register/RegistrationService';
-import { RegisterDto } from 'application/usecase/register/RegisterDto';
+import { RegistrationService } from 'application/register/RegistrationService';
+import { RegisterDto } from 'application/register/dto/RegisterDto';
 import BaseCommand from '../BaseCommand';
 
 @Service()

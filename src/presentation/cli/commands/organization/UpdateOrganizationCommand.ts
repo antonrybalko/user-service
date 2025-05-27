@@ -1,8 +1,8 @@
 import { Command } from 'commander';
 import { Inject, Service } from 'typedi';
 import BaseCommand from '../BaseCommand';
-import { OrganizationService } from 'application/usecase/organization/OrganizationService';
-import { UpdateOrganizationDto } from 'application/usecase/organization/UpdateOrganizationDto';
+import { OrganizationService } from 'application/organization/OrganizationService';
+import { UpdateOrganizationDto } from 'application/organization/dto/UpdateOrganizationDto';
 
 @Service()
 export default class UpdateOrganizationCommand extends BaseCommand {

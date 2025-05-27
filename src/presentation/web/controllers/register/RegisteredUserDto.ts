@@ -1,4 +1,4 @@
-import { User, UserStatus } from 'domain/entity/User';
+import { User, UserStatus } from 'entity/User';
 
 export class RegisteredUserDto {
   constructor(

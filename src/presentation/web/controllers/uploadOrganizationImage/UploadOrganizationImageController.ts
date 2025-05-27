@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { Service, Inject } from 'typedi';
 import BaseController from '../shared/BaseController';
-import { OrganizationImageService } from 'application/usecase/organization/OrganizationImageService';
+import { UploadOrganizationImageService } from 'application/updateOrganizationImage/UploadOrganizationImageService';
 import { OrganizationImageDto } from './OrganizationImageDto';
 
 @Service()
 export default class UploadOrganizationImageController extends BaseController {
   @Inject()
-  private organizationImageService: OrganizationImageService;
+  private organizationImageService: UploadOrganizationImageService;
 
   public async uploadOrganizationImage(
     req: Request,

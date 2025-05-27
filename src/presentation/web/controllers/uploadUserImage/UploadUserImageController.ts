@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { Service, Inject } from 'typedi';
 import BaseController from '../shared/BaseController';
-import { UploadUserImageService } from 'application/usecase/uploadUserImage/UploadUserImageService';
 import { UserImageDto } from './UserImageDto';
+import { UploadUserImageService } from 'application/uploadUserImage/UploadUserImageService';
 
 @Service()
 export default class UploadUserImageController extends BaseController {

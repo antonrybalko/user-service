@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
+import { UserEntity } from 'adapter/persistence/entity/UserEntity';
 import {
   generatePassword,
   generatePhoneNumber,

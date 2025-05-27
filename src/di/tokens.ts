@@ -1,13 +1,13 @@
 import { Token } from 'typedi';
-import { UserRepositoryInterface } from 'application/usecase/user/UserRepositoryInterface';
-import { OrganizationRepositoryInterface } from 'application/usecase/organization/OrganizationRepositoryInterface';
-import { RegistrationRepositoryInterface } from 'application/usecase/register/RegistrationRepositoryInterface';
-import { LoginRepositoryInterface } from 'application/usecase/login/LoginRepositoryInterface';
-import { PasswordServiceInterface } from 'application/services/PasswordServiceInterface';
-import { TokenServiceInterface } from 'application/services/TokenServiceInterface';
-import { LoggerInterface } from 'shared/interface/LoggerInterface';
-import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
-import { SanitizerInterface } from 'shared/interface/SanitizerInterface';
+import { UserRepositoryInterface } from 'application/user/port/UserRepositoryInterface';
+import { OrganizationRepositoryInterface } from 'application/organization/port/OrganizationRepositoryInterface';
+import { RegistrationRepositoryInterface } from 'application/register/port/RegistrationRepositoryInterface';
+import { LoginRepositoryInterface } from 'application/login/port/LoginRepositoryInterface';
+import { PasswordServiceInterface } from 'application/shared/port/PasswordServiceInterface';
+import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
+import { LoggerInterface } from 'shared/port/LoggerInterface';
+import { ValidatorInterface } from 'shared/port/ValidatorInterface';
+import { SanitizerInterface } from 'shared/port/SanitizerInterface';
 
 // Repository Tokens
 export const UserRepositoryInterfaceToken = new Token<UserRepositoryInterface>('UserRepositoryInterface');
@@ -18,6 +18,7 @@ export const LoginRepositoryInterfaceToken = new Token<LoginRepositoryInterface>
 // Service Tokens
 export const PasswordServiceInterfaceToken = new Token<PasswordServiceInterface>('PasswordServiceInterface');
 export const TokenServiceInterfaceToken = new Token<TokenServiceInterface>('TokenServiceInterface');
+export const CloudStorageInterfaceToken = new Token<string>('CloudStorageInterface');
 
 // Shared Service Tokens
 export const LoggerInterfaceToken = new Token<LoggerInterface>('LoggerInterface');

@@ -1,4 +1,4 @@
-import { OrganizationEntity } from 'infrastructure/persistence/entity/OrganizationEntity';
+import { OrganizationEntity } from 'adapter/persistence/entity/OrganizationEntity';
 import { faker } from '@faker-js/faker';
 import { generatePhoneNumber } from './helpers';
 

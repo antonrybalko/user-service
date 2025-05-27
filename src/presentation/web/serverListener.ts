@@ -1,6 +1,6 @@
 import Container from 'typedi';
 import server from './server';
-import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { LoggerInterface } from 'shared/port/LoggerInterface';
 import { LoggerInterfaceToken } from 'di/tokens';
 
 const logger: LoggerInterface = Container.get(LoggerInterfaceToken);

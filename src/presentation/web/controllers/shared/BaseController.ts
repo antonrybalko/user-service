@@ -1,12 +1,12 @@
 import { Inject, Service } from 'typedi';
 import { Response } from 'express';
-import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { LoggerInterface } from 'shared/port/LoggerInterface';
 import { ConflictException } from 'shared/exception/ConflictException';
-import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
-import { SanitizerInterface } from 'shared/interface/SanitizerInterface';
+import { ValidatorInterface } from 'shared/port/ValidatorInterface';
+import { SanitizerInterface } from 'shared/port/SanitizerInterface';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { NotFoundException } from 'shared/exception/NotFoundException';
-import { TokenPayload } from 'domain/valueObject/TokenPayload';
+import { TokenPayload } from 'entity/TokenPayload';
 import { RequestInterface } from 'presentation/web/middleware/RequestInterface';
 import { LoggerInterfaceToken, ValidatorInterfaceToken, SanitizerInterfaceToken } from 'di/tokens';
 

@@ -1,7 +1,7 @@
 import { Inject } from 'typedi';
 import { ConflictException } from 'shared/exception/ConflictException';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
-import { ValidatorInterface } from 'shared/interface/ValidatorInterface';
+import { ValidatorInterface } from 'shared/port/ValidatorInterface';
 import { Command } from 'commander';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import { ValidatorInterfaceToken } from 'di/tokens';

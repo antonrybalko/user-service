@@ -1,9 +1,9 @@
 import request from 'supertest';
 import app from 'presentation/web/server';
-import { AppDataSource } from 'infrastructure/persistence/data-source';
-import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
+import { AppDataSource } from 'adapter/persistence/data-source';
+import { UserEntity } from 'adapter/persistence/entity/UserEntity';
 import { createUser } from './factories/userFactory';
-import { PasswordService } from 'infrastructure/security/PasswordService';
+import { PasswordService } from 'adapter/security/PasswordService';
 
 let usersData: UserEntity[] = [];
 

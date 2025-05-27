@@ -1,3 +1,3 @@
-import { OrganizationImage } from 'domain/entity/OrganizationImage';
+import { OrganizationImage } from 'entity/OrganizationImage';
 
 export type OrganizationImageDto = OrganizationImage;

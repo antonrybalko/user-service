@@ -1,18 +1,18 @@
 import { Container } from 'typedi';
-import { LoggerService } from 'shared/service/LoggerService';
-import { ValidatorService } from 'shared/service/ValidatorService';
-import { SanitizerService } from 'shared/service/SanitizerService';
-import { RegistrationRepository } from 'infrastructure/persistence/repository/RegistrationRepository';
-import { RegistrationService } from 'application/usecase/register/RegistrationService';
-import { PasswordService } from 'infrastructure/security/PasswordService';
-import { TokenService } from 'infrastructure/security/TokenService';
-import { LoginRepository } from 'infrastructure/persistence/repository/LoginRepository';
-import { LoginService } from 'application/usecase/login/LoginService';
-import { UserService } from 'application/usecase/user/UserService';
-import { UserRepository } from 'infrastructure/persistence/repository/UserRepository';
-import { OrganizationRepository } from 'infrastructure/persistence/repository/OrganizationRepository';
-import { OrganizationService } from 'application/usecase/organization/OrganizationService';
-import { StorageService } from 'infrastructure/cloud/StorageService';
+import { LoggerService } from 'adapter/observability/LoggerService';
+import { ValidatorService } from 'adapter/validation/ValidatorService';
+import { SanitizerService } from 'adapter/validation/SanitizerService';
+import { RegistrationRepository } from 'adapter/persistence/repository/RegistrationRepository';
+import { RegistrationService } from 'application/register/RegistrationService';
+import { PasswordService } from 'adapter/security/PasswordService';
+import { TokenService } from 'adapter/security/TokenService';
+import { LoginRepository } from 'adapter/persistence/repository/LoginRepository';
+import { LoginService } from 'application/login/LoginService';
+import { UserService } from 'application/user/UserService';
+import { UserRepository } from 'adapter/persistence/repository/UserRepository';
+import { OrganizationRepository } from 'adapter/persistence/repository/OrganizationRepository';
+import { OrganizationService } from 'application/organization/OrganizationService';
+import { StorageService } from 'adapter/cloud/StorageService';
 import {
   PasswordServiceInterfaceToken,
   TokenServiceInterfaceToken,
@@ -23,6 +23,7 @@ import {
   RegistrationRepositoryInterfaceToken,
   UserRepositoryInterfaceToken,
   OrganizationRepositoryInterfaceToken,
+  CloudStorageInterfaceToken,
 } from 'di/tokens';
 
 Container.set(PasswordServiceInterfaceToken, Container.get(PasswordService));
@@ -30,6 +31,7 @@ Container.set(TokenServiceInterfaceToken, Container.get(TokenService));
 Container.set(LoggerServiceToken, Container.get(LoggerService));
 Container.set(ValidatorServiceToken, Container.get(ValidatorService));
 Container.set(SanitizerServiceToken, Container.get(SanitizerService));
+Container.set(CloudStorageInterfaceToken, Container.get(StorageService));
 
 Container.set(LoginRepositoryInterfaceToken, Container.get(LoginRepository));
 Container.set('LoginService', Container.get(LoginService));

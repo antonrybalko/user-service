@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import '../../di/diconfig';
 import { router } from './routes';
-import { LoggerInterface } from 'shared/interface/LoggerInterface';
+import { LoggerInterface } from 'shared/port/LoggerInterface';
 import { JsonValidatorMiddleware } from './middleware/JsonValidatorMiddleware';
 import { LoggerInterfaceToken } from 'di/tokens';
 

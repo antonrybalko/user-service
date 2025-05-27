@@ -1,6 +1,6 @@
-import { AppDataSource } from 'infrastructure/persistence/data-source';
-import { UserEntity } from 'infrastructure/persistence/entity/UserEntity';
-import { TokenService } from 'infrastructure/security/TokenService';
+import { AppDataSource } from 'adapter/persistence/data-source';
+import { UserEntity } from 'adapter/persistence/entity/UserEntity';
+import { TokenService } from 'adapter/security/TokenService';
 import { createUser } from './userFactory';
 
 export const createUserAndToken = async (

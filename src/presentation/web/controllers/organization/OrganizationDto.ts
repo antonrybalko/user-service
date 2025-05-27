@@ -1,4 +1,4 @@
-import { Organization, OrganizationStatus } from 'domain/entity/Organization';
+import { Organization, OrganizationStatus } from 'entity/Organization';
 
 export class OrganizationDto {
   constructor(
