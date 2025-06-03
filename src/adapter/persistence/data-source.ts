@@ -6,6 +6,7 @@ import { OrganizationEntity } from './entity/OrganizationEntity';
 import { OrganizationMemberEntity } from './entity/OrganizationMemberEntity';
 import { UserImageEntity } from './entity/UserImageEntity';
 import { OrganizationImageEntity } from './entity/OrganizationImageEntity';
+import { RefreshTokenEntity } from './entity/RefreshTokenEntity';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ export const AppDataSource = new DataSource({
     OrganizationMemberEntity,
     UserImageEntity,
     OrganizationImageEntity,
+    RefreshTokenEntity,
   ],
   migrations: ['dist/src/adapter/persistence/migration/*.js'],
 });

@@ -4,9 +4,16 @@ import { Service } from 'typedi';
 import { User } from 'entity/User';
 import { TokenPayload } from 'entity/TokenPayload';
 import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
+import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 @Service()
 export class TokenService implements TokenServiceInterface {
+  // Access token expiration: 30 minutes (1800 seconds)
+  private readonly ACCESS_TOKEN_EXPIRES_IN = 1800;
+  // Refresh token expiration: 30 days (in seconds)
+  private readonly REFRESH_TOKEN_EXPIRES_IN = 30 * 24 * 60 * 60;
+
   generateToken(user: User): string {
     const payload: TokenPayload = {
       guid: user.guid,
@@ -14,18 +21,13 @@ export class TokenService implements TokenServiceInterface {
     };
     
     const jwtSecret = process.env.JWT_SECRET;
-    const jwtExpiresIn = process.env.JWT_EXPIRES_IN;
     
     if (!jwtSecret) {
       throw new Error('JWT_SECRET environment variable is not set');
     }
     
-    if (!jwtExpiresIn) {
-      throw new Error('JWT_EXPIRES_IN environment variable is not set');
-    }
-    
     const options: SignOptions = {
-      expiresIn: Number(jwtExpiresIn),
+      expiresIn: this.ACCESS_TOKEN_EXPIRES_IN,
     };
     
     return jwt.sign(payload, jwtSecret, options);
@@ -49,5 +51,87 @@ export class TokenService implements TokenServiceInterface {
     }
 
     return payload;
+  }
+
+  generateRefreshToken(userGuid: string, family?: string): string {
+    const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
+    
+    if (!jwtRefreshSecret) {
+      throw new Error('JWT_REFRESH_SECRET environment variable is not set');
+    }
+
+    if (!isUUID(userGuid)) {
+      throw new Error('Invalid user GUID');
+    }
+
+    // Generate a secure random family ID if not provided
+    const tokenFamily = family || uuidv4();
+    
+    // Create a secure refresh token with userGuid and family
+    const payload = {
+      userGuid,
+      family: tokenFamily,
+      // Add some randomness to make each token unique
+      random: crypto.randomBytes(16).toString('hex')
+    };
+    
+    const options: SignOptions = {
+      expiresIn: this.REFRESH_TOKEN_EXPIRES_IN,
+    };
+    
+    return jwt.sign(payload, jwtRefreshSecret, options);
+  }
+
+  verifyRefreshToken(token: string): { userGuid: string, family: string } {
+    const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
+    
+    if (!jwtRefreshSecret) {
+      throw new Error('JWT_REFRESH_SECRET environment variable is not set');
+    }
+    
+    try {
+      const payload = jwt.verify(token, jwtRefreshSecret) as any;
+
+      if (!payload.userGuid || !payload.family) {
+        throw new Error('Invalid refresh token payload');
+      }
+
+      if (!isUUID(payload.userGuid)) {
+        throw new Error('Invalid user GUID in refresh token');
+      }
+
+      return {
+        userGuid: payload.userGuid,
+        family: payload.family
+      };
+    } catch (error) {
+      if (error instanceof jwt.TokenExpiredError) {
+        throw new Error('Refresh token expired');
+      } else if (error instanceof jwt.JsonWebTokenError) {
+        throw new Error('Invalid refresh token');
+      }
+      throw error;
+    }
+  }
+
+  generateTokenPair(user: User, family?: string): { 
+    accessToken: string, 
+    refreshToken: string, 
+    family: string 
+  } {
+    // Generate a new family ID if not provided
+    const tokenFamily = family || uuidv4();
+    
+    // Generate access token
+    const accessToken = this.generateToken(user);
+    
+    // Generate refresh token with the same family
+    const refreshToken = this.generateRefreshToken(user.guid, tokenFamily);
+    
+    return {
+      accessToken,
+      refreshToken,
+      family: tokenFamily
+    };
   }
 }

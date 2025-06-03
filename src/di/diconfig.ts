@@ -7,7 +7,9 @@ import { RegistrationService } from 'application/register/RegistrationService';
 import { PasswordService } from 'adapter/security/PasswordService';
 import { TokenService } from 'adapter/security/TokenService';
 import { LoginRepository } from 'adapter/persistence/repository/LoginRepository';
+import { RefreshTokenRepository } from 'adapter/persistence/repository/RefreshTokenRepository';
 import { LoginService } from 'application/login/LoginService';
+import { TokenRotationService } from 'application/tokenRotation/TokenRotationService';
 import { UserService } from 'application/user/UserService';
 import { UserRepository } from 'adapter/persistence/repository/UserRepository';
 import { OrganizationRepository } from 'adapter/persistence/repository/OrganizationRepository';
@@ -20,6 +22,7 @@ import {
   ValidatorInterfaceToken as ValidatorServiceToken,
   SanitizerInterfaceToken as SanitizerServiceToken,
   LoginRepositoryInterfaceToken,
+  RefreshTokenRepositoryInterfaceToken,
   RegistrationRepositoryInterfaceToken,
   UserRepositoryInterfaceToken,
   OrganizationRepositoryInterfaceToken,
@@ -34,7 +37,9 @@ Container.set(SanitizerServiceToken, Container.get(SanitizerService));
 Container.set(CloudStorageInterfaceToken, Container.get(StorageService));
 
 Container.set(LoginRepositoryInterfaceToken, Container.get(LoginRepository));
+Container.set(RefreshTokenRepositoryInterfaceToken, Container.get(RefreshTokenRepository));
 Container.set('LoginService', Container.get(LoginService));
+Container.set('TokenRotationService', Container.get(TokenRotationService));
 
 Container.set(StorageService, Container.get(StorageService));
 
