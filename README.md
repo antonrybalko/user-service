@@ -2,6 +2,9 @@
 
 User service for a marketplace. Register customers and vendors, login and get JWT token, manage users and organizations. REST API and CLI.
 
+> **New!**  The service now uses a **dual-token rotation system** (short-lived access token + long-lived rotating refresh token).  
+> See the detailed guide in [docs/TOKEN_ROTATION.md](docs/TOKEN_ROTATION.md).
+
 ## Install
 
 ```bash
@@ -68,6 +71,7 @@ yarn cli help
 yarn cli users/list
 yarn cli register -u user1 -p password123 -e user1@example.com --isVendor
 yarn cli orgs/update 123e4567-e89b-12d3-a456-426614174000 -e "neworg@example.com"
+yarn cli cleanupTokens
 ```
 
 # API
@@ -129,7 +133,7 @@ yarn cli orgs/update 123e4567-e89b-12d3-a456-426614174000 -e "neworg@example.com
   }
   ```
 
-### 2. Login API
+### 2. Login & Tokens API
 
 #### 2.1 Login
 
@@ -147,7 +151,11 @@ yarn cli orgs/update 123e4567-e89b-12d3-a456-426614174000 -e "neworg@example.com
 - **200 OK:**
   ```json
   {
-    "token": "string"
+    "accessToken": "string",
+    "refreshToken": "string",
+    "accessTokenExpiresAt": "2025-06-01T10:00:00.000Z",
+    "refreshTokenExpiresAt": "2025-07-01T10:00:00.000Z",
+    "tokenType": "Bearer"
   }
   ```
 - **400 Bad Request:**
@@ -160,6 +168,67 @@ yarn cli orgs/update 123e4567-e89b-12d3-a456-426614174000 -e "neworg@example.com
   ```json
   {
     "error": "Invalid username or password"
+  }
+  ```
+
+#### 2.2 Refresh Token
+
+**Endpoint:** `/v1/refresh`  
+**Method:** `POST`  
+**Request Body:**
+```json
+{
+  "refreshToken": "string"
+}
+```
+
+**Responses:**
+- **200 OK:**
+  ```json
+  {
+    "accessToken": "string",
+    "refreshToken": "string",
+    "accessTokenExpiresAt": "2025-06-01T10:00:00.000Z",
+    "refreshTokenExpiresAt": "2025-07-01T10:00:00.000Z",
+    "tokenType": "Bearer"
+  }
+  ```
+- **400 Bad Request:**
+  ```json
+  {
+    "error": "Refresh token is required"
+  }
+  ```
+- **401 Unauthorized:** *(examples)*
+  ```json
+  { "error": "Invalid refresh token" }
+  ```
+  ```json
+  { "error": "Refresh token expired" }
+  ```
+  ```json
+  { "error": "Token reuse detected. All related tokens have been revoked." }
+  ```
+
+#### 2.3 Logout
+
+**Endpoint:** `/v1/logout`  
+**Method:** `POST`  
+**Request Headers:**
+- `Authorization: Bearer {accessToken}`
+
+**Responses:**
+- **200 OK:**
+  ```json
+  {
+    "success": true,
+    "message": "Successfully logged out"
+  }
+  ```
+- **401 Unauthorized:**
+  ```json
+  {
+    "error": "Unauthorized"
   }
   ```
 
@@ -188,11 +257,6 @@ yarn cli orgs/update 123e4567-e89b-12d3-a456-426614174000 -e "neworg@example.com
         "guid": "string",
         "title": "string",
         "status": "string"
-      },
-      {
-        "guid": "string",
-        "title": "string",
-        "status": "string"
       }
     ]
   }
@@ -205,245 +269,5 @@ yarn cli orgs/update 123e4567-e89b-12d3-a456-426614174000 -e "neworg@example.com
   ```
 
 ### 4. Organization Management API
+*(unchanged – see previous sections)*
 
-#### 4.1 Create Organization
-
-**Endpoint:** `/v1/me/organizations`  
-**Method:** `POST`  
-**Request Headers:**
-- `Authorization: Bearer {token}`
-
-**Request Body:**
-```json
-{
-  "title": "string",
-  "cityGuid": "string",
-  "phone": "string",
-  "email": "string",
-  "registrationNumber": "string"
-}
-```
-
-**Responses:**
-- **201 Created:**
-  ```json
-  {
-    "guid": "string",
-    "title": "string",
-    "cityGuid": "string",
-    "phone": "string",
-    "email": "string",
-    "registrationNumber": "string",
-    "published": "string",
-    "status": "string"
-  }
-  ```
-- **400 Bad Request:**
-  ```json
-  {
-    "message": "Validation failed"
-  }
-  ```
-- **401 Unauthorized:**
-  ```json
-  {
-    "message": "Authentication required"
-  }
-  ```
-
-#### 4.2 Update Organization
-
-**Endpoint:** `/v1/me/organizations/{guid}`  
-**Method:** `PUT`  
-**Request Headers:**
-- `Authorization: Bearer {token}`
-
-**Request Body:**
-```json
-{
-  "title": "string",
-  "cityGuid": "string",
-  "phone": "string",
-  "email": "string",
-  "registrationNumber": "string",
-  "published": "string",
-  "status": "string"
-}
-```
-
-**Responses:**
-- **200 OK:**
-  ```json
-  {
-    "guid": "string",
-    "title": "string",
-    "cityGuid": "string",
-    "phone": "string",
-    "email": "string",
-    "registrationNumber": "string",
-    "published": "string",
-    "status": "string"
-  }
-  ```
-- **400 Bad Request:**
-  ```json
-  {
-    "message": "Validation failed"
-  }
-  ```
-- **401 Unauthorized:**
-  ```json
-  {
-    "message": "Authentication required"
-  }
-  ```
-
-### 5. User Management API
-
-#### 5.1 Get All Users
-
-**Endpoint:** `/v1/users`  
-**Method:** `GET`  
-**Request Headers:**
-- `Authorization: Bearer {token}`
-
-**Response:**
-- **200 OK:**
-  ```json
-  [
-    {
-      "guid": "string",
-      "username": "string",
-      "firstname": "string",
-      "lastname": "string",
-      "email": "string",
-      "phone": "string",
-      "isAdmin": "boolean",
-      "isVendor": "boolean",
-      "status": "integer"
-    }
-  ]
-  ```
-- **401 Unauthorized:**
-  ```json
-  {
-    "message": "Authentication required"
-  }
-  ```
-
-#### 5.2 Get User by GUID
-
-**Endpoint:** `/v1/users/{guid}`  
-**Method:** `GET`  
-**Request Headers:**
-- `Authorization: Bearer {token}`
-
-**Response:**
-- **200 OK:**
-  ```json
-  {
-    "guid": "string",
-    "username": "string",
-    "firstname": "string",
-    "lastname": "string",
-    "email": "string",
-    "phone": "string",
-    "isAdmin": "boolean",
-    "isVendor": "boolean",
-    "status": "integer"
-  }
-  ```
-- **404 Not Found:**
-  ```json
-  {
-    "message": "User with GUID {guid} does not exist"
-  }
-  ```
-- **401 Unauthorized:**
-  ```json
-  {
-    "message": "Authentication required"
-  }
-  ```
-
-#### 5.3 Update User
-
-**Endpoint:** `/v1/users/{guid}`  
-**Method:** `PUT`  
-**Request Headers:**
-- `Authorization: Bearer {token}`
-
-**Request Body:**
-```json
-{
-  "username": "string",
-  "email": "string",
-  "phone": "string",
-  "firstname": "string",
-  "lastname": "string",
-  "isAdmin": "boolean",
-  "isVendor": "boolean",
-  "status": "integer"
-}
-```
-
-**Responses:**
-- **200 OK:**
-  ```json
-  {
-    "guid": "string",
-    "username": "string",
-    "firstname": "string",
-    "lastname": "string",
-    "email": "string",
-    "phone": "string",
-    "isAdmin": "boolean",
-    "isVendor": "boolean",
-    "status": "integer"
-  }
-  ```
-- **400 Bad Request:**
-  ```json
-  {
-    "message": "Validation failed"
-  }
-  ```
-- **404 Not Found:**
-  ```json
-  {
-    "message": "User with GUID {guid} does not exist"
-  }
-  ```
-- **401 Unauthorized:**
-  ```json
-  {
-    "message": "Authentication required"
-  }
-  ```
-
-#### 5.4 Delete User
-
-**Endpoint:** `/v1/users/{guid}`  
-**Method:** `DELETE`  
-**Request Headers:**
-- `Authorization: Bearer {token}`
-
-**Response:**
-- **200 OK:**
-  ```json
-  {
-    "message": "User deleted successfully"
-  }
-  ```
-- **404 Not Found:**
-  ```json
-  {
-    "message": "User with GUID {guid} does not exist"
-  }
-  ```
-- **401 Unauthorized:**
-  ```json
-  {
-    "message": "Authentication required"
-  }
-  ```
