@@ -7,6 +7,7 @@ import CurrentUserController from './controllers/getCurrentUser/CurrentUserContr
 import { OrganizationController } from './controllers/organization/OrganizationController';
 import UploadUserImageController from './controllers/uploadUserImage/UploadUserImageController';
 import UploadOrganizationImageController from './controllers/uploadOrganizationImage/UploadOrganizationImageController';
+import { RefreshTokenController } from './controllers/refreshToken/RefreshTokenController';
 import { BinaryImageMiddleware } from './middleware/BinaryImageMiddleware';
 import { AuthenticateMiddleware } from './middleware/AuthenticateMiddleware';
 import { EnsureAdminUser } from './middleware/EnsureAdminUser';
@@ -27,10 +28,24 @@ router.post('/login', (request: Request, response: Response) => {
   return loginController.handle(request, response);
 });
 
+router.post('/refresh', (request: Request, response: Response) => {
+  const refreshTokenController = Container.get(RefreshTokenController);
+  return refreshTokenController.refresh(request, response);
+});
+
 const authenticateMiddleware = Container.get(AuthenticateMiddleware);
 const ensureAdminUser = Container.get(EnsureAdminUser);
 const userController = Container.get(UserController);
 const organizationController = Container.get(OrganizationController);
+
+router.post(
+  '/logout',
+  authenticateMiddleware.authenticate.bind(authenticateMiddleware),
+  (request: Request, response: Response) => {
+    const refreshTokenController = Container.get(RefreshTokenController);
+    return refreshTokenController.logout(request, response);
+  },
+);
 
 // Middleware to authenticate and ensure the user is an admin for certain routes
 const authenticateAndAuthorize = [
