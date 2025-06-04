@@ -25,16 +25,16 @@ export class TokenRotationService {
   private userRepository!: UserRepositoryInterface;
 
   /**
-   * Rotate tokens - verify old refresh token, revoke it, and generate new token pair
+   * Rotate tokens - verify refresh token, delete it, and generate new token pair
    * @param refreshTokenString The refresh token to rotate
    * @returns New token pair (access token + refresh token)
    */
   async rotateTokens(refreshTokenString: string): Promise<TokenPair> {
     try {
       // Verify the refresh token signature and expiration
-      const { userGuid, family } = this.tokenService.verifyRefreshToken(refreshTokenString);
+      const { userGuid } = this.tokenService.verifyRefreshToken(refreshTokenString);
       
-      // Check if token exists in database and is valid
+      // Check if token exists in database
       const refreshToken = await this.refreshTokenRepository.findByToken(refreshTokenString);
       
       if (!refreshToken) {
@@ -42,14 +42,6 @@ export class TokenRotationService {
       }
       
       if (!refreshToken.isValid()) {
-        // Check for token reuse (if token is already revoked but not expired)
-        if (refreshToken.isRevoked) {
-          // Security breach: Revoke all tokens in the family
-          await this.refreshTokenRepository.revokeTokenFamily(family);
-          throw new UnauthorizedException('Token reuse detected. All related tokens have been revoked.');
-        }
-        
-        // Token is expired
         throw new UnauthorizedException('Refresh token expired');
       }
       
@@ -64,11 +56,11 @@ export class TokenRotationService {
         throw new UnauthorizedException('User is not active');
       }
       
-      // Revoke the current refresh token
-      await this.refreshTokenRepository.revokeToken(refreshToken.id);
+      // Delete the current refresh token
+      await this.refreshTokenRepository.deleteByToken(refreshTokenString);
       
-      // Generate new token pair with same family
-      const tokenPair = this.tokenService.generateTokenPair(user, family);
+      // Generate new token pair
+      const tokenPair = this.tokenService.generateTokenPair(user);
       
       // Calculate expiration dates
       const now = new Date();
@@ -81,9 +73,7 @@ export class TokenRotationService {
         tokenPair.refreshToken,
         userGuid,
         refreshTokenExpiresAt,
-        now,
-        false,
-        tokenPair.family
+        now
       );
       
       await this.refreshTokenRepository.save(newRefreshToken);
@@ -93,8 +83,7 @@ export class TokenRotationService {
         tokenPair.accessToken,
         tokenPair.refreshToken,
         accessTokenExpiresAt,
-        refreshTokenExpiresAt,
-        tokenPair.family
+        refreshTokenExpiresAt
       );
     } catch (error) {
       if (error instanceof UnauthorizedException || error instanceof NotFoundException) {
@@ -110,10 +99,11 @@ export class TokenRotationService {
   }
 
   /**
-   * Revoke all refresh tokens for a user (for logout)
+   * Delete all refresh tokens for a user (for logout)
    * @param userGuid The user's GUID
+   * @returns Number of tokens deleted
    */
-  async revokeAllUserTokens(userGuid: string): Promise<void> {
+  async revokeAllUserTokens(userGuid: string): Promise<number> {
     try {
       // Check if user exists
       const userExists = await this.userRepository.checkIfUserExists(userGuid);
@@ -122,14 +112,14 @@ export class TokenRotationService {
         throw new NotFoundException('User not found');
       }
       
-      // Revoke all user's refresh tokens
-      await this.refreshTokenRepository.revokeAllUserTokens(userGuid);
+      // Delete all user's refresh tokens
+      return await this.refreshTokenRepository.deleteByUserGuid(userGuid);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
       }
       
-      throw new Error(`Failed to revoke user tokens: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to delete user tokens: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 

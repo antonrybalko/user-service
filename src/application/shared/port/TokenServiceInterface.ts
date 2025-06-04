@@ -22,27 +22,24 @@ export interface TokenServiceInterface {
   /**
    * Generate a refresh token for a user
    * @param userGuid User GUID to generate token for
-   * @param family Optional family identifier for token rotation tracking
    * @returns Refresh token string
    */
-  generateRefreshToken(userGuid: string, family?: string): string;
+  generateRefreshToken(userGuid: string): string;
   
   /**
    * Verify a refresh token
    * @param token Refresh token to verify
-   * @returns Object containing userGuid and family if valid
+   * @returns Object containing userGuid if valid
    */
-  verifyRefreshToken(token: string): { userGuid: string, family: string };
+  verifyRefreshToken(token: string): { userGuid: string };
   
   /**
    * Generate both access and refresh tokens
    * @param user User to generate tokens for
-   * @param family Optional family identifier for token rotation tracking
-   * @returns Object containing both tokens and family identifier
+   * @returns Object containing both tokens
    */
-  generateTokenPair(user: User, family?: string): { 
+  generateTokenPair(user: User): { 
     accessToken: string, 
-    refreshToken: string, 
-    family: string 
+    refreshToken: string
   };
 }

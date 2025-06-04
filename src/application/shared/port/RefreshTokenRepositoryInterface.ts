@@ -19,13 +19,6 @@ export interface RefreshTokenRepositoryInterface {
   findByToken(token: string): Promise<RefreshToken | null>;
 
   /**
-   * Find all refresh tokens in a specific family
-   * @param family The family identifier
-   * @returns Array of refresh tokens in the family
-   */
-  findByFamily(family: string): Promise<RefreshToken[]>;
-
-  /**
    * Find all refresh tokens for a specific user
    * @param userGuid The user's GUID
    * @returns Array of user's refresh tokens
@@ -33,22 +26,18 @@ export interface RefreshTokenRepositoryInterface {
   findByUserGuid(userGuid: string): Promise<RefreshToken[]>;
 
   /**
-   * Revoke a specific refresh token
-   * @param tokenId The ID of the token to revoke
+   * Delete a specific refresh token
+   * @param token The token string to delete
+   * @returns True if deleted, false if not found
    */
-  revokeToken(tokenId: string): Promise<void>;
+  deleteByToken(token: string): Promise<boolean>;
 
   /**
-   * Revoke all refresh tokens for a specific user
+   * Delete all refresh tokens for a specific user
    * @param userGuid The user's GUID
+   * @returns Number of tokens deleted
    */
-  revokeAllUserTokens(userGuid: string): Promise<void>;
-
-  /**
-   * Revoke all refresh tokens in a specific family
-   * @param family The family identifier
-   */
-  revokeTokenFamily(family: string): Promise<void>;
+  deleteByUserGuid(userGuid: string): Promise<number>;
 
   /**
    * Delete all expired refresh tokens

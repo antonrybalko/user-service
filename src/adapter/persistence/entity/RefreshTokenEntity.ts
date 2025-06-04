@@ -27,13 +27,6 @@ export class RefreshTokenEntity {
   @Column()
   expiresAt: Date;
 
-  @Column({ default: false })
-  isRevoked: boolean;
-
-  @Column()
-  @Index()
-  family: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
@@ -54,9 +47,7 @@ export class RefreshTokenEntity {
       this.token,
       this.userGuid,
       this.expiresAt,
-      this.createdAt,
-      this.isRevoked,
-      this.family
+      this.createdAt
     );
   }
 }

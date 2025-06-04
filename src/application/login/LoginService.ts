@@ -56,7 +56,10 @@ export class LoginService extends BaseUseCaseService {
       throw new UnauthorizedException('Invalid username or password');
     }
 
-    // Generate token pair instead of single token
+    // Delete any existing refresh tokens for this user
+    await this.refreshTokenRepository.deleteByUserGuid(user.guid);
+
+    // Generate token pair
     const tokenPair = this.tokenService.generateTokenPair(user);
 
     // Calculate expiration dates
@@ -70,9 +73,7 @@ export class LoginService extends BaseUseCaseService {
       tokenPair.refreshToken,
       user.guid,
       refreshTokenExpiresAt,
-      now,
-      false,
-      tokenPair.family
+      now
     );
 
     await this.refreshTokenRepository.save(refreshToken);
@@ -82,8 +83,7 @@ export class LoginService extends BaseUseCaseService {
       tokenPair.accessToken,
       tokenPair.refreshToken,
       accessTokenExpiresAt,
-      refreshTokenExpiresAt,
-      tokenPair.family
+      refreshTokenExpiresAt
     );
   }
 

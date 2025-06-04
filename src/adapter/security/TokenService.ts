@@ -5,7 +5,6 @@ import { User } from 'entity/User';
 import { TokenPayload } from 'entity/TokenPayload';
 import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
 import crypto from 'crypto';
-import { v4 as uuidv4 } from 'uuid';
 
 @Service()
 export class TokenService implements TokenServiceInterface {
@@ -53,7 +52,7 @@ export class TokenService implements TokenServiceInterface {
     return payload;
   }
 
-  generateRefreshToken(userGuid: string, family?: string): string {
+  generateRefreshToken(userGuid: string): string {
     const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
     
     if (!jwtRefreshSecret) {
@@ -63,16 +62,12 @@ export class TokenService implements TokenServiceInterface {
     if (!isUUID(userGuid)) {
       throw new Error('Invalid user GUID');
     }
-
-    // Generate a secure random family ID if not provided
-    const tokenFamily = family || uuidv4();
     
-    // Create a secure refresh token with userGuid and family
+    // Create a secure refresh token with userGuid and randomness
     const payload = {
       userGuid,
-      family: tokenFamily,
       // Add some randomness to make each token unique
-      random: crypto.randomBytes(16).toString('hex')
+      random: crypto.randomBytes(32).toString('hex')
     };
     
     const options: SignOptions = {
@@ -82,7 +77,7 @@ export class TokenService implements TokenServiceInterface {
     return jwt.sign(payload, jwtRefreshSecret, options);
   }
 
-  verifyRefreshToken(token: string): { userGuid: string, family: string } {
+  verifyRefreshToken(token: string): { userGuid: string } {
     const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
     
     if (!jwtRefreshSecret) {
@@ -92,7 +87,7 @@ export class TokenService implements TokenServiceInterface {
     try {
       const payload = jwt.verify(token, jwtRefreshSecret) as any;
 
-      if (!payload.userGuid || !payload.family) {
+      if (!payload.userGuid) {
         throw new Error('Invalid refresh token payload');
       }
 
@@ -101,8 +96,7 @@ export class TokenService implements TokenServiceInterface {
       }
 
       return {
-        userGuid: payload.userGuid,
-        family: payload.family
+        userGuid: payload.userGuid
       };
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
@@ -114,24 +108,19 @@ export class TokenService implements TokenServiceInterface {
     }
   }
 
-  generateTokenPair(user: User, family?: string): { 
+  generateTokenPair(user: User): { 
     accessToken: string, 
-    refreshToken: string, 
-    family: string 
+    refreshToken: string
   } {
-    // Generate a new family ID if not provided
-    const tokenFamily = family || uuidv4();
-    
     // Generate access token
     const accessToken = this.generateToken(user);
     
-    // Generate refresh token with the same family
-    const refreshToken = this.generateRefreshToken(user.guid, tokenFamily);
+    // Generate refresh token
+    const refreshToken = this.generateRefreshToken(user.guid);
     
     return {
       accessToken,
-      refreshToken,
-      family: tokenFamily
+      refreshToken
     };
   }
 }

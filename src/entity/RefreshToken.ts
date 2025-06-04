@@ -9,8 +9,6 @@ export class RefreshToken {
    * @param userGuid Reference to the user this token belongs to
    * @param expiresAt When this token expires
    * @param createdAt When this token was created
-   * @param isRevoked Whether this token has been revoked
-   * @param family Token family identifier for tracking rotation
    */
   constructor(
     public readonly id: string,
@@ -18,16 +16,14 @@ export class RefreshToken {
     public readonly userGuid: string,
     public readonly expiresAt: Date,
     public readonly createdAt: Date,
-    public isRevoked: boolean = false,
-    public readonly family: string,
   ) {}
 
   /**
-   * Checks if the token is valid (not expired and not revoked)
+   * Checks if the token is valid (not expired)
    * @returns boolean indicating if the token is valid
    */
   isValid(): boolean {
-    return !this.isExpired() && !this.isRevoked;
+    return !this.isExpired();
   }
 
   /**
@@ -36,12 +32,5 @@ export class RefreshToken {
    */
   isExpired(): boolean {
     return new Date() > this.expiresAt;
-  }
-
-  /**
-   * Revokes this token
-   */
-  revoke(): void {
-    this.isRevoked = true;
   }
 }
