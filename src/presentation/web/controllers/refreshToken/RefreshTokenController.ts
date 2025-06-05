@@ -46,7 +46,7 @@ export class RefreshTokenController extends BaseController {
    */
   public async logout(request: RequestInterface, response: Response): Promise<Response> {
     try {
-      const { guid } = request.tokenPayload;
+      const { guid } = await this.getTokenPayload(request);
 
       if (!guid) {
         return response.status(401).json({

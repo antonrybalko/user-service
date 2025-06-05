@@ -42,12 +42,12 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
 
   async deleteByToken(token: string): Promise<boolean> {
     const result = await this.refreshTokenRepository.delete({ token });
-    return result.affected !== undefined && result.affected > 0;
+    return result.affected !== null && result.affected !== undefined && result.affected > 0;
   }
 
   async deleteByUserGuid(userGuid: string): Promise<number> {
     const result = await this.refreshTokenRepository.delete({ userGuid });
-    return result.affected !== undefined ? result.affected : 0;
+    return result.affected !== null && result.affected !== undefined ? result.affected : 0;
   }
 
   async deleteExpiredTokens(): Promise<void> {
