@@ -28,4 +28,3 @@ export const AppDataSource = new DataSource({
   ],
   migrations: ['dist/src/adapter/persistence/migration/*.js'],
 });
-

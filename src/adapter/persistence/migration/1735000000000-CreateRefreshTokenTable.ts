@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateRefreshTokenTable1735000000000 implements MigrationInterface {
+export class CreateRefreshTokenTable1735000000000
+  implements MigrationInterface
+{
   name = 'CreateRefreshTokenTable1735000000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -19,15 +21,19 @@ export class CreateRefreshTokenTable1735000000000 implements MigrationInterface 
     );
 
     // Create indexes
-    await queryRunner.query(`CREATE INDEX "IDX_refresh_token_token" ON "refresh_token" ("token")`);
-    await queryRunner.query(`CREATE INDEX "IDX_refresh_token_userGuid" ON "refresh_token" ("userGuid")`);
+    await queryRunner.query(
+      `CREATE INDEX "IDX_refresh_token_token" ON "refresh_token" ("token")`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "IDX_refresh_token_userGuid" ON "refresh_token" ("userGuid")`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Drop indexes
     await queryRunner.query(`DROP INDEX "IDX_refresh_token_userGuid"`);
     await queryRunner.query(`DROP INDEX "IDX_refresh_token_token"`);
-    
+
     // Drop table
     await queryRunner.query(`DROP TABLE "refresh_token"`);
   }

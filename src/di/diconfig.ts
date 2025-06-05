@@ -40,10 +40,19 @@ Container.set(StorageService, Container.get(StorageService));
 
 // Register repositories with their interface tokens
 Container.set(LoginRepositoryInterfaceToken, Container.get(LoginRepository));
-Container.set(RefreshTokenRepositoryInterfaceToken, Container.get(RefreshTokenRepository));
-Container.set(RegistrationRepositoryInterfaceToken, Container.get(RegistrationRepository));
+Container.set(
+  RefreshTokenRepositoryInterfaceToken,
+  Container.get(RefreshTokenRepository),
+);
+Container.set(
+  RegistrationRepositoryInterfaceToken,
+  Container.get(RegistrationRepository),
+);
 Container.set(UserRepositoryInterfaceToken, Container.get(UserRepository));
-Container.set(OrganizationRepositoryInterfaceToken, Container.get(OrganizationRepository));
+Container.set(
+  OrganizationRepositoryInterfaceToken,
+  Container.get(OrganizationRepository),
+);
 
 // Register application services after their dependencies
 Container.set('LoginService', Container.get(LoginService));
