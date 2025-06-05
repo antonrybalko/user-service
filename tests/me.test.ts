@@ -12,8 +12,6 @@ describe('GET /v1/me', () => {
   let token: string;
 
   beforeAll(async () => {
-    await AppDataSource.initialize();
-
     // Create a test user
     user = new UserEntity();
     user.guid = '123e4567-e89b-12d3-a456-426614174000';
@@ -34,7 +32,6 @@ describe('GET /v1/me', () => {
   afterAll(async () => {
     const userRepository = AppDataSource.getRepository(UserEntity);
     await userRepository.delete({ username: user.username });
-    await AppDataSource.destroy();
   });
 
   it('should return user details for valid token', async () => {

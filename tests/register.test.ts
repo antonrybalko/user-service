@@ -36,7 +36,6 @@ beforeAll(async () => {
     }),
     userFull: await createUser(),
   };
-  await AppDataSource.initialize();
 });
 
 afterAll(async () => {

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { Container } from 'typedi';
 import { LoginService } from './LoginService';
 import { LoginRepositoryInterface } from 'application/login/port/LoginRepositoryInterface';
+import { RefreshTokenRepositoryInterface } from 'application/shared/port/RefreshTokenRepositoryInterface';
 import { PasswordServiceInterface } from 'application/shared/port/PasswordServiceInterface';
 import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
 import { ValidatorInterface } from 'shared/port/ValidatorInterface';
@@ -10,9 +11,11 @@ import { LoginDto } from 'application/login/dto/LoginDto';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { User } from 'entity/User';
 import { UserAndPassword } from 'entity/UserAndPassword';
+import { TokenPair } from 'entity/TokenPair';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import {
   LoginRepositoryInterfaceToken,
+  RefreshTokenRepositoryInterfaceToken,
   PasswordServiceInterfaceToken,
   TokenServiceInterfaceToken,
   ValidatorInterfaceToken,
@@ -22,6 +25,7 @@ import {
 describe('LoginService', () => {
   let loginService: LoginService;
   let loginRepository: LoginRepositoryInterface;
+  let refreshTokenRepository: RefreshTokenRepositoryInterface;
   let passwordService: PasswordServiceInterface;
   let tokenService: TokenServiceInterface;
   let validator: ValidatorInterface;
@@ -32,6 +36,11 @@ describe('LoginService', () => {
       findByUsername: jest.fn(),
     } as unknown as LoginRepositoryInterface;
 
+    refreshTokenRepository = {
+      deleteByUserGuid: jest.fn(),
+      save: jest.fn(),
+    } as unknown as RefreshTokenRepositoryInterface;
+
     passwordService = {
       hashPassword: jest.fn(),
       comparePassword: jest.fn(),
@@ -39,6 +48,7 @@ describe('LoginService', () => {
 
     tokenService = {
       generateToken: jest.fn(),
+      generateTokenPair: jest.fn(),
       verifyToken: jest.fn(),
     } as unknown as TokenServiceInterface;
 
@@ -51,6 +61,7 @@ describe('LoginService', () => {
     } as unknown as SanitizerInterface;
 
     Container.set(LoginRepositoryInterfaceToken, loginRepository);
+    Container.set(RefreshTokenRepositoryInterfaceToken, refreshTokenRepository);
     Container.set(PasswordServiceInterfaceToken, passwordService);
     Container.set(TokenServiceInterfaceToken, tokenService);
     Container.set(ValidatorInterfaceToken, validator);
@@ -70,22 +81,28 @@ describe('LoginService', () => {
     });
     const user = new User('123', 'testuser', false, false, 'Test', 'User');
     const userAndPassword = new UserAndPassword(user, 'hashedpassword');
+    const mockTokenPair = { accessToken: 'access-token', refreshToken: 'refresh-token' };
 
     (loginRepository.findByUsername as jest.Mock).mockResolvedValue(
       userAndPassword,
     );
     (passwordService.comparePassword as jest.Mock).mockResolvedValue(true);
-    (tokenService.generateToken as jest.Mock).mockReturnValue('token');
+    (tokenService.generateTokenPair as jest.Mock).mockReturnValue(mockTokenPair);
+    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(undefined);
+    (refreshTokenRepository.save as jest.Mock).mockResolvedValue(undefined);
 
-    const token = await loginService.login(loginDto);
+    const tokenPair = await loginService.login(loginDto);
 
-    expect(token).toBe('token');
+    expect(tokenPair.accessToken).toBe('access-token');
+    expect(tokenPair.refreshToken).toBe('refresh-token');
     expect(loginRepository.findByUsername).toHaveBeenCalledWith('testuser');
     expect(passwordService.comparePassword).toHaveBeenCalledWith(
       'testpassword',
       'hashedpassword',
     );
-    expect(tokenService.generateToken).toHaveBeenCalledWith(user);
+    expect(tokenService.generateTokenPair).toHaveBeenCalledWith(user);
+    expect(refreshTokenRepository.deleteByUserGuid).toHaveBeenCalledWith(user.guid);
+    expect(refreshTokenRepository.save).toHaveBeenCalled();
   });
 
   it('should validate and sanitize login data', async () => {
@@ -95,12 +112,15 @@ describe('LoginService', () => {
     });
     const user = new User('123', 'testuser', false, false, 'Test', 'User');
     const userAndPassword = new UserAndPassword(user, 'hashedpassword');
+    const mockTokenPair = { accessToken: 'access-token', refreshToken: 'refresh-token' };
 
     (loginRepository.findByUsername as jest.Mock).mockResolvedValue(
       userAndPassword,
     );
     (passwordService.comparePassword as jest.Mock).mockResolvedValue(true);
-    (tokenService.generateToken as jest.Mock).mockReturnValue('token');
+    (tokenService.generateTokenPair as jest.Mock).mockReturnValue(mockTokenPair);
+    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(undefined);
+    (refreshTokenRepository.save as jest.Mock).mockResolvedValue(undefined);
 
     await loginService.login(loginDto);
 

@@ -29,31 +29,25 @@ import {
   CloudStorageInterfaceToken,
 } from 'di/tokens';
 
+// Register infrastructure services first
 Container.set(PasswordServiceInterfaceToken, Container.get(PasswordService));
 Container.set(TokenServiceInterfaceToken, Container.get(TokenService));
 Container.set(LoggerServiceToken, Container.get(LoggerService));
 Container.set(ValidatorServiceToken, Container.get(ValidatorService));
 Container.set(SanitizerServiceToken, Container.get(SanitizerService));
 Container.set(CloudStorageInterfaceToken, Container.get(StorageService));
-
-Container.set(LoginRepositoryInterfaceToken, Container.get(LoginRepository));
-Container.set(RefreshTokenRepositoryInterfaceToken, Container.get(RefreshTokenRepository));
-Container.set('LoginService', Container.get(LoginService));
-Container.set('TokenRotationService', Container.get(TokenRotationService));
-
 Container.set(StorageService, Container.get(StorageService));
 
-Container.set(
-  RegistrationRepositoryInterfaceToken,
-  Container.get(RegistrationRepository),
-);
-Container.set('RegistrationService', Container.get(RegistrationService));
-
+// Register repositories with their interface tokens
+Container.set(LoginRepositoryInterfaceToken, Container.get(LoginRepository));
+Container.set(RefreshTokenRepositoryInterfaceToken, Container.get(RefreshTokenRepository));
+Container.set(RegistrationRepositoryInterfaceToken, Container.get(RegistrationRepository));
 Container.set(UserRepositoryInterfaceToken, Container.get(UserRepository));
-Container.set('UserService', Container.get(UserService));
+Container.set(OrganizationRepositoryInterfaceToken, Container.get(OrganizationRepository));
 
-Container.set(
-  OrganizationRepositoryInterfaceToken,
-  Container.get(OrganizationRepository),
-);
+// Register application services after their dependencies
+Container.set('LoginService', Container.get(LoginService));
+Container.set('TokenRotationService', Container.get(TokenRotationService));
+Container.set('RegistrationService', Container.get(RegistrationService));
+Container.set('UserService', Container.get(UserService));
 Container.set('OrganizationService', Container.get(OrganizationService));
