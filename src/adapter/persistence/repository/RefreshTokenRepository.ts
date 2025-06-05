@@ -10,7 +10,8 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
   private refreshTokenRepository: Repository<RefreshTokenEntity>;
 
   constructor() {
-    this.refreshTokenRepository = AppDataSource.getRepository(RefreshTokenEntity);
+    this.refreshTokenRepository =
+      AppDataSource.getRepository(RefreshTokenEntity);
   }
 
   async save(refreshToken: RefreshToken): Promise<RefreshToken> {
@@ -20,13 +21,14 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     refreshTokenEntity.userGuid = refreshToken.userGuid;
     refreshTokenEntity.expiresAt = refreshToken.expiresAt;
 
-    const savedEntity = await this.refreshTokenRepository.save(refreshTokenEntity);
+    const savedEntity =
+      await this.refreshTokenRepository.save(refreshTokenEntity);
     return savedEntity.toDomainEntity();
   }
 
   async findByToken(token: string): Promise<RefreshToken | null> {
     const refreshTokenEntity = await this.refreshTokenRepository.findOne({
-      where: { token }
+      where: { token },
     });
 
     return refreshTokenEntity ? refreshTokenEntity.toDomainEntity() : null;
@@ -34,25 +36,31 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
 
   async findByUserGuid(userGuid: string): Promise<RefreshToken[]> {
     const refreshTokenEntities = await this.refreshTokenRepository.find({
-      where: { userGuid }
+      where: { userGuid },
     });
 
-    return refreshTokenEntities.map(entity => entity.toDomainEntity());
+    return refreshTokenEntities.map((entity) => entity.toDomainEntity());
   }
 
   async deleteByToken(token: string): Promise<boolean> {
     const result = await this.refreshTokenRepository.delete({ token });
-    return result.affected !== null && result.affected !== undefined && result.affected > 0;
+    return (
+      result.affected !== null &&
+      result.affected !== undefined &&
+      result.affected > 0
+    );
   }
 
   async deleteByUserGuid(userGuid: string): Promise<number> {
     const result = await this.refreshTokenRepository.delete({ userGuid });
-    return result.affected !== null && result.affected !== undefined ? result.affected : 0;
+    return result.affected !== null && result.affected !== undefined
+      ? result.affected
+      : 0;
   }
 
   async deleteExpiredTokens(): Promise<void> {
     await this.refreshTokenRepository.delete({
-      expiresAt: LessThan(new Date())
+      expiresAt: LessThan(new Date()),
     });
   }
 }

@@ -81,14 +81,23 @@ describe('LoginService', () => {
     });
     const user = new User('123', 'testuser', false, false, 'Test', 'User');
     const userAndPassword = new UserAndPassword(user, 'hashedpassword');
-    const mockTokenPair = { accessToken: 'access-token', refreshToken: 'refresh-token' };
+    const mockTokenPairResult = {
+      accessToken: 'access-token',
+      refreshToken: 'refresh-token',
+      accessTokenExpiresIn: 1800,
+      refreshTokenExpiresIn: 2592000,
+    };
 
     (loginRepository.findByUsername as jest.Mock).mockResolvedValue(
       userAndPassword,
     );
     (passwordService.comparePassword as jest.Mock).mockResolvedValue(true);
-    (tokenService.generateTokenPair as jest.Mock).mockReturnValue(mockTokenPair);
-    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(undefined);
+    (tokenService.generateTokenPair as jest.Mock).mockReturnValue(
+      mockTokenPairResult,
+    );
+    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(
+      undefined,
+    );
     (refreshTokenRepository.save as jest.Mock).mockResolvedValue(undefined);
 
     const tokenPair = await loginService.login(loginDto);
@@ -101,7 +110,9 @@ describe('LoginService', () => {
       'hashedpassword',
     );
     expect(tokenService.generateTokenPair).toHaveBeenCalledWith(user);
-    expect(refreshTokenRepository.deleteByUserGuid).toHaveBeenCalledWith(user.guid);
+    expect(refreshTokenRepository.deleteByUserGuid).toHaveBeenCalledWith(
+      user.guid,
+    );
     expect(refreshTokenRepository.save).toHaveBeenCalled();
   });
 
@@ -112,14 +123,23 @@ describe('LoginService', () => {
     });
     const user = new User('123', 'testuser', false, false, 'Test', 'User');
     const userAndPassword = new UserAndPassword(user, 'hashedpassword');
-    const mockTokenPair = { accessToken: 'access-token', refreshToken: 'refresh-token' };
+    const mockTokenPairResult = {
+      accessToken: 'access-token',
+      refreshToken: 'refresh-token',
+      accessTokenExpiresIn: 1800,
+      refreshTokenExpiresIn: 2592000,
+    };
 
     (loginRepository.findByUsername as jest.Mock).mockResolvedValue(
       userAndPassword,
     );
     (passwordService.comparePassword as jest.Mock).mockResolvedValue(true);
-    (tokenService.generateTokenPair as jest.Mock).mockReturnValue(mockTokenPair);
-    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(undefined);
+    (tokenService.generateTokenPair as jest.Mock).mockReturnValue(
+      mockTokenPairResult,
+    );
+    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(
+      undefined,
+    );
     (refreshTokenRepository.save as jest.Mock).mockResolvedValue(undefined);
 
     await loginService.login(loginDto);

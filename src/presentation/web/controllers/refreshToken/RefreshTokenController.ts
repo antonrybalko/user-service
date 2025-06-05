@@ -18,14 +18,19 @@ export class RefreshTokenController extends BaseController {
    * @param response Express response
    * @returns New token pair or error response
    */
-  public async refresh(request: Request, response: Response): Promise<Response> {
+  public async refresh(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
     try {
       const refreshTokenDto = new RefreshTokenDto(request.body);
 
       // Validate the request body
       await this.validate(refreshTokenDto);
 
-      const tokenPair = await this.tokenRotationService.rotateTokens(refreshTokenDto.refreshToken);
+      const tokenPair = await this.tokenRotationService.rotateTokens(
+        refreshTokenDto.refreshToken,
+      );
 
       return response.status(200).json(TokenPairDto.fromTokenPair(tokenPair));
     } catch (error) {
@@ -44,7 +49,10 @@ export class RefreshTokenController extends BaseController {
    * @param response Express response
    * @returns Success response or error
    */
-  public async logout(request: RequestInterface, response: Response): Promise<Response> {
+  public async logout(
+    request: RequestInterface,
+    response: Response,
+  ): Promise<Response> {
     try {
       const { guid } = await this.getTokenPayload(request);
 

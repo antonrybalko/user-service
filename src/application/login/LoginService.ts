@@ -60,30 +60,34 @@ export class LoginService extends BaseUseCaseService {
     await this.refreshTokenRepository.deleteByUserGuid(user.guid);
 
     // Generate token pair
-    const tokenPair = this.tokenService.generateTokenPair(user);
+    const tokenPairResult = this.tokenService.generateTokenPair(user);
 
-    // Calculate expiration dates
+    // Calculate expiration dates using the returned expiration times
     const now = new Date();
-    const accessTokenExpiresAt = new Date(now.getTime() + 30 * 60 * 1000); // 30 minutes
-    const refreshTokenExpiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+    const accessTokenExpiresAt = new Date(
+      now.getTime() + tokenPairResult.accessTokenExpiresIn * 1000,
+    );
+    const refreshTokenExpiresAt = new Date(
+      now.getTime() + tokenPairResult.refreshTokenExpiresIn * 1000,
+    );
 
     // Create and save refresh token to database
     const refreshToken = new RefreshToken(
       uuidv4(),
-      tokenPair.refreshToken,
       user.guid,
+      tokenPairResult.refreshToken,
       refreshTokenExpiresAt,
-      now
+      now,
     );
 
     await this.refreshTokenRepository.save(refreshToken);
 
     // Return token pair with expiration dates
     return new TokenPair(
-      tokenPair.accessToken,
-      tokenPair.refreshToken,
+      tokenPairResult.accessToken,
+      tokenPairResult.refreshToken,
       accessTokenExpiresAt,
-      refreshTokenExpiresAt
+      refreshTokenExpiresAt,
     );
   }
 

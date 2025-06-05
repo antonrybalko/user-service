@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
-  Index
+  Index,
 } from 'typeorm';
 import { RefreshToken } from 'entity/RefreshToken';
 import { UserEntity } from './UserEntity';
@@ -44,10 +44,10 @@ export class RefreshTokenEntity {
   public toDomainEntity(): RefreshToken {
     return new RefreshToken(
       this.id,
-      this.token,
       this.userGuid,
+      this.token,
       this.expiresAt,
-      this.createdAt
+      this.createdAt,
     );
   }
 }

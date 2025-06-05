@@ -18,7 +18,7 @@ export class TokenPairDto {
     public readonly refreshToken: string,
     public readonly accessTokenExpiresAt: Date,
     public readonly refreshTokenExpiresAt: Date,
-    public readonly tokenType: string = 'Bearer'
+    public readonly tokenType: string = 'Bearer',
   ) {}
 
   /**
@@ -31,7 +31,7 @@ export class TokenPairDto {
       tokenPair.accessToken,
       tokenPair.refreshToken,
       tokenPair.accessTokenExpiresAt,
-      tokenPair.refreshTokenExpiresAt
+      tokenPair.refreshTokenExpiresAt,
     );
   }
 }
