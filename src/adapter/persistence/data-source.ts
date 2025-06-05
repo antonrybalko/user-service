@@ -29,9 +29,3 @@ export const AppDataSource = new DataSource({
   migrations: ['dist/src/adapter/persistence/migration/*.js'],
 });
 
-AppDataSource.initialize()
-  .then(async () => {
-    // Connection initialized with database...
-  })
-  /* eslint-disable-next-line no-console */
-  .catch((error) => console.log(error));
