@@ -6,7 +6,7 @@ module.exports = {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
   testMatch: ['**/*.test.ts'],
-  // setupFilesAfterEnv: ['./tests/setup.ts'],
+  setupFilesAfterEnv: ['./tests/setup.ts'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],

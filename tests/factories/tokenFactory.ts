@@ -10,7 +10,7 @@ export const createUserAndToken = async (
   await AppDataSource.manager.save(user);
 
   const tokenService = new TokenService();
-  const token = tokenService.generateToken(user.toDomainEntity());
+  const { token } = tokenService.generateToken(user.toDomainEntity());
 
   return { user, token };
 };

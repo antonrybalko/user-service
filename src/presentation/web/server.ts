@@ -4,7 +4,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import '../../di/diconfig';
+import 'di/diconfig';
 import { router } from './routes';
 import { LoggerInterface } from 'shared/port/LoggerInterface';
 import { JsonValidatorMiddleware } from './middleware/JsonValidatorMiddleware';

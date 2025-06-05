@@ -9,6 +9,66 @@ yarn global add typescript
 yarn install
 ```
 
+## Docker
+
+A ready-to-use **docker-compose** stack is provided to spin-up PostgreSQL and the user-service with one command.
+
+### 1. Setup
+
+```bash
+# clone repository
+git clone https://github.com/antonrybalko/user-service.git
+cd user-service
+
+# build & start services in the background
+docker compose up -d
+```
+
+### 2. Stopping Services
+
+```bash
+# graceful stop
+docker compose stop
+
+# or remove containers, keeping data volume
+docker compose down
+```
+
+To wipe Postgres data completely:
+
+```bash
+docker compose down -v        # drops the postgres_data volume
+```
+
+### 3. Available Endpoints (default ports)
+
+http://localhost:3001/v1
+
+| Service      | URL / Port        | Purpose                    |
+|--------------|-------------------|----------------------------|
+| Health Check | GET /v1           | returns `{ status: "OK" }` |
+| Login        | POST /v1/login    | returns access + refresh tokens |
+| Refresh      | POST /v1/refresh  | rotates tokens            |
+| Logout       | POST /v1/logout   | deletes all refresh tokens |
+
+### 4. Database Access
+
+| Parameter      | Value                |
+|----------------|----------------------|
+| Host           | `localhost`          |
+| Port           | `5433`               |
+| Database       | `user_service`       |
+| User           | `db_dev_user`        |
+| Password       | `db_dev_password`    |
+
+Connect via psql:
+
+```bash
+psql -h localhost -p 5433 -U db_dev_user -d user_service
+```
+
+Extensions (`uuid-ossp`) are enabled during the init script.
+
 ## Scripts
 
 ```bash
