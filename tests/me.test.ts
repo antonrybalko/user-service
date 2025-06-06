@@ -3,7 +3,10 @@ import jwt from 'jsonwebtoken';
 import app from 'presentation/web/server';
 import { AppDataSource } from 'adapter/persistence/data-source';
 import { UserEntity } from 'adapter/persistence/entity/UserEntity';
-import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
+import {
+  TokenResult,
+  TokenServiceInterface,
+} from 'application/shared/port/TokenServiceInterface';
 import { TokenService } from 'adapter/security/TokenService';
 
 describe('GET /v1/me', () => {
@@ -12,8 +15,6 @@ describe('GET /v1/me', () => {
   let token: string;
 
   beforeAll(async () => {
-    await AppDataSource.initialize();
-
     // Create a test user
     user = new UserEntity();
     user.guid = '123e4567-e89b-12d3-a456-426614174000';
@@ -28,13 +29,12 @@ describe('GET /v1/me', () => {
     await AppDataSource.manager.save(user);
 
     tokenService = new TokenService();
-    token = tokenService.generateToken(user.toDomainEntity());
+    token = tokenService.generateToken(user.toDomainEntity()).token;
   });
 
   afterAll(async () => {
     const userRepository = AppDataSource.getRepository(UserEntity);
     await userRepository.delete({ username: user.username });
-    await AppDataSource.destroy();
   });
 
   it('should return user details for valid token', async () => {

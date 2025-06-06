@@ -15,7 +15,6 @@ beforeAll(async () => {
     createUser({ status: 3 }), // Blocked user
   ]);
 
-  await AppDataSource.initialize();
   const userRepository = AppDataSource.getRepository(UserEntity);
   const passwordService = new PasswordService();
 
@@ -36,7 +35,6 @@ afterAll(async () => {
   for (const user of usersData) {
     await userRepository.delete({ username: user.username });
   }
-
   await AppDataSource.destroy();
 });
 
@@ -49,7 +47,11 @@ describe('POST /login', () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
-      token: expect.any(String),
+      accessToken: expect.any(String),
+      accessTokenExpiresAt: expect.any(String),
+      refreshToken: expect.any(String),
+      refreshTokenExpiresAt: expect.any(String),
+      tokenType: 'Bearer',
     });
   });
 

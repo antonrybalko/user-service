@@ -3,6 +3,7 @@ import { UserRepositoryInterface } from 'application/user/port/UserRepositoryInt
 import { OrganizationRepositoryInterface } from 'application/organization/port/OrganizationRepositoryInterface';
 import { RegistrationRepositoryInterface } from 'application/register/port/RegistrationRepositoryInterface';
 import { LoginRepositoryInterface } from 'application/login/port/LoginRepositoryInterface';
+import { RefreshTokenRepositoryInterface } from 'application/shared/port/RefreshTokenRepositoryInterface';
 import { PasswordServiceInterface } from 'application/shared/port/PasswordServiceInterface';
 import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
 import { LoggerInterface } from 'shared/port/LoggerInterface';
@@ -19,6 +20,8 @@ export const RegistrationRepositoryInterfaceToken =
   new Token<RegistrationRepositoryInterface>('RegistrationRepositoryInterface');
 export const LoginRepositoryInterfaceToken =
   new Token<LoginRepositoryInterface>('LoginRepositoryInterface');
+export const RefreshTokenRepositoryInterfaceToken =
+  new Token<RefreshTokenRepositoryInterface>('RefreshTokenRepositoryInterface');
 
 // Service Tokens
 export const PasswordServiceInterfaceToken =

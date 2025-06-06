@@ -14,7 +14,6 @@ describe('Organizations', () => {
   let organizationGuid: string;
 
   beforeAll(async () => {
-    await AppDataSource.initialize();
     const userAndToken = await createUserAndToken();
     user = userAndToken.user;
     token = userAndToken.token;
@@ -27,7 +26,6 @@ describe('Organizations', () => {
     await organizationRepository.delete({ title: organizationData.title });
     await organizationRepository.delete({ guid: organizationGuid });
     await userRepository.delete({ username: user.username });
-    await AppDataSource.destroy();
   });
 
   describe('POST /v1/me/organizations', () => {
