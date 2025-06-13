@@ -1,4 +1,4 @@
-import { Repository, LessThan, DeleteResult } from 'typeorm';
+import { Repository, LessThan } from 'typeorm';
 import { Service } from 'typedi';
 import { RefreshToken } from 'entity/RefreshToken';
 import { RefreshTokenEntity } from '../entity/RefreshTokenEntity';

@@ -12,7 +12,7 @@ export class RefreshTokenDto {
    * Creates a new RefreshTokenDto instance from request body
    * @param body Request body containing refresh token
    */
-  constructor(body: any) {
+  constructor(body: { refreshToken: string }) {
     this.refreshToken = body.refreshToken;
   }
 }

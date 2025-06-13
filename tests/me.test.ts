@@ -3,10 +3,7 @@ import jwt from 'jsonwebtoken';
 import app from 'presentation/web/server';
 import { AppDataSource } from 'adapter/persistence/data-source';
 import { UserEntity } from 'adapter/persistence/entity/UserEntity';
-import {
-  TokenResult,
-  TokenServiceInterface,
-} from 'application/shared/port/TokenServiceInterface';
+import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
 import { TokenService } from 'adapter/security/TokenService';
 
 describe('GET /v1/me', () => {
