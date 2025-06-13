@@ -17,7 +17,11 @@
     "migration:revert:dev": "yarn build && NODE_ENV=development yarn typeorm migration:revert -- -d src/adapter/persistence/data-source.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
-    "test": "jest"
+    "test": "jest",
+    "test:unit": "jest --config jest.unit.config.js",
+    "test:integration": "jest --config jest.config.js",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
