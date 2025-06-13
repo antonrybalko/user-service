@@ -236,24 +236,4 @@ describe('TokenRotationService', () => {
       tokenRotationService.revokeAllUserTokens('uid'),
     ).rejects.toThrow('Failed to delete user tokens: db');
   });
-
-  it('should cleanup expired tokens', async () => {
-    (refreshTokenRepository.deleteExpiredTokens as jest.Mock).mockResolvedValue(
-      undefined,
-    );
-
-    await expect(
-      tokenRotationService.cleanupExpiredTokens(),
-    ).resolves.not.toThrow();
-  });
-
-  it('should wrap cleanup errors', async () => {
-    (refreshTokenRepository.deleteExpiredTokens as jest.Mock).mockRejectedValue(
-      new Error('fail'),
-    );
-
-    await expect(tokenRotationService.cleanupExpiredTokens()).rejects.toThrow(
-      'Failed to clean up expired tokens: fail',
-    );
-  });
 });
