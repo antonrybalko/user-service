@@ -110,7 +110,10 @@ export class TokenService implements TokenServiceInterface {
     }
 
     try {
-      const payload = jwt.verify(token, this.JWT_REFRESH_SECRET) as any;
+      const payload = jwt.verify(
+        token,
+        this.JWT_REFRESH_SECRET,
+      ) as jwt.JwtPayload;
 
       if (!payload.userGuid) {
         throw new Error('Invalid refresh token payload');

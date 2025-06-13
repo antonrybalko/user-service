@@ -11,7 +11,6 @@ import { LoginDto } from 'application/login/dto/LoginDto';
 import { UnauthorizedException } from 'shared/exception/UnauthorizedException';
 import { User } from 'entity/User';
 import { UserAndPassword } from 'entity/UserAndPassword';
-import { TokenPair } from 'entity/TokenPair';
 import { NotFoundException } from 'shared/exception/NotFoundException';
 import {
   LoginRepositoryInterfaceToken,
