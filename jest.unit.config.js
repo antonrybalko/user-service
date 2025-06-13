@@ -5,12 +5,12 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
-  testMatch: ['**/tests/**/*.test.ts'], // Only test files in tests folder
-  setupFilesAfterEnv: ['./tests/setup.ts'],
+  testMatch: ['**/src/**/*.test.ts'], // Only test files in src folder
+  testPathIgnorePatterns: ['/node_modules/', '/tests/'], // Explicitly ignore tests folder
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
-  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/tests/'],
   moduleNameMapper: {
     '^adapter/(.*)$': '<rootDir>/src/adapter/$1',
     '^presentation/(.*)$': '<rootDir>/src/presentation/$1',
