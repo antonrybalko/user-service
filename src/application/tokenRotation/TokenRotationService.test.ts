@@ -188,4 +188,72 @@ describe('TokenRotationService', () => {
       UnauthorizedException,
     );
   });
+
+  it('should throw UnauthorizedException when verifyRefreshToken reports expired', async () => {
+    (tokenService.verifyRefreshToken as jest.Mock).mockImplementation(() => {
+      throw new Error('expired');
+    });
+
+    await expect(tokenRotationService.rotateTokens('bad')).rejects.toThrow(
+      'Refresh token expired',
+    );
+  });
+
+  it('should throw UnauthorizedException for unexpected errors', async () => {
+    (tokenService.verifyRefreshToken as jest.Mock).mockImplementation(() => {
+      throw new Error('boom');
+    });
+
+    await expect(tokenRotationService.rotateTokens('bad')).rejects.toThrow(
+      'Invalid refresh token',
+    );
+  });
+
+  it('should revoke all tokens for a user', async () => {
+    (userRepository.checkIfUserExists as jest.Mock).mockResolvedValue(true);
+    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(2);
+
+    await expect(tokenRotationService.revokeAllUserTokens('uid')).resolves.toBe(
+      2,
+    );
+  });
+
+  it('should throw NotFoundException when revoking tokens for missing user', async () => {
+    (userRepository.checkIfUserExists as jest.Mock).mockResolvedValue(false);
+
+    await expect(
+      tokenRotationService.revokeAllUserTokens('uid'),
+    ).rejects.toThrow(NotFoundException);
+  });
+
+  it('should wrap unexpected errors when revoking tokens', async () => {
+    (userRepository.checkIfUserExists as jest.Mock).mockResolvedValue(true);
+    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockRejectedValue(
+      new Error('db'),
+    );
+
+    await expect(
+      tokenRotationService.revokeAllUserTokens('uid'),
+    ).rejects.toThrow('Failed to delete user tokens: db');
+  });
+
+  it('should cleanup expired tokens', async () => {
+    (refreshTokenRepository.deleteExpiredTokens as jest.Mock).mockResolvedValue(
+      undefined,
+    );
+
+    await expect(
+      tokenRotationService.cleanupExpiredTokens(),
+    ).resolves.not.toThrow();
+  });
+
+  it('should wrap cleanup errors', async () => {
+    (refreshTokenRepository.deleteExpiredTokens as jest.Mock).mockRejectedValue(
+      new Error('fail'),
+    );
+
+    await expect(tokenRotationService.cleanupExpiredTokens()).rejects.toThrow(
+      'Failed to clean up expired tokens: fail',
+    );
+  });
 });
