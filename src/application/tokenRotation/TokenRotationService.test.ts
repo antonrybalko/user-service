@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
+import { faker } from '@faker-js/faker';
 import { TokenRotationService } from './TokenRotationService';
 import { TokenServiceInterface } from 'application/shared/port/TokenServiceInterface';
 import { RefreshTokenRepositoryInterface } from 'application/shared/port/RefreshTokenRepositoryInterface';
@@ -16,18 +17,70 @@ import {
 
 describe('TokenRotationService', () => {
   let tokenRotationService: TokenRotationService;
-  let tokenService: TokenServiceInterface;
-  let refreshTokenRepository: RefreshTokenRepositoryInterface;
-  let userRepository: UserRepositoryInterface;
+  let tokenService: jest.Mocked<TokenServiceInterface>;
+  let refreshTokenRepository: jest.Mocked<RefreshTokenRepositoryInterface>;
+  let userRepository: jest.Mocked<UserRepositoryInterface>;
 
-  beforeAll(() => {
+  // Test data helpers
+  const createValidRefreshToken = (userGuid: string) =>
+    new RefreshToken(
+      faker.string.uuid(),
+      userGuid,
+      faker.string.alphanumeric(64),
+      faker.date.future(), // expires in the future
+      faker.date.recent(),
+    );
+
+  const createExpiredRefreshToken = (userGuid: string) =>
+    new RefreshToken(
+      faker.string.uuid(),
+      userGuid,
+      faker.string.alphanumeric(64),
+      faker.date.past(), // expired in the past
+      faker.date.recent(),
+    );
+
+  const createActiveUser = (guid: string) =>
+    new User(
+      guid,
+      faker.internet.userName(),
+      false,
+      false,
+      faker.person.firstName(),
+      faker.person.lastName(),
+    );
+
+  const createBlockedUser = (guid: string) =>
+    new User(
+      guid,
+      faker.internet.userName(),
+      false,
+      false,
+      faker.person.firstName(),
+      faker.person.lastName(),
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      UserStatus.BLOCKED,
+    );
+
+  const createTokenPair = () => ({
+    accessToken: faker.string.alphanumeric(128),
+    refreshToken: faker.string.alphanumeric(64),
+    accessTokenExpiresIn: faker.number.int({ min: 3600, max: 7200 }),
+    refreshTokenExpiresIn: faker.number.int({ min: 7200, max: 14400 }),
+  });
+
+  beforeEach(() => {
     tokenService = {
       verifyRefreshToken: jest.fn(),
       generateTokenPair: jest.fn(),
       generateToken: jest.fn(),
       verifyToken: jest.fn(),
       generateRefreshToken: jest.fn(),
-    } as unknown as TokenServiceInterface;
+    } as jest.Mocked<TokenServiceInterface>;
 
     refreshTokenRepository = {
       findByToken: jest.fn(),
@@ -36,7 +89,7 @@ describe('TokenRotationService', () => {
       deleteByUserGuid: jest.fn(),
       findByUserGuid: jest.fn(),
       deleteExpiredTokens: jest.fn(),
-    } as unknown as RefreshTokenRepositoryInterface;
+    } as jest.Mocked<RefreshTokenRepositoryInterface>;
 
     userRepository = {
       findByGuid: jest.fn(),
@@ -44,7 +97,7 @@ describe('TokenRotationService', () => {
       updateUser: jest.fn(),
       deleteUser: jest.fn(),
       checkIfUserExists: jest.fn(),
-    } as unknown as UserRepositoryInterface;
+    } as jest.Mocked<UserRepositoryInterface>;
 
     Container.set(TokenServiceInterfaceToken, tokenService);
     Container.set(RefreshTokenRepositoryInterfaceToken, refreshTokenRepository);
@@ -53,45 +106,29 @@ describe('TokenRotationService', () => {
     tokenRotationService = Container.get(TokenRotationService);
   });
 
-  afterAll(() => {
+  afterEach(() => {
     Container.reset();
+    jest.clearAllMocks();
   });
 
   it('should rotate tokens when refresh token is valid', async () => {
-    const userGuid = 'user-guid';
-    const refreshTokenString = 'valid-refresh-token';
-    const existingToken = new RefreshToken(
-      'id',
-      userGuid,
-      refreshTokenString,
-      new Date(Date.now() + 10000),
-      new Date(),
-    );
-    const user = new User(userGuid, 'username', false, false, 'Test');
-    const tokenPairResult = {
-      accessToken: 'access',
-      refreshToken: 'refresh',
-      accessTokenExpiresIn: 3600,
-      refreshTokenExpiresIn: 7200,
-    };
+    const userGuid = faker.string.uuid();
+    const refreshTokenString = faker.string.alphanumeric(64);
+    const existingToken = createValidRefreshToken(userGuid);
+    const user = createActiveUser(userGuid);
+    const tokenPairResult = createTokenPair();
 
-    (tokenService.verifyRefreshToken as jest.Mock).mockReturnValue({
-      userGuid,
-    });
-    (refreshTokenRepository.findByToken as jest.Mock).mockResolvedValue(
-      existingToken,
-    );
-    (userRepository.findByGuid as jest.Mock).mockResolvedValue(user);
-    (tokenService.generateTokenPair as jest.Mock).mockReturnValue(
-      tokenPairResult,
-    );
-    (refreshTokenRepository.deleteByToken as jest.Mock).mockResolvedValue(true);
-    (refreshTokenRepository.save as jest.Mock).mockResolvedValue(existingToken);
+    tokenService.verifyRefreshToken.mockReturnValue({ userGuid });
+    refreshTokenRepository.findByToken.mockResolvedValue(existingToken);
+    userRepository.findByGuid.mockResolvedValue(user);
+    tokenService.generateTokenPair.mockReturnValue(tokenPairResult);
+    refreshTokenRepository.deleteByToken.mockResolvedValue(true);
+    refreshTokenRepository.save.mockResolvedValue(existingToken);
 
-    const pair = await tokenRotationService.rotateTokens(refreshTokenString);
+    const result = await tokenRotationService.rotateTokens(refreshTokenString);
 
-    expect(pair.accessToken).toBe('access');
-    expect(pair.refreshToken).toBe('refresh');
+    expect(result.accessToken).toBe(tokenPairResult.accessToken);
+    expect(result.refreshToken).toBe(tokenPairResult.refreshToken);
     expect(tokenService.verifyRefreshToken).toHaveBeenCalledWith(
       refreshTokenString,
     );
@@ -102,138 +139,166 @@ describe('TokenRotationService', () => {
       refreshTokenString,
     );
     expect(tokenService.generateTokenPair).toHaveBeenCalledWith(user);
-    expect(refreshTokenRepository.save).toHaveBeenCalled();
+    expect(refreshTokenRepository.save).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userGuid,
+        token: tokenPairResult.refreshToken,
+      }),
+    );
   });
 
   it('should throw UnauthorizedException if refresh token not found', async () => {
-    (tokenService.verifyRefreshToken as jest.Mock).mockReturnValue({
-      userGuid: 'uid',
-    });
-    (refreshTokenRepository.findByToken as jest.Mock).mockResolvedValue(null);
+    const userGuid = faker.string.uuid();
+    const refreshTokenString = faker.string.alphanumeric(64);
 
-    await expect(tokenRotationService.rotateTokens('missing')).rejects.toThrow(
-      UnauthorizedException,
+    tokenService.verifyRefreshToken.mockReturnValue({ userGuid });
+    refreshTokenRepository.findByToken.mockResolvedValue(null);
+
+    await expect(
+      tokenRotationService.rotateTokens(refreshTokenString),
+    ).rejects.toThrow(UnauthorizedException);
+
+    expect(tokenService.verifyRefreshToken).toHaveBeenCalledWith(
+      refreshTokenString,
+    );
+    expect(refreshTokenRepository.findByToken).toHaveBeenCalledWith(
+      refreshTokenString,
     );
   });
 
   it('should throw UnauthorizedException if refresh token expired', async () => {
-    const expired = new RefreshToken(
-      'id',
-      'uid',
-      'token',
-      new Date(Date.now() - 1000),
-      new Date(),
-    );
-    (tokenService.verifyRefreshToken as jest.Mock).mockReturnValue({
-      userGuid: 'uid',
-    });
-    (refreshTokenRepository.findByToken as jest.Mock).mockResolvedValue(
-      expired,
-    );
+    const userGuid = faker.string.uuid();
+    const refreshTokenString = faker.string.alphanumeric(64);
+    const expiredToken = createExpiredRefreshToken(userGuid);
 
-    await expect(tokenRotationService.rotateTokens('token')).rejects.toThrow(
-      UnauthorizedException,
+    tokenService.verifyRefreshToken.mockReturnValue({ userGuid });
+    refreshTokenRepository.findByToken.mockResolvedValue(expiredToken);
+
+    await expect(
+      tokenRotationService.rotateTokens(refreshTokenString),
+    ).rejects.toThrow(UnauthorizedException);
+
+    expect(tokenService.verifyRefreshToken).toHaveBeenCalledWith(
+      refreshTokenString,
+    );
+    expect(refreshTokenRepository.findByToken).toHaveBeenCalledWith(
+      refreshTokenString,
     );
   });
 
   it('should throw NotFoundException if user not found', async () => {
-    const valid = new RefreshToken(
-      'id',
-      'uid',
-      'token',
-      new Date(Date.now() + 1000),
-      new Date(),
-    );
-    (tokenService.verifyRefreshToken as jest.Mock).mockReturnValue({
-      userGuid: 'uid',
-    });
-    (refreshTokenRepository.findByToken as jest.Mock).mockResolvedValue(valid);
-    (userRepository.findByGuid as jest.Mock).mockResolvedValue(undefined);
+    const userGuid = faker.string.uuid();
+    const refreshTokenString = faker.string.alphanumeric(64);
+    const validToken = createValidRefreshToken(userGuid);
 
-    await expect(tokenRotationService.rotateTokens('token')).rejects.toThrow(
-      NotFoundException,
+    tokenService.verifyRefreshToken.mockReturnValue({ userGuid });
+    refreshTokenRepository.findByToken.mockResolvedValue(validToken);
+    userRepository.findByGuid.mockRejectedValue(
+      new NotFoundException(faker.lorem.sentence()),
     );
+
+    await expect(
+      tokenRotationService.rotateTokens(refreshTokenString),
+    ).rejects.toThrow(NotFoundException);
+
+    expect(userRepository.findByGuid).toHaveBeenCalledWith(userGuid);
   });
 
-  it('should throw UnauthorizedException if user is inactive', async () => {
-    const valid = new RefreshToken(
-      'id',
-      'uid',
-      'token',
-      new Date(Date.now() + 1000),
-      new Date(),
-    );
-    const inactiveUser = new User(
-      'uid',
-      'username',
-      false,
-      false,
-      'Test',
-      'User',
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      UserStatus.BLOCKED,
-    );
+  it('should throw UnauthorizedException if user is blocked', async () => {
+    const userGuid = faker.string.uuid();
+    const refreshTokenString = faker.string.alphanumeric(64);
+    const validToken = createValidRefreshToken(userGuid);
+    const blockedUser = createBlockedUser(userGuid);
 
-    (tokenService.verifyRefreshToken as jest.Mock).mockReturnValue({
-      userGuid: 'uid',
-    });
-    (refreshTokenRepository.findByToken as jest.Mock).mockResolvedValue(valid);
-    (userRepository.findByGuid as jest.Mock).mockResolvedValue(inactiveUser);
+    tokenService.verifyRefreshToken.mockReturnValue({ userGuid });
+    refreshTokenRepository.findByToken.mockResolvedValue(validToken);
+    userRepository.findByGuid.mockResolvedValue(blockedUser);
 
-    await expect(tokenRotationService.rotateTokens('token')).rejects.toThrow(
-      UnauthorizedException,
-    );
+    await expect(
+      tokenRotationService.rotateTokens(refreshTokenString),
+    ).rejects.toThrow(UnauthorizedException);
+
+    expect(userRepository.findByGuid).toHaveBeenCalledWith(userGuid);
   });
 
   it('should throw UnauthorizedException when verifyRefreshToken reports expired', async () => {
-    (tokenService.verifyRefreshToken as jest.Mock).mockImplementation(() => {
+    const refreshTokenString = faker.string.alphanumeric(64);
+
+    tokenService.verifyRefreshToken.mockImplementation(() => {
       throw new Error('expired');
     });
 
-    await expect(tokenRotationService.rotateTokens('bad')).rejects.toThrow(
-      'Refresh token expired',
+    await expect(
+      tokenRotationService.rotateTokens(refreshTokenString),
+    ).rejects.toThrow('Refresh token expired');
+
+    expect(tokenService.verifyRefreshToken).toHaveBeenCalledWith(
+      refreshTokenString,
     );
   });
 
   it('should throw UnauthorizedException for unexpected errors', async () => {
-    (tokenService.verifyRefreshToken as jest.Mock).mockImplementation(() => {
+    const refreshTokenString = faker.string.alphanumeric(64);
+
+    tokenService.verifyRefreshToken.mockImplementation(() => {
       throw new Error('boom');
     });
 
-    await expect(tokenRotationService.rotateTokens('bad')).rejects.toThrow(
-      'Invalid refresh token',
-    );
-  });
-
-  it('should revoke all tokens for a user', async () => {
-    (userRepository.checkIfUserExists as jest.Mock).mockResolvedValue(true);
-    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockResolvedValue(2);
-
-    await expect(tokenRotationService.revokeAllUserTokens('uid')).resolves.toBe(
-      2,
-    );
-  });
-
-  it('should throw NotFoundException when revoking tokens for missing user', async () => {
-    (userRepository.checkIfUserExists as jest.Mock).mockResolvedValue(false);
-
     await expect(
-      tokenRotationService.revokeAllUserTokens('uid'),
-    ).rejects.toThrow(NotFoundException);
+      tokenRotationService.rotateTokens(refreshTokenString),
+    ).rejects.toThrow('Invalid refresh token');
+
+    expect(tokenService.verifyRefreshToken).toHaveBeenCalledWith(
+      refreshTokenString,
+    );
   });
 
-  it('should wrap unexpected errors when revoking tokens', async () => {
-    (userRepository.checkIfUserExists as jest.Mock).mockResolvedValue(true);
-    (refreshTokenRepository.deleteByUserGuid as jest.Mock).mockRejectedValue(
-      new Error('db'),
-    );
+  describe('revokeAllUserTokens', () => {
+    it('should revoke all tokens for an existing user', async () => {
+      const userGuid = faker.string.uuid();
+      const deletedTokensCount = faker.number.int({ min: 1, max: 5 });
 
-    await expect(
-      tokenRotationService.revokeAllUserTokens('uid'),
-    ).rejects.toThrow('Failed to delete user tokens: db');
+      userRepository.checkIfUserExists.mockResolvedValue(true);
+      refreshTokenRepository.deleteByUserGuid.mockResolvedValue(
+        deletedTokensCount,
+      );
+
+      const result = await tokenRotationService.revokeAllUserTokens(userGuid);
+
+      expect(result).toBe(deletedTokensCount);
+      expect(userRepository.checkIfUserExists).toHaveBeenCalledWith(userGuid);
+      expect(refreshTokenRepository.deleteByUserGuid).toHaveBeenCalledWith(
+        userGuid,
+      );
+    });
+
+    it('should throw NotFoundException when user does not exist', async () => {
+      const userGuid = faker.string.uuid();
+
+      userRepository.checkIfUserExists.mockResolvedValue(false);
+
+      await expect(
+        tokenRotationService.revokeAllUserTokens(userGuid),
+      ).rejects.toThrow(NotFoundException);
+
+      expect(userRepository.checkIfUserExists).toHaveBeenCalledWith(userGuid);
+      expect(refreshTokenRepository.deleteByUserGuid).not.toHaveBeenCalled();
+    });
+
+    it('should wrap database errors with descriptive message', async () => {
+      const userGuid = faker.string.uuid();
+      const dbError = new Error(faker.lorem.sentence());
+
+      userRepository.checkIfUserExists.mockResolvedValue(true);
+      refreshTokenRepository.deleteByUserGuid.mockRejectedValue(dbError);
+
+      await expect(
+        tokenRotationService.revokeAllUserTokens(userGuid),
+      ).rejects.toThrow(`Failed to delete user tokens: ${dbError.message}`);
+
+      expect(refreshTokenRepository.deleteByUserGuid).toHaveBeenCalledWith(
+        userGuid,
+      );
+    });
   });
 });
