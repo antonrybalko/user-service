@@ -18,5 +18,6 @@ module.exports = {
     '^application/(.*)$': '<rootDir>/src/application/$1',
     '^entity/(.*)$': '<rootDir>/src/entity/$1',
     '^di/(.*)$': '<rootDir>/src/di/$1',
+    '^@tests/(.*)$': '<rootDir>/tests/$1',
   },
 };

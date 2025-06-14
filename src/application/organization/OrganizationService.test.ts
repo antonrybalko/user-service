@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
 import { faker } from '@faker-js/faker';
+import { generatePhoneNumber } from '@tests/factories/helpers';
 import { OrganizationService } from './OrganizationService';
 import { OrganizationRepositoryInterface } from './port/OrganizationRepositoryInterface';
 import { UserRepositoryInterface } from '../user/port/UserRepositoryInterface';
@@ -72,7 +73,7 @@ describe('OrganizationService', () => {
       const createDto = new CreateOrganizationDto({
         title: faker.company.name(),
         cityGuid: faker.string.uuid(),
-        phone: '79' + faker.string.numeric(9),
+        phone: generatePhoneNumber(),
         email: faker.internet.email(),
         description: faker.company.catchPhrase(),
         registrationNumber: faker.string.alphanumeric(10),
@@ -136,7 +137,7 @@ describe('OrganizationService', () => {
       const orgGuid = faker.string.uuid();
       const updateDto = new UpdateOrganizationDto({
         title: faker.company.name(),
-        phone: '79' + faker.string.numeric(9),
+        phone: generatePhoneNumber(),
         email: faker.internet.email(),
         cityGuid: faker.string.uuid(),
         registrationNumber: faker.string.alphanumeric(10),
@@ -207,7 +208,7 @@ describe('OrganizationService', () => {
         orgGuid,
         updateDto.title!,
         faker.string.uuid(),
-        '79' + faker.string.numeric(9),
+        generatePhoneNumber(),
         faker.internet.email(),
         new User(
           faker.string.uuid(),
@@ -266,7 +267,7 @@ describe('OrganizationService', () => {
         faker.string.uuid(),
         faker.company.name(),
         faker.string.uuid(),
-        '79' + faker.string.numeric(9),
+        generatePhoneNumber(),
         faker.internet.email(),
         new User(
           adminGuid,

@@ -34,7 +34,7 @@ export class RegistrationService extends BaseUseCaseService {
       )
     ) {
       throw new ConflictException(
-        'User with this email or phone number already exists.',
+        'User with this email or phone number already exists',
       );
     }
 

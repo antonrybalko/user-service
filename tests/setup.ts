@@ -1,8 +1,13 @@
 import 'reflect-metadata';
 import { AppDataSource } from '../src/adapter/persistence/data-source';
 
-// Global setup for integration tests
 beforeAll(async () => {
+  // Suppress console output during tests to prevent tslog noise
+  // eslint-disable-next-line no-console
+  console.log = jest.fn();
+  // eslint-disable-next-line no-console
+  console.error = jest.fn();
+
   // Wait for database connection
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();

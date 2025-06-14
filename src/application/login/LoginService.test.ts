@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
 import { faker } from '@faker-js/faker';
+import { generatePhoneNumber } from '@tests/factories/helpers';
 import { LoginService } from './LoginService';
 import { LoginRepositoryInterface } from 'application/login/port/LoginRepositoryInterface';
 import { RefreshTokenRepositoryInterface } from 'application/shared/port/RefreshTokenRepositoryInterface';
@@ -49,7 +50,7 @@ describe('LoginService', () => {
       false,
       faker.person.firstName(),
       faker.person.lastName(),
-      faker.phone.number(),
+      generatePhoneNumber(),
       faker.internet.email(),
       undefined,
       undefined,
@@ -65,7 +66,7 @@ describe('LoginService', () => {
       false,
       faker.person.firstName(),
       faker.person.lastName(),
-      faker.phone.number(),
+      generatePhoneNumber(),
       faker.internet.email(),
       undefined,
       undefined,

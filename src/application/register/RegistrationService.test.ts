@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
 import { faker } from '@faker-js/faker';
+import { generatePhoneNumber } from '@tests/factories/helpers';
 import { RegistrationService } from './RegistrationService';
 import { RegistrationRepositoryInterface } from './port/RegistrationRepositoryInterface';
 import { PasswordServiceInterface } from 'application/shared/port/PasswordServiceInterface';
@@ -30,7 +31,7 @@ describe('RegistrationService', () => {
       username: faker.internet.userName(),
       password: faker.internet.password(),
       email: faker.internet.email(),
-      phone: faker.phone.number('##########'),
+      phone: generatePhoneNumber(),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       isVendor: faker.datatype.boolean(),
@@ -134,7 +135,7 @@ describe('RegistrationService', () => {
 
     await expect(registrationService.registerUser(dto)).rejects.toThrow(
       new ConflictException(
-        'User with this email or phone number already exists.',
+        'User with this email or phone number already exists',
       ),
     );
 
