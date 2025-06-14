@@ -30,7 +30,7 @@ describe('RegistrationService', () => {
       username: faker.internet.userName(),
       password: faker.internet.password(),
       email: faker.internet.email(),
-      phone: faker.phone.number('##########'),
+      phone: '79' + faker.string.numeric(9),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       isVendor: faker.datatype.boolean(),
@@ -134,7 +134,7 @@ describe('RegistrationService', () => {
 
     await expect(registrationService.registerUser(dto)).rejects.toThrow(
       new ConflictException(
-        'User with this email or phone number already exists.',
+        'User with this email or phone number already exists',
       ),
     );
 
