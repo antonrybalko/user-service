@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
 import { faker } from '@faker-js/faker';
+import { generatePhoneNumber } from '@tests/factories/helpers';
 import { RegistrationService } from './RegistrationService';
 import { RegistrationRepositoryInterface } from './port/RegistrationRepositoryInterface';
 import { PasswordServiceInterface } from 'application/shared/port/PasswordServiceInterface';
@@ -30,7 +31,7 @@ describe('RegistrationService', () => {
       username: faker.internet.userName(),
       password: faker.internet.password(),
       email: faker.internet.email(),
-      phone: '79' + faker.string.numeric(9),
+      phone: generatePhoneNumber(),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       isVendor: faker.datatype.boolean(),
